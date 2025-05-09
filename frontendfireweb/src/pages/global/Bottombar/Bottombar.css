@@ -1,0 +1,15 @@
+.bottombar {
+    height: 3.2vh;
+    background-color: #67AF6F;
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    font-family: Montserrat;
+    font-weight: 400;
+    font-size: 0.9375rem;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-align: center;
+    vertical-align: middle;
+    /* border-top: 1px solid #c1d8c5; */
+    }

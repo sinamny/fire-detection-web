@@ -1,0 +1,66 @@
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 7.5vh;
+    background-color: #328F6F;
+    padding: 0.25rem 1rem;
+    border-bottom: 1px solid #e0e0e0;
+    }
+
+    .topbar-left {
+        display: flex;
+        width: 22.6%;
+        height: 2.9vh;
+        align-items: center;
+        height: 100%;
+        gap: 0.5rem;
+    }
+
+    .topbar-logo {
+        color: #FFFFFF;
+        font-size: 2.5rem;
+    }
+
+    .topbar-title {
+        font-family: Montserrat, sans-serif;;
+        font-weight: 700;
+        font-size: 1.25rem;
+        line-height: 100%;
+        letter-spacing: 0%;
+        text-align: left;
+        vertical-align: middle;
+        color: #FFFFFF;
+        /* width: 100%;
+        display: inline; */
+    }
+    
+    .topbar-user {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    /* color: #333; */
+    font-weight: 500;
+    margin-right: 0.5rem;
+    }
+
+    .topbar-user-logo {
+        font-size: 2rem;
+    }
+
+    .topbar-username-container {
+        background-color: #FFFFFF; 
+        border-radius: 10px; 
+        padding: 0.2rem 0.5rem; 
+        font-weight: 500; 
+    }
+    
+    
+    .topbar-username {
+        font-family: Montserrat;
+        font-weight: 400;
+        font-size: 0.8125rem;
+        line-height: 100%;
+        letter-spacing: 0%;
+        vertical-align: middle;    
+    }

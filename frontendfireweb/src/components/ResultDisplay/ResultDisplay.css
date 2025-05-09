@@ -1,0 +1,166 @@
+.result-page {
+  /* background-color: #B9FFDE; */
+  /* padding: 0.5rem; */
+  max-width: 90%;
+  margin: auto;
+  
+}
+
+.video-result-frame {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border: 10px solid #C4D9FF;
+  
+}
+
+.video-player,
+.camera-result-video {
+  width: 100%;
+  border-radius: 8px;
+  object-fit: fill;
+
+  
+}
+
+ .stats-bar {
+    background: #a6c8e0;
+    padding: 0.625rem;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    color: #fff;
+    display: flex;
+    justify-content: space-between; 
+}
+
+.left-column {
+  flex: 1; 
+  margin-right: 1.7rem; 
+}
+
+.right-column {
+  flex: 0 0 32%; 
+  display: flex;
+  flex-direction: column; 
+  justify-content: space-between; 
+}
+
+.progress-text {
+    font-family: Montserrat;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 100%;
+    letter-spacing: 0%;
+    vertical-align: middle;
+    color: #FFFFFF;
+    margin-bottom: 0.625rem; 
+
+}
+
+.progress-container {
+  display: flex;
+  gap: 1rem;
+  align-items: center; 
+  border-radius: 5px;
+  height: 0.625rem; 
+  position: relative;
+  margin: 0.625rem 0rem 0.625rem 0rem; 
+  padding-right: 0.5rem;
+}
+
+.progress-bar-wrapper {
+  flex: 1;
+  background-color: #D9D9D9;
+  height: 100%; 
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fire {
+  background-color: red;
+  height: 100%; 
+  border-radius: 5px; 
+}
+
+.progress-bg {
+  background-color: #00ff00; 
+  height: 100%; 
+  border-radius: 5px; 
+  
+}
+
+.progress-percent {
+    font-family: Montserrat;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 100%;
+    letter-spacing: 0%;
+    vertical-align: middle;
+    color: #FFFFFF;
+    margin-bottom: 0.625rem; 
+    text-align: right;
+}
+
+
+.detection-time {
+    font-family: Montserrat;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 100%;
+    letter-spacing: 0%;
+    vertical-align: middle;
+    color: #FFFFFF;
+    margin-bottom: 0.625rem; 
+}
+
+.new-button {
+  background-color: #5AB2FF; 
+  color: #ffffff; 
+  padding: 0.75rem 0.75rem; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  transition: background-color 0.3s; 
+  align-self: flex-end;
+  font-family: Montserrat;
+    font-weight: 510;
+    font-size: 1rem;
+    line-height: 100%;
+    text-align: center;
+    vertical-align: middle;
+
+}
+
+.new-button:hover {
+  background-color: #0073e6; 
+}
+
+.custom-controls {
+  width: 100%;
+  background-color: #E0F7FA;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-around !important;
+  padding: 0.5rem 0rem;
+  display: flex !important;
+  align-items: center !important;
+  /* justify-content: space-between !important; */
+}
+
+.control-button,
+.custom-controls button {
+  background: none !important;
+  border: none;
+  /* font-size: 1.25rem; */
+  color: #003366;
+  cursor: pointer;
+  flex: 1; 
+  text-align: center; 
+}
+
+
+.control-time {
+  font-size: 0.875rem;
+  font-weight: bold;
+  color: #003366;
+}
+
