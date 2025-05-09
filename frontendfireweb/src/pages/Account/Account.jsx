@@ -66,7 +66,7 @@ const Account = () => {
       </div>
 
       <div className="history-box">
-        <h3>Lịch sử người dùng:</h3>
+        <h3>Lịch sử người dùng</h3>
         <div className="history-table">
           <div className="table-header">
             <span>Ngày</span>
