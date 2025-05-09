@@ -16,7 +16,7 @@
 .video-player,
 .camera-result-video {
   width: 100%;
-  border-radius: 8px;
+  /* border-radius: 8px; */
   object-fit: fill;
 
   

@@ -7,6 +7,7 @@ import Video from "./pages/Video/Video";
 import Bottombar from "./pages/global/Bottombar/Bottombar"; 
 import DetectionResult from "./pages/DetectionResult/DetectionResult"; 
 import CameraResult from "./pages/CameraResult/CameraResult"; 
+import Account from "./pages/Account/Account"
 import { ColorModeContext, useMode } from "./theme";
 import { ThemeProvider, CssBaseline } from '@mui/material';
 
@@ -39,7 +40,8 @@ function App() {
                 <Routes>
                   <Route path="/video" element={<Video />} />
                    <Route path="/detectionresult" element={<DetectionResult />} />
-                  <Route path="/cameraresult" element={<CameraResult />} />
+                   <Route path="/cameraresult" element={<CameraResult />} />
+                   <Route path="/account" element={<Account/>} />
                   {/* Các Route khác */}
                 </Routes>
               </main>

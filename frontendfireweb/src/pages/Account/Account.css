@@ -1,0 +1,103 @@
+.user-container {
+  font-family: Montserrat;
+  padding: 1.1rem;
+  max-width: 90%;
+  margin: auto;
+}
+
+.account-box, .history-box {
+  background-color: #b8fce0;
+  border-radius: 20px;
+  padding: 1rem 2.25rem;
+  margin-bottom: 1.875rem;
+  box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+}
+
+.account-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: Montserrat;
+    font-weight: 700;
+    font-size: 2rem;
+    line-height: 100%;
+    letter-spacing: 0%;
+    vertical-align: middle;
+    color: #474F7A;
+    margin-top: -3%;
+
+}
+
+.account-content {
+  margin-top: -2%;
+  padding: 0rem 5.5rem;
+  
+}
+
+.account-name {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 0.9375rem;
+  font-size: 1.2rem;
+}
+
+.account-avatar {
+    color: #FFFFFF;
+    font-size: 2.5rem !important;
+}
+
+.name-input {
+  background-color: white;
+  padding: 0.375rem 0.75rem;
+  border-radius: 8px;
+}
+
+.account-details {
+    background-color: #FFFFFF;
+    padding: 0.5rem 1.5rem;
+    border-radius: 10px;
+    font-size: 1.2rem;
+}
+
+.account-details p {
+  margin: 0.625rem 0;
+ 
+}
+
+.history-box h3 {
+  text-align: center;
+  color: #474F7A;
+  margin-bottom: 0.625rem;
+  font-family: Montserrat;
+    font-weight: 600;
+    font-size: 1.25rem;
+    line-height: 100%;
+    letter-spacing: 0%;
+    vertical-align: middle;
+
+}
+
+.history-table {
+  background-color: white;
+  border-radius: 12px;
+  padding: 0.625rem 1.25rem;
+}
+
+.table-header, .table-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr auto;
+  align-items: center;
+  padding: 0.5rem 0rem;
+  font-size: 1rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.table-header {
+  font-weight: bold;
+  color: #e53935;
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
