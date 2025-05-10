@@ -95,7 +95,9 @@
     margin-bottom: 0.8rem;
     cursor: pointer;
     justify-content: center; 
+    align-items: center;  
     display: flex;
+    overflow: hidden;
     flex-direction: column;
 }
 

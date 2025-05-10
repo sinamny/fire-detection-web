@@ -93,7 +93,7 @@ const Video = () => {
                       src={URL.createObjectURL(videoFile)}
                       controls
                       className="analyze-video-player"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }}
+                      style={{ width: '100%', height: '100%' }}
                     />
                   ) : (
                     <iframe
@@ -102,7 +102,7 @@ const Video = () => {
                       frameBorder="0"
                       allowFullScreen
                       className="analyze-video-player"
-                      style={{ width: '100%', height: '100%', borderRadius: '8px' }}
+                      style={{ width: '100%', height: '100%',objectFit: 'cover',}}
                     />
                   )}
                   <Button
@@ -117,7 +117,6 @@ const Video = () => {
                       zIndex: 10,
                     }}
                   >
-                    Xóa
                   </Button>
                 </div>
               ) : (
