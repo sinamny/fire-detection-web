@@ -1,12 +1,14 @@
 .user-container {
   font-family: Montserrat;
-  padding: 1.1rem;
+  padding: 1rem;
   max-width: 90%;
   margin: auto;
 }
 
 .account-box, .history-box {
-  background-color: #b8fce0;
+  /* background-color: #b8fce0; */
+  /* background-color: #7ed4ad; */
+  background-color: #acfadf;
   border-radius: 20px;
   padding: 1rem 2.25rem;
   margin-bottom: 1.875rem;
@@ -19,7 +21,7 @@
   align-items: center;
   font-family: Montserrat;
     font-weight: 700;
-    font-size: 1.75rem;
+    font-size: 1.2rem;
     line-height: 100%;
     letter-spacing: 0%;
     vertical-align: middle;
@@ -39,7 +41,7 @@
   align-items: center;
   gap: 0.625rem;
   margin-bottom: 0.9375rem;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 .account-avatar {
@@ -57,7 +59,7 @@
     background-color: #FFFFFF;
     padding: 0.5rem 1.5rem;
     border-radius: 10px;
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
 .account-details p {
@@ -71,10 +73,9 @@
   margin-bottom: 0.625rem;
   font-family: Montserrat;
     font-weight: 600;
-    font-size: 1.25rem;
-    line-height: 100%;
-    letter-spacing: 0%;
-    vertical-align: middle;
+    font-size: 1.1rem;
+  margin-top: -0.3rem;
+
 
 }
 

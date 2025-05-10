@@ -1,34 +1,35 @@
 .manage-container {
   font-family: "Montserrat", sans-serif;
-  padding: 1.5rem 3rem;
+  padding: 1rem 3.7rem;
   min-height: 100vh;
 }
 
 .model-info {
   background-color: #B9FFDE;
-  padding: 1.5rem 3rem;
+  padding: 1rem 3rem;
   border-radius: 20px;
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .model-title {
     font-family: Montserrat;
-  margin-bottom: 0.5rem;
- color: #00224D;
+    margin-bottom: 0.5rem;
+    color: #00224D;
     font-weight: 600;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     line-height: 100%;
     letter-spacing: 0%;
     vertical-align: middle;
+    margin-top: 0rem;
 
 }
 
 .model-name {
     font-family: Montserrat;
     font-weight: 600;
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     line-height: 100%;
     letter-spacing: 0%;
     vertical-align: middle;
@@ -49,22 +50,22 @@
   margin-top: 0.75rem auto;
   font-family: Montserrat;
     font-weight: 400;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
 }
 
 .history-section {
   background-color: #B9FFDE;
-  padding: 0.1rem 1.5rem;
+  padding: 0.03rem 1.5rem;
   border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .history-title {
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0.6rem;
   font-family: Montserrat;
     font-weight: 600;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     line-height: 100%;
     letter-spacing: 0%;
     vertical-align: middle;
@@ -83,23 +84,25 @@
 .ant-table th,
 .ant-table td {
   font-family: "Montserrat", sans-serif;
-  /* padding: 0.0625rem 0.0625rem; */
 }
 .ant-table th {
     color: #4D4B7E !important;
     font-family: Montserrat;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 0.95rem !important;
     line-height: 100%;
     letter-spacing: 0%;
     vertical-align: middle;
+    padding-top: 0.4rem !important;
+     padding-bottom: 0.4rem !important;
 
 ;
 }
 
 .ant-table td {
-     padding-top: 0.5rem !important;
-     padding-bottom: 0.5rem !important;
+     padding-top: 0.25rem !important;
+     padding-bottom: 0.25rem !important;
+     
 }
 
 :where(.css-dev-only-do-not-override-18afz5u).ant-pagination .ant-pagination-item-active {
