@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './App.css';
 import Sidebar from "./pages/global/Sidebar/Sidebar";
 import Topbar from "./pages/global/Topbar/Topbar"; 
+import Home from "./pages/HomePage/Home";
 import Video from "./pages/Video/Video";
 import Bottombar from "./pages/global/Bottombar/Bottombar"; 
 import DetectionResult from "./pages/DetectionResult/DetectionResult"; 
@@ -40,6 +41,7 @@ function App() {
               <Sidebar isSidebar={isSidebar} />
               <main className={`main-content ${isSidebar ? "" : "collapsed"}`}>
                 <Routes>
+                   <Route path="/" element={<Home />} />
                   <Route path="/video" element={<Video />} />
                    <Route path="/detectionresult" element={<DetectionResult />} />
                    <Route path="/cameraresult" element={<CameraResult />} />
