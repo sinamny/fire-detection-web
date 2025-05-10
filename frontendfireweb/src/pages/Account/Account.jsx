@@ -5,6 +5,7 @@ import {
   Snackbar,
   Alert,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { Edit, Logout } from '@mui/icons-material';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import SaveAltOutlinedIcon from '@mui/icons-material/SaveAltOutlined';
@@ -22,7 +23,7 @@ const Account = () => {
   const [userInfo, setUserInfo] = useState(user);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-
+  const navigate = useNavigate();
   const handleEditSave = (newData) => {
     setUser(newData);
     setUserInfo(newData);
@@ -39,12 +40,17 @@ const Account = () => {
     URL.revokeObjectURL(url);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('user'); 
+    navigate('/login');
+};
+
   return (
     <div className="user-container">
       <div className="account-box">
         <div className="account-header">
           <h2>Tài khoản</h2>
-          <IconButton>
+          <IconButton onClick={handleLogout}>
             <Logout />
           </IconButton>
         </div>

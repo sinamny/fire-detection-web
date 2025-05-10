@@ -23,7 +23,7 @@ const Sidebar = () => {
         </button>
       </div>
       <div className="fire-icon" style={{ display: collapsed ? 'none' : 'block' }}>
-        <NavLink to="/">  
+        <NavLink to="/home">  
           <MdOutlineLocalFireDepartment />
         </NavLink>
       </div>
