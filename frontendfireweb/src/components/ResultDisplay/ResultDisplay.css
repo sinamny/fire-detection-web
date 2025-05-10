@@ -1,8 +1,9 @@
 .result-page {
   /* background-color: #B9FFDE; */
   /* padding: 0.5rem; */
-  max-width: 90%;
-  margin: auto;
+  max-width: 76%;
+  margin: 2.2% 12% 2.2% 12%;
+  
   
 }
 
@@ -10,21 +11,25 @@
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   border: 10px solid #C4D9FF;
+  max-height: 60vh;
   
 }
 
-.video-player,
-.camera-result-video {
-  width: 100%;
-  /* border-radius: 8px; */
+.video-player {
+  width: 76%;
   object-fit: fill;
 
   
 }
 
+.camera-result-video {
+  width: 100%;
+  object-fit: fill;
+}
+
  .stats-bar {
     background: #a6c8e0;
-    padding: 0.625rem;
+    padding: 0.5rem;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
     color: #fff;
@@ -34,7 +39,7 @@
 
 .left-column {
   flex: 1; 
-  margin-right: 1.7rem; 
+  margin-right: 2rem; 
 }
 
 .right-column {
@@ -47,7 +52,7 @@
 .progress-text {
     font-family: Montserrat;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 0.85rem;
     line-height: 100%;
     letter-spacing: 0%;
     vertical-align: middle;
@@ -91,7 +96,7 @@
 .progress-percent {
     font-family: Montserrat;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 0.85rem;
     line-height: 100%;
     letter-spacing: 0%;
     vertical-align: middle;
@@ -104,7 +109,7 @@
 .detection-time {
     font-family: Montserrat;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 0.85rem;
     line-height: 100%;
     letter-spacing: 0%;
     vertical-align: middle;
@@ -123,15 +128,33 @@
   align-self: flex-end;
   font-family: Montserrat;
     font-weight: 510;
-    font-size: 1rem;
+    font-size: 0.85rem;
     line-height: 100%;
     text-align: center;
     vertical-align: middle;
 
 }
 
-.new-button:hover {
+.new-button:hover, .new-review-button {
   background-color: #0073e6; 
+}
+
+.new-review-button {
+  background-color: #5AB2FF; 
+  color: #ffffff; 
+  padding: 0.5rem 0.5rem; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  transition: background-color 0.3s; 
+  justify-content: center;
+  font-family: Montserrat;
+    font-weight: 510;
+    font-size: 0.85rem;
+    text-align: center;
+  margin-top: 1rem;
+  margin-left: 44%;
+  margin-right: 44%;
 }
 
 .custom-controls {
@@ -150,7 +173,7 @@
 .custom-controls button {
   background: none !important;
   border: none;
-  /* font-size: 1.25rem; */
+  font-size: 1.2rem !important;
   color: #003366;
   cursor: pointer;
   flex: 1; 
@@ -159,8 +182,71 @@
 
 
 .control-time {
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   font-weight: bold;
   color: #003366;
 }
 
+.video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  flex-direction: column;
+  font-family: Montserrat;
+  font-weight: 600;
+  font-size: 1rem;
+  color: white;
+}
+
+.review-button {
+  font-family: Montserrat;
+  font-weight: 600;
+  font-size: 0.74rem;
+  padding: 0.4rem 0.5rem;
+  background-color: #5CB338;
+  color: white;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.2s ease;
+}
+
+.review-button:hover {
+  background-color: #88C273;
+}
+
+.custom-progress-bar {
+  position: relative;
+  height: 0.45rem;
+  background-color: #ddd;
+  border-radius: 3px;
+  overflow: visible;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #F14E4E;
+  transition: width 0.1s linear;
+}
+
+.progress-thumb {
+  margin-left: 0.5rem;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 0.8rem;       
+  height: 0.8rem;
+  background-color: #F14E4E;
+  border: 1px solid white;
+  border-radius: 50%;
+  pointer-events: none; 
+  z-index: 1;
+}

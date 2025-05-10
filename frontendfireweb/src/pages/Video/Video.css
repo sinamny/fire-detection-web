@@ -1,18 +1,18 @@
 .video-page {
-    margin: 2% 8.5% 2% 8.5%;
-    padding: 2rem;
+    margin: 4% 12.5% 4% 12.5%;
+    padding: 1.3rem;
     background: #B9FFDE;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    /* height: 78vh; */
+    height: auto;
 }
 
 .tabs {
     display: flex;
     display: flex;
     margin-top: -2rem; 
-    margin-left: -2rem; 
-    margin-right: -2rem;
+    margin-left: -1.3rem; 
+    margin-right: -1.3rem;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     overflow: hidden;
@@ -28,7 +28,7 @@
     transition: background 0.3s;
     font-family: Montserrat;
     font-weight: 600;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     line-height: 100%;
     letter-spacing: 0%;
     text-align: center;
@@ -44,7 +44,7 @@
 
 
 .tab-content {
-    padding: 1rem;
+    padding: 0.5rem;
     background: #eaffea;
     height: 98%;
     /* border-radius: 8px; */
@@ -54,14 +54,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 70vh;
+    height: 60vh;
     /* max-height: 100vh; */
 }
 
 .upload-header {
     display: flex;
     align-items: center; 
-    height: 7vh;
+    height: 6vh;
    
 }
 
@@ -69,7 +69,7 @@
     margin-left: 0.7rem; 
     font-family: Montserrat;
     font-weight: 600;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     line-height: 100%;
     letter-spacing: 0%;
     text-align: center;
@@ -88,12 +88,11 @@
     border: 5px solid #62A76A;
     border-radius: 30px;
     text-align: center;
-    /* width: 45%; */
-    height: 90% !important;
-    max-height: 90vh;
+    width: 35%;
+    height: 85% !important;
     /* max-width: 50%; */
     background: white;
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
     cursor: pointer;
     justify-content: center; 
     display: flex;
@@ -103,7 +102,7 @@
 .upload-box p {
     font-family: Montserrat;
     font-weight: 400;
-    font-size: 0.875rem;
+    font-size: 0.7rem;
     line-height: 100%;
     padding-left: 20%;
     padding-right: 20%;
@@ -148,7 +147,7 @@
     padding-left: 0.5rem;
     font-family: Montserrat;
     font-weight: 300;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     line-height: 100%;
     letter-spacing: 0%;
     text-align: center;
@@ -186,15 +185,16 @@
 }
 
 .camera-video {
-    width: 100%;
-    height: auto;
-    margin-top: 12px;
+    width: 90%;
+    height: 70%;
+    margin-top: 0.7rem;
+    margin-bottom: 0.7rem;
     border: 5px solid #57b657;
     border-radius: 12px;
 }
 
 .camera-button, .analyze-button {
-    margin-top: 1rem;
+    justify-items: center;
     background: #57b657;
     color: white;
     padding: 0.625rem 1.5rem;
@@ -204,10 +204,7 @@
     font-family: Montserrat;
     font-weight: 600;
     font-size: 1rem;
-    line-height: 100%;
-    letter-spacing: 0%;
     text-align: center;
-    vertical-align: middle;
 }
 
 .camera-button:hover, .analyze-button:hover {
@@ -215,33 +212,36 @@
 }
 
 .video-preview-section {
-  text-align: center;
+    padding: 0.5rem;
+    background: #eaffea;
+    height: 98%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+     flex-direction: column;
+    /* border-radius: 8px; */
 }
 
-/* .video-title {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-bottom: 15px;
-  color: #2d2d2d;
-} */
 
 .video-frame {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 2rem;
   margin-bottom: auto;
-  padding: 0.625rem;
+  padding: 0.85rem;
   border-radius: 30px;
   background-color: #f8f8f8;
   border: 7px solid #C4D9FF;
   text-align: center;
   flex-direction: column;
-  height: 60vh; /* Chiều cao 60% của viewport */
+  height: 45vh; 
   overflow: hidden;
   position: relative;
+  width: 78%;
 }
 
-.video-player {
+.analyze-video-player {
   position: absolute; 
   top: 0;
   left: 0;

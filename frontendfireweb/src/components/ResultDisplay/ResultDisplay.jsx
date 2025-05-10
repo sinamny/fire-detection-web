@@ -1,23 +1,260 @@
+// import React, { useEffect, useRef, useState } from "react";
+// import ReactPlayer from "react-player";
+// import ReplayIcon from '@mui/icons-material/Replay';
+// import SaveAltOutlinedIcon from '@mui/icons-material/SaveAltOutlined';
+// import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
+// import FastRewindOutlinedIcon from '@mui/icons-material/FastRewindOutlined';
+// import FastForwardOutlinedIcon from '@mui/icons-material/FastForwardOutlined';
+// import { useNavigate } from "react-router-dom";
+// import "./ResultDisplay.css";
+
+// const ResultDisplay = ({ mode, videoFile, videoUrl }) => {
+//   const videoRef = useRef(null);
+//   const [firePercent, setFirePercent] = useState(0);
+//   const [backgroundPercent, setBackgroundPercent] = useState(100);
+//   const [detectionTime, setDetectionTime] = useState("");
+//   const [cameraStream, setCameraStream] = useState(null);
+//   const streamRef = useRef(null);
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       const mockData = {
+//         total_area: +(Math.random() * 100).toFixed(2),
+//       };
+//       setFirePercent(mockData.total_area);
+//       setBackgroundPercent(+(100 - mockData.total_area).toFixed(2));
+
+//       // Cập nhật thời gian phát hiện tùy theo chế độ
+//       if (mode === "camera") {
+//         setDetectionTime(new Date().toLocaleTimeString());
+//       } else if (mode === "video" && videoRef.current) {
+//         const currentTime = videoRef.current.currentTime;
+//         const minutes = Math.floor(currentTime / 60);
+//         const seconds = Math.floor(currentTime % 60);
+//         setDetectionTime(
+//           `${minutes.toString().padStart(2, "0")}:${seconds
+//             .toString()
+//             .padStart(2, "0")}`
+//         );
+//       }
+//     }, 1000);
+
+//     return () => clearInterval(interval);
+//   }, [mode]);
+
+//   useEffect(() => {
+//     let stream;
+
+//     const startCamera = async () => {
+//       try {
+//         stream = await navigator.mediaDevices.getUserMedia({ video: true });
+//         streamRef.current = stream;
+//         if (videoRef.current) {
+//           videoRef.current.srcObject = stream;
+//         }
+//       } catch (error) {
+//         console.error("Không thể truy cập camera:", error);
+//       }
+//     };
+
+//     if (mode === "camera") {
+//       startCamera();
+//     }
+
+//     return () => {
+//       const currentVideoRef = videoRef.current;
+
+//       if (currentVideoRef) {
+//         currentVideoRef.pause();
+//         currentVideoRef.srcObject = null;
+//       }
+
+//       if (streamRef.current) {
+//         streamRef.current.getTracks().forEach((track) => {
+//           track.stop();
+//         });
+
+//         streamRef.current = null;
+//       }
+//     };
+//   }, [mode]);
+
+//   const handleNewClick = () => {
+//     if (cameraStream) {
+//       cameraStream.getTracks().forEach((track) => track.stop());
+//       if (videoRef.current) {
+//         videoRef.current.srcObject = null;
+//       }
+//       setCameraStream(null);
+//     }
+
+//     // Delay nhỏ để đảm bảo dừng xong mới navigate (nếu cần)
+//     setTimeout(() => {
+//       navigate("/video");
+//     }, 100);
+//   };
+
+//   const [playing, setPlaying] = useState(false);
+//   const [playedSeconds, setPlayedSeconds] = useState(0);
+//   const playerRef = useRef(null);
+
+//   return (
+//     <div className="result-page">
+//       {mode === "video" && (
+//         <div className="video-result-frame">
+//           {/* {videoFile ? (
+//             <video
+//                 src={URL.createObjectURL(videoFile)}
+//                 controls
+//                 ref={videoRef}
+//                 className="video-player"
+//             />
+//             ) : videoUrl ? (
+//             <iframe
+//                 className="video-player"
+//                 src={`https://www.youtube.com/embed/${extractYouTubeID(videoUrl)}`}
+//                 title="YouTube video"
+//                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+//                 allowFullScreen
+//             />
+//             ) : (
+//             <div>Không có video để hiển thị</div>
+//             )} */}
+//           <ReactPlayer
+//             ref={playerRef}
+//             url={videoFile ? URL.createObjectURL(videoFile) : videoUrl}
+//             playing={playing}
+//             controls={false}
+//             onProgress={({ playedSeconds }) => setPlayedSeconds(playedSeconds)}
+//             width="100%"
+//             height="53vh"
+//           />
+
+//           {/* Custom control bar */}
+//           <div className="custom-controls">
+//             <button
+//               onClick={() => {
+//                 if (playerRef.current) {
+//                   playerRef.current.seekTo(0);
+//                   setPlaying(false);
+//                 }
+//               }}
+//             >
+//               <ReplayIcon className="control-button" />
+//             </button>
+
+//             <span className="control-time">
+//               {new Date(playedSeconds * 1000).toISOString().substr(14, 5)}
+//             </span>
+
+//             <button
+//               onClick={() => {
+//                 if (playerRef.current)
+//                   playerRef.current.seekTo(playedSeconds - 5, "seconds");
+//               }}
+//             >
+//               <FastRewindOutlinedIcon className="control-button"/>
+//             </button>
+
+//             <button onClick={() => setPlaying(!playing)}>
+//               <PlayArrowOutlinedIcon className="control-button" />
+//             </button>
+
+//             <button
+//               onClick={() => {
+//                 if (playerRef.current)
+//                   playerRef.current.seekTo(playedSeconds + 5, "seconds");
+//               }}
+//             >
+//               <FastForwardOutlinedIcon className="control-button" />
+//             </button>
+
+//             <button
+//               onClick={() => {
+//                 const url = URL.createObjectURL(videoFile);
+//                 const a = document.createElement("a");
+//                 a.href = url;
+//                 a.download = "result.mp4";
+//                 a.click();
+//               }}
+//             >
+//               <SaveAltOutlinedIcon className="control-button" />
+//             </button>
+//           </div>
+//         </div>
+//       )}
+
+//       {mode === "camera" && (
+//         <div className="video-result-frame">
+//           <video
+//             ref={videoRef}
+//             autoPlay
+//             playsInline
+//             muted
+//             className="camera-result-video"
+//             style={{ height: '57vh', width: '100%' }} 
+//           />
+//         </div>
+//       )}
+
+//       <div className="stats-bar">
+//         <div className="left-column">
+//           <div className="progress-text">Fire</div>
+//             <div className="progress-container">
+//                 <div className="progress-bar-wrapper">
+//                     <div
+//                     className="progress-fire"
+//                     style={{ width: `${firePercent}%` }}
+//                     ></div>
+//                 </div>
+//                 <span className="progress-percent">{firePercent}%</span>
+//             </div>
+
+
+//           <div className="progress-text">Background</div>
+//           <div className="progress-container">
+//             <div className="progress-bar-wrapper">
+//                 <div
+//                 className="progress-bg"
+//                 style={{ width: `${backgroundPercent}%` }}
+//                 ></div>
+//             </div>
+//             <span className="progress-percent">{backgroundPercent}%</span>
+//             </div>
+
+//         </div>
+
+//         <div className="right-column">
+//           <div className="detection-time">
+//             {mode === "camera"
+//               ? "Thời gian hiện tại"
+//               : "Thời điểm phát hiện cháy"}
+//             : <strong>{detectionTime}</strong>
+//           </div>
+//           <button className="new-button" onClick={handleNewClick}>
+//             Tạo mới
+//           </button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default ResultDisplay;
 import React, { useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
-import {
-  FaBackward,
-  FaPlay,
-  FaForward,
-} from "react-icons/fa";
-import ReplayIcon from '@mui/icons-material/Replay';
-import SaveAltOutlinedIcon from '@mui/icons-material/SaveAltOutlined';
 import { useNavigate } from "react-router-dom";
 import "./ResultDisplay.css";
 
-const ResultDisplay = ({ mode, videoFile, videoUrl }) => {
+const DetectionDisplay = ({ mode, videoFile, videoUrl }) => {
   const videoRef = useRef(null);
   const [firePercent, setFirePercent] = useState(0);
   const [backgroundPercent, setBackgroundPercent] = useState(100);
   const [detectionTime, setDetectionTime] = useState("");
-  const [cameraStream, setCameraStream] = useState(null);
-  const streamRef = useRef(null);
+  const [videoEnded, setVideoEnded] = useState(false);
   const navigate = useNavigate();
+   const [played, setPlayed] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -27,11 +264,8 @@ const ResultDisplay = ({ mode, videoFile, videoUrl }) => {
       setFirePercent(mockData.total_area);
       setBackgroundPercent(+(100 - mockData.total_area).toFixed(2));
 
-      // Cập nhật thời gian phát hiện tùy theo chế độ
-      if (mode === "camera") {
-        setDetectionTime(new Date().toLocaleTimeString());
-      } else if (mode === "video" && videoRef.current) {
-        const currentTime = videoRef.current.currentTime;
+      if (mode === "video" && videoRef.current) {
+        const currentTime = videoRef.current.getCurrentTime();
         const minutes = Math.floor(currentTime / 60);
         const seconds = Math.floor(currentTime % 60);
         setDetectionTime(
@@ -39,211 +273,121 @@ const ResultDisplay = ({ mode, videoFile, videoUrl }) => {
             .toString()
             .padStart(2, "0")}`
         );
+      } else if (mode === "camera") {
+        setDetectionTime(new Date().toLocaleTimeString());
       }
     }, 1000);
 
     return () => clearInterval(interval);
   }, [mode]);
 
-  useEffect(() => {
-    let stream;
-
-    const startCamera = async () => {
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        streamRef.current = stream;
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-        }
-      } catch (error) {
-        console.error("Không thể truy cập camera:", error);
-      }
-    };
-
-    if (mode === "camera") {
-      startCamera();
-    }
-
-    return () => {
-      const currentVideoRef = videoRef.current;
-
-      if (currentVideoRef) {
-        currentVideoRef.pause();
-        currentVideoRef.srcObject = null;
-      }
-
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach((track) => {
-          track.stop();
-        });
-
-        streamRef.current = null;
-      }
-    };
-  }, [mode]);
-
-  const handleNewClick = () => {
-    if (cameraStream) {
-      cameraStream.getTracks().forEach((track) => track.stop());
-      if (videoRef.current) {
-        videoRef.current.srcObject = null;
-      }
-      setCameraStream(null);
-    }
-
-    // Delay nhỏ để đảm bảo dừng xong mới navigate (nếu cần)
-    setTimeout(() => {
-      navigate("/video");
-    }, 100);
-  };
-
-  const [playing, setPlaying] = useState(false);
-  const [playedSeconds, setPlayedSeconds] = useState(0);
-  const playerRef = useRef(null);
-
   return (
     <div className="result-page">
-      {mode === "video" && (
-        <div className="video-result-frame">
-          {/* {videoFile ? (
-            <video
-                src={URL.createObjectURL(videoFile)}
-                controls
-                ref={videoRef}
-                className="video-player"
-            />
-            ) : videoUrl ? (
-            <iframe
-                className="video-player"
-                src={`https://www.youtube.com/embed/${extractYouTubeID(videoUrl)}`}
-                title="YouTube video"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-            />
-            ) : (
-            <div>Không có video để hiển thị</div>
-            )} */}
-          <ReactPlayer
-            ref={playerRef}
-            url={videoFile ? URL.createObjectURL(videoFile) : videoUrl}
-            playing={playing}
-            controls={false}
-            onProgress={({ playedSeconds }) => setPlayedSeconds(playedSeconds)}
-            width="100%"
-            height="75vh"
-          />
-
-          {/* Custom control bar */}
-          <div className="custom-controls">
-            <button
-              onClick={() => {
-                if (playerRef.current) {
-                  playerRef.current.seekTo(0);
-                  setPlaying(false);
-                }
-              }}
-            >
-              <ReplayIcon className="control-button" />
-            </button>
-
-            <span className="control-time">
-              {new Date(playedSeconds * 1000).toISOString().substr(14, 5)}
-            </span>
-
-            <button
-              onClick={() => {
-                if (playerRef.current)
-                  playerRef.current.seekTo(playedSeconds - 5, "seconds");
-              }}
-            >
-              <FaBackward />
-            </button>
-
-            <button onClick={() => setPlaying(!playing)}>
-              <FaPlay className="control-button" />
-            </button>
-
-            <button
-              onClick={() => {
-                if (playerRef.current)
-                  playerRef.current.seekTo(playedSeconds + 5, "seconds");
-              }}
-            >
-              <FaForward className="control-button" />
-            </button>
-
-            <button
-              onClick={() => {
-                const url = URL.createObjectURL(videoFile);
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = "result.mp4";
-                a.click();
-              }}
-            >
-              <SaveAltOutlinedIcon className="control-button" />
-            </button>
-          </div>
-        </div>
-      )}
-
-      {mode === "camera" && (
-        <div className="video-result-frame">
+      <div className="video-result-frame" style={{ position: "relative" }}>
+        {mode === "camera" ? (
           <video
             ref={videoRef}
             autoPlay
             playsInline
             muted
             className="camera-result-video"
-            style={{ height: '75vh', width: '100%' }} 
+            style={{ width: "100%", height: "53vh" }}
           />
-        </div>
-      )}
-
-      <div className="stats-bar">
-        <div className="left-column">
-          <div className="progress-text">Fire</div>
-            <div className="progress-container">
-                <div className="progress-bar-wrapper">
-                    <div
-                    className="progress-fire"
-                    style={{ width: `${firePercent}%` }}
-                    ></div>
-                </div>
-                <span className="progress-percent">{firePercent}%</span>
+        ) : (
+          <>
+            <ReactPlayer
+              ref={videoRef}
+              url={videoFile ? URL.createObjectURL(videoFile) : videoUrl}
+              playing
+              controls={false}
+              onProgress={({ played }) => setPlayed(played)}
+              width="100%"
+              height="53vh"
+              onEnded={() => setVideoEnded(true)}
+            />
+            {videoEnded && (
+              <div className="video-overlay">
+                <p>Streaming kết thúc !</p>
+                <button
+                  className="review-button"
+                  onClick={() =>
+                    navigate("/video/review", {
+                      state: { videoFile, videoUrl },
+                    })
+                  }
+                >
+                  Xem lại kết quả
+                </button>
+              </div>
+            )}
+          </>
+        )}
+         {mode === "video" && (
+          <div className="custom-control">
+            <div className="custom-progress-bar">
+              <div
+                className="progress-fill"
+                style={{ width: `${played * 100}%` }}
+              ></div>
+              <div
+                className="progress-thumb"
+                style={{ left: `calc(${played * 100}% - 8px)` }}
+              ></div>
             </div>
-
-
-          <div className="progress-text">Background</div>
-          <div className="progress-container">
-            <div className="progress-bar-wrapper">
-                <div
-                className="progress-bg"
-                style={{ width: `${backgroundPercent}%` }}
-                ></div>
-            </div>
-            <span className="progress-percent">{backgroundPercent}%</span>
-            </div>
-
-        </div>
-
-        <div className="right-column">
-          <div className="detection-time">
-            {mode === "camera"
-              ? "Thời gian hiện tại"
-              : "Thời điểm phát hiện cháy"}
-            : <strong>{detectionTime}</strong>
           </div>
-          <button className="new-button" onClick={handleNewClick}>
-            Tạo mới
-          </button>
-        </div>
+        )}
+
       </div>
+       
+
+
+        <div className="stats-bar">
+          <div className="left-column">
+            <div className="progress-text">Fire</div>
+            <div className="progress-container">
+              <div className="progress-bar-wrapper">
+                <div
+                  className="progress-fire"
+                  style={{ width: `${firePercent}%` }}
+                ></div>
+              </div>
+              <span className="progress-percent">{firePercent}%</span>
+            </div>
+
+            <div className="progress-text">Background</div>
+            <div className="progress-container">
+              <div className="progress-bar-wrapper">
+                <div
+                  className="progress-bg"
+                  style={{ width: `${backgroundPercent}%` }}
+                ></div>
+              </div>
+              <span className="progress-percent">{backgroundPercent}%</span>
+            </div>
+          </div>
+
+          <div className="right-column">
+            <div className="detection-time">
+              {mode === "camera"
+                ? "Thời gian hiện tại"
+                : "Thời điểm phát hiện cháy"}:{" "}
+             
+            </div>
+            <button
+              className="new-button"
+              onClick={() => navigate("/video")}
+            >
+              Tạo mới
+            </button>
+          </div>
+        </div>
     </div>
   );
 };
 
-export default ResultDisplay;
+export default DetectionDisplay;
+
+
 // import React, { useEffect, useRef, useState } from 'react';
 // import { FaRedo, FaBackward, FaPlay, FaForward, FaDownload } from 'react-icons/fa';
 // import { useNavigate } from 'react-router-dom';

@@ -10,6 +10,7 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import SaveAltOutlinedIcon from '@mui/icons-material/SaveAltOutlined';
 import EditUserModal from '../../components/EditAccountModal/EditAccountModal';
 
+
 const Account = () => {
   const [user, setUser] = useState({
     name: 'ABC Nguyễn Văn',

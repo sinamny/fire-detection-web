@@ -12,7 +12,7 @@ const Topbar = () => {
         <h1 className="topbar-title">Phát hiện đám cháy</h1>
       </div>
       <div className="topbar-user">
-        <Avatar size="1.9rem" icon={<FaRegUserCircle className="topbar-user-logo"/>} />
+        <Avatar size="1.5rem" icon={<FaRegUserCircle className="topbar-user-logo"/>} />
         <div className="topbar-username-container">
           <span className="topbar-username">ABC Nguyen</span>
         </div>
