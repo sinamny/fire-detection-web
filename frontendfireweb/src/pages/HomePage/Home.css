@@ -19,7 +19,7 @@
 }
 
 .fire-header h1 {
-  font-size: 2rem;
+  font-size: 1.75rem;
   color: #00712D; 
   margin: 0;
   font-weight: 700;
@@ -62,13 +62,13 @@
   color: #007a33;
   margin-top: 0.8rem;
   /* margin-bottom: -0,5rem; */
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   text-align: left;
 }
 
 .fire-text p {
   margin-top: -1rem;
-  margin-bottom: 16px;
+  margin-bottom: 1rem;
   line-height: 1.75;
   font-size: 1rem;
 }
