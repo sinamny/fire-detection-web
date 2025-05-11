@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; 
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"; 
 import './App.css';
 import Sidebar from "./pages/global/Sidebar/Sidebar";
 import Topbar from "./pages/global/Topbar/Topbar"; 
@@ -32,7 +32,8 @@ function App() {
         <CssBaseline />
         <ConfigProvider>
           <Routes>
-            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Navigate to="/login" />} />
+             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route
               path="/*"

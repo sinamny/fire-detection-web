@@ -291,7 +291,7 @@ const DetectionDisplay = ({ mode, videoFile, videoUrl }) => {
             playsInline
             muted
             className="camera-result-video"
-            style={{ width: "100%", height: "53vh" }}
+            style={{ width: "100%", height: "70vh" }}
           />
         ) : (
           <>
