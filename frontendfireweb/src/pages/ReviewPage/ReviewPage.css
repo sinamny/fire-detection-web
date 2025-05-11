@@ -24,6 +24,7 @@
   text-align: center;
   padding: 0.25rem 0rem;
   align-items: center !important;
+  position: relative !important;
  
 } 
 
@@ -38,7 +39,7 @@
   text-align: center; 
 }
 
-.left-control {
+/* .left-control {
   display: flex;
   align-items: center; 
   gap: 0.8rem;
@@ -47,13 +48,40 @@
 .center-button {
   display: flex; 
   justify-content: center; 
-  margin-left: 11.8rem;
+  margin-left: 27%;
   gap: 0.8rem;
 }
 
 .right-control {
   margin-left: auto;
   margin-right: 0rem;
+} */
+
+.left-control,
+.right-control {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  z-index: 1; 
+}
+
+.left-control {
+  flex-shrink: 0;
+}
+
+.right-control {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.center-button {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  z-index: 0; 
 }
 
 .control-time {
