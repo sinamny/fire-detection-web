@@ -24,11 +24,11 @@ Dự án này là một ứng dụng web được xây dựng bằng React, vớ
 
 1. Clone kho lưu trữ:
    ```bash
-   git clone https://github.com/yourusername/your-repo-name.git
+   git clone https://github.com/sinamny/fire-detection-web
    ```
 2. Đi tới thư mục dự án:
    ```bash
-   cd your-repo-name
+   cd frontendfireweb
    ```
 3. Cài đặt các phụ thuộc:
    ```bash
