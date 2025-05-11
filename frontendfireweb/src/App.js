@@ -50,7 +50,7 @@ function App() {
                           <Route path="/video/analyze" element={<Analyze />} />
                           <Route path="/video/detectionresult" element={<DetectionResult />} />
                           <Route path="/video/cameraresult" element={<CameraResult />} />
-                          <Route path="/video/review" element={<ReviewResult />} />
+                          <Route path="/video/review" element={<ReviewResult/>} />
                           <Route path="/account" element={<Account />} />
                           <Route path="/settings" element={<Setting />} />
                           <Route path="/manage" element={<Manage />} />

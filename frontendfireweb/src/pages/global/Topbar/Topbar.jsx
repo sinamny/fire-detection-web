@@ -1,17 +1,22 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { FaRegUserCircle } from "react-icons/fa";
 import { MdOutlineLocalFireDepartment } from "react-icons/md";
 import { Avatar } from "antd";
 import "./Topbar.css";
 
 const Topbar = () => {
+  const navigate = useNavigate(); 
+   const handleUserClick = () => {
+    navigate("/account"); 
+  };
   return (
     <div className="topbar">
      <div className="topbar-left">
         <MdOutlineLocalFireDepartment className="topbar-logo" />
         <h1 className="topbar-title">Phát hiện đám cháy</h1>
       </div>
-      <div className="topbar-user">
+      <div className="topbar-user" onClick={handleUserClick} style={{ cursor: "pointer" }}>
         <Avatar size="1.5rem" icon={<FaRegUserCircle className="topbar-user-logo"/>} />
         <div className="topbar-username-container">
           <span className="topbar-username">ABC Nguyen</span>

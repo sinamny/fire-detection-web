@@ -85,7 +85,7 @@ const Login = () => {
                 </span>
                 </div>
 
-            <div className="login-forgot">Quên mật khẩu?</div>
+            {/* <div className="login-forgot">Quên mật khẩu?</div> */}
             {errorMsg && <p className="login-error">{errorMsg}</p>}
             <button type="submit" className="login-button">
               Đăng nhập

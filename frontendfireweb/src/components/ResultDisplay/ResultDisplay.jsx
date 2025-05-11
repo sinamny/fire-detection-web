@@ -193,7 +193,7 @@
 //             playsInline
 //             muted
 //             className="camera-result-video"
-//             style={{ height: '57vh', width: '100%' }} 
+//             style={{ height: '57vh', width: '100%' }}
 //           />
 //         </div>
 //       )}
@@ -210,7 +210,6 @@
 //                 </div>
 //                 <span className="progress-percent">{firePercent}%</span>
 //             </div>
-
 
 //           <div className="progress-text">Background</div>
 //           <div className="progress-container">
@@ -249,12 +248,13 @@ import "./ResultDisplay.css";
 
 const DetectionDisplay = ({ mode, videoFile, videoUrl }) => {
   const videoRef = useRef(null);
+   const streamRef = useRef(null);
   const [firePercent, setFirePercent] = useState(0);
   const [backgroundPercent, setBackgroundPercent] = useState(100);
   const [detectionTime, setDetectionTime] = useState("");
   const [videoEnded, setVideoEnded] = useState(false);
   const navigate = useNavigate();
-   const [played, setPlayed] = useState(0);
+  const [played, setPlayed] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -274,12 +274,74 @@ const DetectionDisplay = ({ mode, videoFile, videoUrl }) => {
             .padStart(2, "0")}`
         );
       } else if (mode === "camera") {
-        setDetectionTime(new Date().toLocaleTimeString());
+        const now = new Date();
+        const timeString = now.toLocaleTimeString();
+        setDetectionTime(timeString);
       }
     }, 1000);
 
     return () => clearInterval(interval);
   }, [mode]);
+
+
+
+ 
+  useEffect(() => {
+    const video = videoRef.current;
+    let mounted = true;
+
+    const startCamera = async () => {
+      if (mode !== "camera") return;
+
+      try {
+        // Yêu cầu quyền truy cập camera
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+
+        if (!mounted) {
+          stream.getTracks().forEach((track) => track.stop());
+          return;
+        }
+
+        streamRef.current = stream;
+        if (video) {
+          video.srcObject = stream;
+        }
+      } catch (error) {
+        console.error("Không thể truy cập camera:", error);
+      }
+    };
+
+    startCamera();
+
+    return () => {
+      console.log("Cleanup chạy khi rời trang");
+      mounted = false;
+
+      const stream = streamRef.current;
+      if (stream) {
+        stream.getTracks().forEach((track) => {
+          if (track.readyState === "live") {
+            console.log("Dừng track:", track.kind);
+            track.stop();
+          }
+        });
+      }
+
+      if (video) {
+        video.srcObject = null;
+      }
+      streamRef.current = null;
+    };
+  }, [mode]);
+
+
+  const handleCreateNew = () => {
+    window.location.assign("/video");
+};
+
+ 
+
+  // console.log("DetectionDisplay rendered, mode:", mode);
 
   return (
     <div className="result-page">
@@ -291,7 +353,7 @@ const DetectionDisplay = ({ mode, videoFile, videoUrl }) => {
             playsInline
             muted
             className="camera-result-video"
-            style={{ width: "100%", height: "70vh" }}
+            style={{ width: "100%", height: "62vh" }}
           />
         ) : (
           <>
@@ -302,7 +364,7 @@ const DetectionDisplay = ({ mode, videoFile, videoUrl }) => {
               controls={false}
               onProgress={({ played }) => setPlayed(played)}
               width="100%"
-              height="53vh"
+              height="60vh"
               onEnded={() => setVideoEnded(true)}
             />
             {videoEnded && (
@@ -322,7 +384,7 @@ const DetectionDisplay = ({ mode, videoFile, videoUrl }) => {
             )}
           </>
         )}
-         {mode === "video" && (
+        {mode === "video" && (
           <div className="custom-control">
             <div className="custom-progress-bar">
               <div
@@ -336,57 +398,51 @@ const DetectionDisplay = ({ mode, videoFile, videoUrl }) => {
             </div>
           </div>
         )}
-
       </div>
-       
 
-
-        <div className="stats-bar">
-          <div className="left-column">
-            <div className="progress-text">Fire</div>
-            <div className="progress-container">
-              <div className="progress-bar-wrapper">
-                <div
-                  className="progress-fire"
-                  style={{ width: `${firePercent}%` }}
-                ></div>
-              </div>
-              <span className="progress-percent">{firePercent}%</span>
+      <div className="stats-bar">
+        <div className="left-column">
+          <div className="progress-text">Fire</div>
+          <div className="progress-container">
+            <div className="progress-bar-wrapper">
+              <div
+                className="progress-fire"
+                style={{ width: `${firePercent}%` }}
+              ></div>
             </div>
-
-            <div className="progress-text">Background</div>
-            <div className="progress-container">
-              <div className="progress-bar-wrapper">
-                <div
-                  className="progress-bg"
-                  style={{ width: `${backgroundPercent}%` }}
-                ></div>
-              </div>
-              <span className="progress-percent">{backgroundPercent}%</span>
-            </div>
+            <span className="progress-percent">{firePercent}%</span>
           </div>
 
-          <div className="right-column">
-            <div className="detection-time">
-              {mode === "camera"
-                ? "Thời gian hiện tại"
-                : "Thời điểm phát hiện cháy"}:{" "}
-             
+          <div className="progress-text">Background</div>
+          <div className="progress-container">
+            <div className="progress-bar-wrapper">
+              <div
+                className="progress-bg"
+                style={{ width: `${backgroundPercent}%` }}
+              ></div>
             </div>
-            <button
-              className="new-button"
-              onClick={() => navigate("/video")}
-            >
-              Tạo mới
-            </button>
+            <span className="progress-percent">{backgroundPercent}%</span>
           </div>
         </div>
+
+        <div className="right-column">
+          <div className="detection-time">
+            {mode === "camera"
+              ? "Thời gian hiện tại"
+              : "Thời điểm phát hiện cháy"}
+            :{" "}
+             <strong>{detectionTime}</strong>
+          </div>
+          <button className="new-button" onClick={handleCreateNew}>
+            Tạo mới
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
 
 export default DetectionDisplay;
-
 
 // import React, { useEffect, useRef, useState } from 'react';
 // import { FaRedo, FaBackward, FaPlay, FaForward, FaDownload } from 'react-icons/fa';

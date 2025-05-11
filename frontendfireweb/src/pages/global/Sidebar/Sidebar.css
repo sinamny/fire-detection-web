@@ -54,14 +54,14 @@
 .sidebar-item {
     display: flex;
     align-items: center;
-    padding: 1rem 0.5rem 1rem 2rem;
+    padding: 1rem 1.5rem 1rem 5.5rem;
     color: #000000; 
     transition: background 0.3s;
     width: 100%; 
     text-align: center; 
     font-family: Montserrat;
     font-weight: 400;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     text-align: left;
     /* border: 0.5px solid #1F2544; */
     /* text-align: center;

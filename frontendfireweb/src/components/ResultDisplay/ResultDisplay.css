@@ -2,8 +2,8 @@
   /* background-color: #B9FFDE; */
   /* padding: 0.5rem; */
   max-width: 76%;
-  margin: 2% 12% -1.5% 12%;
-  
+  margin: 1% 12% 1% 12%;
+  height: 100vh;
   
 }
 
@@ -11,7 +11,8 @@
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   border: 10px solid #C4D9FF;
-  max-height: 60vh;
+   /* border: 10px solid #FF9965; */
+  max-height: 65vh;
   
 }
 
@@ -28,7 +29,8 @@
 }
 
  .stats-bar {
-    background: #a6c8e0;
+    /* background: #a6c8e0; */
+    background-color: #70A6D2;
     padding: 0.5rem;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
@@ -153,39 +155,10 @@
     font-size: 0.85rem;
     text-align: center;
   margin-top: 1rem;
-  margin-left: 44%;
-  margin-right: 44%;
+  display: block; 
+   margin: 1rem auto;
 }
 
-.custom-controls {
-  width: 100%;
-  background-color: #E0F7FA;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-around !important;
-  padding: 0.5rem 0rem;
-  display: flex !important;
-  align-items: center !important;
-  /* justify-content: space-between !important; */
-}
-
-.control-button,
-.custom-controls button {
-  background: none !important;
-  border: none;
-  font-size: 1.2rem !important;
-  color: #003366;
-  cursor: pointer;
-  flex: 1; 
-  text-align: center; 
-}
-
-
-.control-time {
-  font-size: 0.85rem;
-  font-weight: bold;
-  color: #003366;
-}
 
 .video-overlay {
   position: absolute;

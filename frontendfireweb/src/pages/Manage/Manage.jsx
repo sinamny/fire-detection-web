@@ -180,8 +180,19 @@ const Manage = () => {
                 showSizeChanger: true,
                 pageSizeOptions: ["5","10", "15", "20", "30"],
                 onShowSizeChange: handlePageSizeChange,
-                showTotal: (total, range) =>
-                    `${range[0]}-${range[1]} of ${total} items`,
+                showTotal: (total, range) => `${range[0]}-${range[1]} trong tổng số ${total} bản ghi`,
+                locale: {
+                  items_per_page: "bản ghi / trang",
+                  jump_to: "Đi tới",
+                  jump_to_confirm: "Xác nhận",
+                  page: "Trang",
+                  prev_page: "Trang trước",
+                  next_page: "Trang sau",
+                  prev_5: "Lùi 5 trang",
+                  next_5: "Tiến 5 trang",
+                  prev_3: "Lùi 3 trang",
+                  next_3: "Tiến 3 trang",
+                },
                 }}
             bordered/>
         </div>

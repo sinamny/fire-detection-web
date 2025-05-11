@@ -87,43 +87,54 @@ const Video = () => {
 
             <div className="upload-box">
               {videoFile ? (
-                <div style={{ width: '100%', height: '100%', position: 'relative' }}>
-                  {videoFile ? (
-                    <video
-                      src={URL.createObjectURL(videoFile)}
-                      controls
-                      className="analyze-video-player"
-                      style={{ width: '100%', height: '100%' }}
-                    />
-                  ) : (
-                    <iframe
-                      src={`https://www.youtube.com/embed/${extractYouTubeID(videoUrl)}`}
-                      title="YouTube video player"
-                      frameBorder="0"
-                      allowFullScreen
-                      className="analyze-video-player"
-                      style={{ width: '100%', height: '100%',objectFit: 'cover',}}
-                    />
-                  )}
+                // <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+                //   {videoFile ? (
+                //     <video
+                //       src={URL.createObjectURL(videoFile)}
+                //       controls
+                //       className="analyze-video-player"
+                //       style={{ width: '100%', height: '100%' }}
+                //     />
+                //   ) : (
+                //     <iframe
+                //       src={`https://www.youtube.com/embed/${extractYouTubeID(videoUrl)}`}
+                //       title="YouTube video player"
+                //       frameBorder="0"
+                //       allowFullScreen
+                //       className="analyze-video-player"
+                //       style={{ width: '100%', height: '100%',objectFit: 'cover',}}
+                //     />
+                //   )}
+                //   <Button
+                //     icon={<DeleteOutlined />}
+                //     danger
+                //     onClick={handleRemoveVideo}
+                //     size="small"
+                //     style={{
+                //       position: 'absolute',
+                //       top: 8,
+                //       right: 8,
+                //       zIndex: 10,
+                //     }}
+                //   >
+                //   </Button>
+                // </div>
+                 <div style={{ width: '100%', height: '100%', position: 'relative',display: 'flex',justifyContent: 'center', alignItems: 'center', }}>
+                  <p style={{ marginBottom: 0 }}>{videoFile.name}</p>
                   <Button
                     icon={<DeleteOutlined />}
                     danger
                     onClick={handleRemoveVideo}
                     size="small"
-                    style={{
-                      position: 'absolute',
-                      top: 8,
-                      right: 8,
-                      zIndex: 10,
-                    }}
-                  >
-                  </Button>
+                    style={{ position: 'absolute', top: 8, right: 8 }}
+                  />
                 </div>
               ) : (
                 <Upload
                   accept="video/mp4,video/avi"
                   showUploadList={false}
                   beforeUpload={handleBeforeUpload}
+                  disabled={!!videoUrl}
                 >
                   <div>
                     <div className="upload-icon">
@@ -147,6 +158,7 @@ const Video = () => {
                 type="text"
                 placeholder="Nhập URL video Youtube..."
                 value={videoUrl}
+                disabled={!!videoFile}
                 onChange={(e) => {
                   setVideoUrl(e.target.value);
                   setVideoFile(null);
