@@ -48,19 +48,3 @@ Dự án này là một ứng dụng web được xây dựng bằng React, vớ
 - Đăng ký tài khoản mới tại `/register`.
 - Truy cập vào các đường dẫn bảo vệ như `/home`, `/video`, và `/account` sau khi đăng nhập.
 
-## Đóng Góp
-
-1. Fork kho lưu trữ.
-2. Tạo một nhánh mới:
-   ```bash
-   git checkout -b feature/YourFeature
-   ```
-3. Thực hiện thay đổi và commit chúng:
-   ```bash
-   git commit -m "Thêm thông điệp của bạn"
-   ```
-4. Đưa lên nhánh:
-   ```bash
-   git push origin feature/YourFeature
-   ```
-5. Mở một pull request.
