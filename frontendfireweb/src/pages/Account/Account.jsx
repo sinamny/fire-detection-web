@@ -41,7 +41,8 @@ const Account = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('user'); 
+    localStorage.removeItem('user');
+    localStorage.removeItem("isAuthenticated"); 
     navigate('/login');
 };
 
