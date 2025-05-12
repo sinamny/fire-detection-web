@@ -6,13 +6,16 @@ import "./Home.css";
 const Home = () => {
   return (
     <div className="fire-detection-wrapper">
+      <div className="fire-container">
       <div className="fire-header">
         <MdOutlineLocalFireDepartment className="fire-icon-home"/>
         <h1>HỆ THỐNG PHÁT HIỆN ĐÁM CHÁY QUA VIDEO</h1>
       </div>
       <div className="fire-detection-container">
         <div className="fire-text">
-          <h2>Giới thiệu chung</h2>
+          <div className="fire-text-header">
+          <h5>Giới thiệu chung</h5>
+          </div>
           <p>
             Với sự phát triển của trí tuệ nhân tạo và thị giác máy tính, việc
             khai thác dữ liệu từ video để phát hiện sớm các hiện tượng bất
@@ -37,6 +40,7 @@ const Home = () => {
             className="fire-img"
           />
         </div>
+      </div>
       </div>
     </div>
   );

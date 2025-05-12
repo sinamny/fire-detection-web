@@ -92,7 +92,12 @@
 
 .login-form-section {
   width: 50%;
-  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* padding: 2rem; */
+  height: 100%;
+  padding: 6% 5%;
 }
 
 .login-title {
@@ -115,7 +120,7 @@
   padding: 0.6rem;
   border: 1px solid #a5d6a7;
   border-radius: 8px;
-  margin-bottom: 1rem;
+  margin-bottom: 5%;
   outline: none;
   transition: border-color 0.3s;
 }
@@ -173,6 +178,7 @@
   padding:0.8rem;
   border: none;
   border-radius: 8px;
+  font-size: 0.8rem;
   cursor: pointer;
   transition: background-color 0.3s;
   font-family: Montserrat;
@@ -186,7 +192,7 @@
 .login-divider {
   display: flex;
   align-items: center;
-  margin: 1.3rem 0;
+  margin: 1.2rem 0;
 }
 
 .divider-line {
@@ -204,7 +210,7 @@
 
 .login-register {
   text-align: center;
-  margin-top: -0.6rem;
+  margin-top: -5%;
   font-size: 0.875rem;
 }
 

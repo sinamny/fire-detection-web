@@ -14,11 +14,13 @@ const Analyze = () => {
   };
 
   const videoSrc = useMemo(() => {
+    // Tạo URL cho video từ file tải lên
     return videoFile ? URL.createObjectURL(videoFile) : null;
   }, [videoFile]);
 
   useEffect(() => {
     return () => {
+      // Giải phóng URL video khi không còn sử dụng
       if (videoSrc) {
         URL.revokeObjectURL(videoSrc);
       }
@@ -49,7 +51,7 @@ const Analyze = () => {
     }
   };
 
-   const handleBackToUpload = () => {
+  const handleBackToUpload = () => {
     navigate('/video');
   };
 
@@ -59,7 +61,6 @@ const Analyze = () => {
         <button
           className={`tab-button ${activeTab === 'video' ? 'active' : ''}`}
           onClick={handleBackToUpload}
-
         >
           Video
         </button>
@@ -94,7 +95,7 @@ const Analyze = () => {
         </div>
       )}
 
-     {activeTab === 'camera' && (
+      {activeTab === 'camera' && (
         <div className="tab-content camera-tab">
           <video id="cameraFeed" autoPlay playsInline muted className="camera-video" />
           <button className="camera-button" onClick={startCamera}>Bắt đầu Camera</button>

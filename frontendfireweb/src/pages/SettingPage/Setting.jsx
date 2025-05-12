@@ -15,6 +15,7 @@ import {
   DialogActions,
   Menu,
   MenuItem,
+  Alert
 } from "@mui/material";
 
 export default function Setting() {
@@ -147,11 +148,11 @@ export default function Setting() {
 
       <Snackbar
         open={openSnackbar}
-        autoHideDuration={3000}
+        autoHideDuration={1500}
         onClose={() => setOpenSnackbar(false)}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
-        <Box
+        {/* <Box
           sx={{
             backgroundColor: "#4caf50",
             color: "white",
@@ -163,7 +164,14 @@ export default function Setting() {
           }}
         >
           Lưu cài đặt thành công
-        </Box>
+        </Box> */}
+         <Alert
+          onClose={() => setOpenSnackbar(false)}
+          severity="success"
+          variant="filled"
+        >
+         Lưu cài đặt thành công!
+        </Alert>
       </Snackbar>
       <Dialog open={openConfirm} onClose={() => setOpenConfirm(false)}>
         <DialogTitle>Bạn có chắc chắn muốn lưu thay đổi?</DialogTitle>

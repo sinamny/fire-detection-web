@@ -4,26 +4,31 @@
     align-items: center;
     height: 6.5vh;
     background-color: #328F6F;
-    padding: 0.25rem 1rem;
+    padding: 0.25rem 0rem;
     border-bottom: 1px solid #e0e0e0;
     }
 
-    .topbar-left {
-        display: flex;
-        width: 22%;
-        height: 2.5vh;
-        align-items: center;
-        height: 100%;
-        gap: 0.5rem;
-    }
+.topbar-left {
+  width: 23%;
+  display: flex;
+  justify-content: center;   
+  align-items: center;       
+  gap: 0.5rem !important;
+  flex-shrink: 0;
+  position: relative;
+}
 
+    .topbar-logo {
+    font-size: 1.5rem;
+    color: #ff4d4f;
+    }
     .topbar-logo {
         color: #FF9965;
         font-size: 2.2rem;
     }
 
     .topbar-title {
-        font-family: Montserrat, sans-serif;;
+        font-family: Montserrat, sans-serif;
         font-weight: 700;
         font-size: 1.2rem;
         line-height: 100%;
@@ -34,14 +39,18 @@
         /* width: 100%;
         display: inline; */
     }
-    
+    .topbar-right {
+    display: flex;
+    align-items: center;
+    margin-left: auto; 
+    gap: 0rem;
+    }
     .topbar-user {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     /* color: #333; */
     font-weight: 500;
-    margin-right: 0.5rem;
     }
 
     .topbar-user-logo {
@@ -63,4 +72,8 @@
         line-height: 100%;
         letter-spacing: 0%;
         vertical-align: middle;    
+    }
+
+    .topbar-logout {
+        margin-right: 0.5rem;
     }
