@@ -336,7 +336,14 @@ const DetectionDisplay = ({ mode, videoFile, videoUrl }) => {
 
 
   const handleCreateNew = () => {
-    window.location.assign("/video");
+    if (mode === "camera") {
+      setTimeout(() => {
+        // window.location.assign("/video");
+        navigate("/video"); 
+      }, 10);
+    } else if (mode === "video") {
+      navigate("/video"); 
+    }
 };
 
  

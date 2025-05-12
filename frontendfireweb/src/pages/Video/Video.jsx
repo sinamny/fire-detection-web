@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setVideoData } from '../../redux/videoSlice';
 import { Upload, Button, message } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
@@ -9,15 +11,16 @@ import './Video.css';
 
 const Video = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [videoUrl, setVideoUrl] = useState('');
   const [videoFile, setVideoFile] = useState(null);
   const [activeTab, setActiveTab] = useState('video');
 
-  const extractYouTubeID = (url) => {
-    const regex = /(?:\?v=|\/embed\/|\.be\/)([a-zA-Z0-9_-]{11})/;
-    const match = url.match(regex);
-    return match ? match[1] : '';
-  };
+  // const extractYouTubeID = (url) => {
+  //   const regex = /(?:\?v=|\/embed\/|\.be\/)([a-zA-Z0-9_-]{11})/;
+  //   const match = url.match(regex);
+  //   return match ? match[1] : '';
+  // };
 
   const handleBeforeUpload = (file) => {
     const isVideo = file.type.startsWith('video/');
@@ -52,19 +55,30 @@ const Video = () => {
     }
   };
 
+  // const handleUpload = () => {
+  //   if (videoFile || videoUrl) {
+  //     sessionStorage.setItem('videoFileUrl', videoUrl);
+  //     navigate('/video/analyze', {
+  //       state: {
+  //         mode: 'video',
+  //         videoFile,
+  //         videoUrl,
+  //       },
+  //     });
+  //   } else {
+  //     message.warning('Vui lòng chọn file hoặc nhập URL video.');
+  //   }
+  // };
+
   const handleUpload = () => {
-    if (videoFile || videoUrl) {
-      navigate('/video/analyze', {
-        state: {
-          mode: 'video',
-          videoFile,
-          videoUrl,
-        },
-      });
-    } else {
-      message.warning('Vui lòng chọn file hoặc nhập URL video.');
-    }
-  };
+  if (videoFile || videoUrl) {
+    dispatch(setVideoData({ videoFile, videoUrl, mode: 'video' }));
+    navigate('/video/analyze');
+  } else {
+    message.warning('Vui lòng chọn file hoặc nhập URL video.');
+  }
+};
+
 
   return (
     <div className="video-page">
