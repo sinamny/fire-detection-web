@@ -467,13 +467,19 @@ const UsersPage = () => {
         )} */}
       </div>
 
-     <Tabs
+      {/* <Tabs
         defaultActiveKey="user"
         onChange={setActiveTab}
         items={[
           { label: "User", key: "user" },
           { label: "Admin", key: "admin" },
         ]}
+      /> */}
+
+      <Tabs
+        defaultActiveKey="user"
+        onChange={setActiveTab}
+        items={[{ label: "User", key: "user" }]}
       />
 
       <Table

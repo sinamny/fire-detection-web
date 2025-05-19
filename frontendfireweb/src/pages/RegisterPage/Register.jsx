@@ -58,7 +58,7 @@ const Register = () => {
         setSuccessMsg("Đăng ký thành công!");
         setTimeout(() => {
           navigate("/login");
-        }, 2000);
+        }, 1500);
       }
     } catch (err) {
       if (err.response) {

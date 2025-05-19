@@ -36,50 +36,48 @@ const Account = () => {
    const [total, setTotal] = useState(0);
      const pageSize = 10;
    
-  useEffect(() => {
-    const fetchCurrentUser = async () => {
-      const token = localStorage.getItem("access_token");
-      if (!token) {
-        navigate("/login");
-        return;
-      }
+ const fetchCurrentUser = async () => {
+  const token = localStorage.getItem("access_token");
+  if (!token) {
+    navigate("/login");
+    return;
+  }
 
-      try {
-        const response = await axios.get(
-          "http://127.0.0.1:8000/api/v1/users/me",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              Accept: "application/json",
-            },
-          }
-        );
+  try {
+    const response = await axios.get("http://127.0.0.1:8000/api/v1/users/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    });
 
-        const userData = response.data;
-        setUser({
-          name: userData.username || "Người dùng",
-          email: userData.email || "",
-          phone: userData.phone_number || "",
-          address: userData.address || "",
-          role: userData.role || "user",
-        });
-        setUserInfo({
-          name: userData.username || "Người dùng",
-          email: userData.email || "",
-          phone: userData.phone_number || "",
-          address: userData.address || "",
-        });
-      } catch (error) {
-        console.error("Không lấy được thông tin người dùng:", error);
-        if (error.response && error.response.status === 401) {
-          dispatch(logout());
-          navigate("/login");
-        }
-      }
-    };
+    const userData = response.data;
+    setUser({
+      name: userData.username || "Người dùng",
+      email: userData.email || "",
+      phone: userData.phone_number || "",
+      address: userData.address || "",
+      role: userData.role || "user",
+    });
+    setUserInfo({
+      name: userData.username || "Người dùng",
+      email: userData.email || "",
+      phone: userData.phone_number || "",
+      address: userData.address || "",
+    });
+  } catch (error) {
+    console.error("Không lấy được thông tin người dùng:", error);
+    if (error.response && error.response.status === 401) {
+      dispatch(logout());
+      navigate("/login");
+    }
+  }
+};
 
-    fetchCurrentUser();
-  }, [dispatch, navigate]);
+useEffect(() => {
+  fetchCurrentUser();
+}, []);
+
 
   // Lấy toàn bộ video (không phân trang)
   useEffect(() => {
@@ -207,10 +205,12 @@ const Account = () => {
 ];
 
 
-  const handleEditSave = (newData) => {
+  const handleEditSave = async (newData) => {
     setUser(newData);
     setUserInfo(newData);
     setSnackbarOpen(true);
+    setEditModalVisible(false);
+    await fetchCurrentUser();
   };
 
   const handleLogout = () => {

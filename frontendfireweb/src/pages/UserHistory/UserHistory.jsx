@@ -84,7 +84,7 @@ const UserHistoryPage = () => {
       <Title level={2} style={{flexGrow: 1,
       textAlign: "center",
       margin: 0,}}>
-        Lịch sử hoạt động
+        Lịch sử chi tiếthoạt động
       </Title>
 </div>
       <List

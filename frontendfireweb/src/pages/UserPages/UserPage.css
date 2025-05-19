@@ -16,7 +16,7 @@
 .header h2 {
   margin-left: 0rem;
   margin-right: auto;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
 }
 
 .add-user-button {
@@ -57,7 +57,7 @@
 
 :where(.css-dev-only-do-not-override-18afz5u).ant-tabs .ant-tabs-tab.ant-tabs-tab .ant-tabs-tab-btn {
   color: #000000;
-   font-size: 1rem !important;
+   font-size: 0.9rem !important;
   font-family: Montserrat !important;
   font-weight: 600;
 

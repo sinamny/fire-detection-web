@@ -82,7 +82,7 @@ const GetUserHistoryPage = () => {
         </Tooltip>
 
         <Title level={2} style={{ flexGrow: 1, textAlign: "center", margin: 0 }}>
-          Lịch sử hoạt động người dùng
+          Lịch sử chi tiết hoạt động người dùng
         </Title>
       </div>
 
