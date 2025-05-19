@@ -128,11 +128,6 @@ useEffect(() => {
               className="camera-result-video"
               style={{ width: "100%", height: "62vh", transform: "scaleX(-1)" }}
             />
-             {cameraOn && (
-              <button className="stop-camera-button" onClick={handleTurnOffCamera}>
-                Tắt camera
-              </button>
-            )}
           </>
         ) : (
           <>
@@ -215,11 +210,11 @@ useEffect(() => {
           </div>
 
           <div className="turnoff-button">
-            {/* {mode === "camera" && cameraOn && (
+            {mode === "camera" && cameraOn && (
               <button className="new-button" onClick={handleTurnOffCamera}>
                 Tắt camera
               </button>
-            )} */}
+            )}
            
             <button className="new-button" onClick={handleCreateNew}>
               Tạo mới

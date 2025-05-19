@@ -74,6 +74,7 @@
 
 .table-wrapper {
   overflow-x: auto;
+  padding-bottom: 1.2rem;
 }
 
 .ant-table-wrapper .ant-table-thead > tr > th {

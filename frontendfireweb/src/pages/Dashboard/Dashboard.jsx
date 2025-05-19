@@ -102,7 +102,6 @@ const Dashboard = () => {
             family: "Montserrat",
             size: 12,
             weight: "bold",
-            
           },
           usePointStyle: true,
           pointStyle: "circle",
@@ -113,6 +112,34 @@ const Dashboard = () => {
       },
     },
   };
+
+  const isToday = (dateStr) => {
+    const date = new Date(dateStr);
+    const today = new Date();
+    return (
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    );
+  };
+
+  const isThisWeek = (dateStr) => {
+    const date = new Date(dateStr);
+    const today = new Date();
+    const firstDayOfWeek = new Date(today);
+    firstDayOfWeek.setDate(today.getDate() - today.getDay());
+    const lastDayOfWeek = new Date(firstDayOfWeek);
+    lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 6);
+    return date >= firstDayOfWeek && date <= lastDayOfWeek;
+  };
+
+  const todayAlerts = videos.filter(
+    (v) => v.fire_detected && isToday(v.created_at)
+  ).length;
+
+  const weekAlerts = videos.filter(
+    (v) => v.fire_detected && isThisWeek(v.created_at)
+  ).length;
 
   return (
     <div
@@ -135,7 +162,7 @@ const Dashboard = () => {
                 marginBottom: "1.5rem",
                 display: "flex",
                 alignItems: "center",
-                width: "100%"
+                width: "100%",
               }}
             >
               <Card
@@ -147,20 +174,19 @@ const Dashboard = () => {
                   alignItems: "center",
                 }}
               >
-                 <div
-                    style={{
+                <div
+                  style={{
                     textAlign: "center",
                     fontWeight: "600",
                     marginBottom: "0.5rem",
                     fontFamily: "Montserrat",
                     fontSize: "1rem",
                     color: "#000000",
-                    }}
+                  }}
                 >
-                    Tổng số người dùng
+                  Tổng số người dùng
                 </div>
                 <Statistic
-                 
                   value={users.length}
                   valueStyle={{
                     fontSize: "0.9rem",
@@ -183,20 +209,19 @@ const Dashboard = () => {
                   alignItems: "center",
                 }}
               >
-                 <div
-                    style={{
+                <div
+                  style={{
                     textAlign: "center",
                     fontWeight: "600",
                     marginBottom: "0.5rem",
                     fontFamily: "Montserrat",
                     fontSize: "1rem",
                     color: "#000000",
-                    }}
+                  }}
                 >
-                   Số video đã tải lên
+                  Số video đã tải lên
                 </div>
                 <Statistic
-                 
                   value={videos.length}
                   valueStyle={{
                     fontSize: "0.9rem",
@@ -237,18 +262,32 @@ const Dashboard = () => {
               }}
             >
               <Doughnut data={pieData} options={pieOptions} />
+              
             </div>
+            <span>
+                Tỷ lệ cháy / tổng video:{" "}
+                {videos.length > 0
+                  ? `${((fireCount / videos.length) * 100).toFixed(2)}%`
+                  : "0%"}
+              </span>
           </Card>
         </Col>
       </Row>
-       <Row gutter={[24, 24]} style={{ marginTop: "1.5rem" }}>
+
+      <Row gutter={[24, 24]} style={{ marginTop: "1.5rem" }}>
         <Col span={24}>
           <Card className="dashboard-card" style={{ textAlign: "center" }}>
             <Typography.Title
               level={4}
-              style={{ marginBottom: 16, fontFamily: "Montserrat",  textAlign: "center", margin: 0, fontSize: "1rem"}}
+              style={{
+                marginBottom: 16,
+                fontFamily: "Montserrat",
+                textAlign: "center",
+                margin: 0,
+                fontSize: "1rem",
+              }}
             >
-              Hiệu suất mô hình phát hiện đám cháy 
+                Thống kê hoạt động hệ thống trong tuần
             </Typography.Title>
             <div
               style={{
@@ -257,12 +296,13 @@ const Dashboard = () => {
                 fontSize: "0.9rem",
                 padding: "0 2rem",
                 color: "#000000",
-                marginTop: "0.5rem"
+                marginTop: "0.5rem",
               }}
             >
-              <span>mAR: 93.33%</span>
-              <span>mIoU: 77.86%</span>
-              <span>F-m: 50.76%</span>
+               <span>Người dùng mới trong tuần: {users.filter(u => isThisWeek(u.created_at)).length}</span>
+              <span>Video tải lên trong tuần: {videos.filter(v => isThisWeek(v.created_at)).length}</span>
+              <span>Video phát hiện cháy trong tuần: {weekAlerts}</span>
+               
             </div>
           </Card>
         </Col>

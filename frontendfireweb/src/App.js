@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -27,12 +27,21 @@ import UserHistoryPage from "./pages/UserHistory/UserHistory";
 import GetUserHistoryPage from "./pages/UserHistory/GetUserHistory";
 import { ColorModeContext, useMode } from "./theme";
 import { ThemeProvider, CssBaseline } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCurrentUser } from "./redux/apiRequest";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import { ConfigProvider } from "antd";
 
 function App() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    fetchCurrentUser(dispatch);
+  }, [dispatch]);
+
+  const user = useSelector((state) => state.user.user);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
@@ -57,48 +66,37 @@ function App() {
                         }`}
                       >
                         <Routes>
-                          <Route path="/home" element={<Home />} />
-                          <Route path="/dashboard" element={<Dashboard />} />
-                          <Route path="/video" element={<Video />} />
-                          <Route path="/video/analyze" element={<Analyze />} />
-                          <Route
-                            path="/video/detectionresult"
-                            element={<DetectionResult />}
-                          />
-                          <Route
-                            path="/video/cameraresult"
-                            element={<CameraResult />}
-                          />
-                          <Route
-                            path="/video/review"
-                            element={<ReviewResult />}
-                          />
+                         {/* Chỉ User */}
+                          {user?.role === "user" && (
+                            <>
+                              <Route path="/home" element={<Home />} />
+                              <Route path="/video" element={<Video />} />
+                              <Route path="/video/analyze" element={<Analyze />} />
+                              <Route path="/video/detectionresult" element={<DetectionResult />} />
+                              <Route path="/video/cameraresult" element={<CameraResult />} />
+                              <Route path="/video/review" element={<ReviewResult />} />
+                              <Route path="/settings" element={<Setting />} />
+                            </>
+                          )}
+
+                          {/* Chỉ Admin */}
+                          {user?.role === "admin" && (
+                            <>
+                              <Route path="/dashboard" element={<Dashboard />} />
+                              <Route path="/manage" element={<Manage />} />
+                              <Route path="/manage/review" element={<ReviewResult />} />
+                              <Route path="/user-page" element={<UsersPage />} />
+                              <Route path="/user-page/user-detail/:userId" element={<UserDetailPage />} />
+                              <Route path="/user-page/user-detail/:userId/review" element={<ReviewResult />} />
+                              <Route path="/user-page/user-detail/:userId/history" element={<GetUserHistoryPage />} />
+                            </>
+                          )}
+
+                          {/* Cả hai vai trò */}
                           <Route path="/account" element={<Account />} />
                           <Route path="/account/history" element={<UserHistoryPage />} />
-                          <Route
-                            path="/account/review"
-                            element={<ReviewResult />}
-                          />
-                          <Route path="/settings" element={<Setting />} />
-                          <Route path="/manage" element={<Manage />} />
-                          <Route
-                            path="/manage/review"
-                            element={<ReviewResult />}
-                          />
-                          <Route path="/user-page" element={<UsersPage />} />
-                          <Route
-                            path="/user-page/user-detail/:userId"
-                            element={<UserDetailPage />}
-                          />
-                          <Route
-                            path="/user-page/user-detail/:userId/review"
-                            element={<ReviewResult />}
-                          />
-                           <Route
-                            path="/account/history/review"
-                            element={<ReviewResult />}
-                          />
-                          <Route path="/user-page/user-detail/:userId/history" element={<GetUserHistoryPage />} />
+                          <Route path="/account/review" element={<ReviewResult />} />
+                          <Route path="/account/history/review" element={<ReviewResult />} />
                         </Routes>
                       </main>
                     </div>
