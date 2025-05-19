@@ -18,7 +18,7 @@
     margin-bottom: 0.5rem;
     color: #00224D;
     font-weight: 600;
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     line-height: 100%;
     letter-spacing: 0%;
     vertical-align: middle;
@@ -29,7 +29,7 @@
 .model-name {
     font-family: Montserrat;
     font-weight: 600;
-    font-size: 1.15rem;
+    font-size: 1.05rem;
     line-height: 100%;
     letter-spacing: 0%;
     vertical-align: middle;
@@ -50,7 +50,7 @@
   margin-top: 0.75rem auto;
   font-family: Montserrat;
     font-weight: 400;
-    font-size: 1rem;
+    font-size: 0.9rem;
 }
 
 .history-section {
@@ -65,7 +65,7 @@
   /* margin-bottom: 0.6rem; */
   font-family: Montserrat;
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 1rem;
     line-height: 100%;
     letter-spacing: 0%;
     vertical-align: middle;
@@ -89,7 +89,7 @@
     color: #4D4B7E !important;
     font-family: Montserrat;
     font-weight: 700;
-    font-size: 0.95rem !important;
+    font-size: 0.9rem !important;
     line-height: 100%;
     letter-spacing: 0%;
     vertical-align: middle;

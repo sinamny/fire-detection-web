@@ -433,7 +433,7 @@ const Account = () => {
                 style={{
                   position: "absolute",
                   right: 0,
-                  fontSize: "0.9rem",
+                  fontSize: "0.8rem",
                   color: "#000000",
                   whiteSpace: "nowrap",
                   marginTop: "0.75rem",
@@ -453,6 +453,7 @@ const Account = () => {
                       color: page === i + 1 ? "white" : "black",
                       border: "none",
                       cursor: "pointer",
+                      fontSize: "0.8rem"
                     }}
                     aria-current={page === i + 1 ? "page" : undefined}
                   >

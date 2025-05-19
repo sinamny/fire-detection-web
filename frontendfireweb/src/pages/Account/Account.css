@@ -21,7 +21,7 @@
   align-items: center;
   font-family: Montserrat;
     font-weight: 700;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     line-height: 100%;
     letter-spacing: 0%;
     vertical-align: middle;
@@ -42,7 +42,7 @@
   align-items: center;
   gap: 0.625rem;
   margin-bottom: 0.5rem;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .account-avatar {
@@ -60,7 +60,7 @@
     background-color: #FFFFFF;
     padding: 0.05rem 1.5rem;
     border-radius: 10px;
-    font-size: 1rem;
+    font-size: 0.9rem;
 }
 
 .account-details p {
@@ -95,7 +95,7 @@
   align-items: center;
   text-align: center;
   padding: 0.5rem 0;
-  font-size: 1rem;
+  font-size: 0.9rem;
   border-bottom: 1px solid #ccc;
 
 }
@@ -108,7 +108,7 @@
   align-items: center;
   text-align: center;
   padding: 0.5rem 0;
-  font-size: 1rem;
+  font-size: 0.9rem;
   border-bottom: 1px solid #ccc;
 }
 
@@ -152,7 +152,7 @@
   min-height: 2.25rem;
   border-radius: 50%;
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 0.9rem;
   transition: background-color 0.3s ease, color 0.3s ease;
   font-family: Montserrat;
 }

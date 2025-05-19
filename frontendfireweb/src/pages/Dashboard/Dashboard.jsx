@@ -153,7 +153,7 @@ const Dashboard = () => {
                     fontWeight: "600",
                     marginBottom: "0.5rem",
                     fontFamily: "Montserrat",
-                    fontSize: "1.1rem",
+                    fontSize: "1rem",
                     color: "#000000",
                     }}
                 >
@@ -163,7 +163,7 @@ const Dashboard = () => {
                  
                   value={users.length}
                   valueStyle={{
-                    fontSize: "1rem",
+                    fontSize: "0.9rem",
                     color: "#000000",
                     fontFamily: "Montserrat",
                     display: "flex",
@@ -189,7 +189,7 @@ const Dashboard = () => {
                     fontWeight: "600",
                     marginBottom: "0.5rem",
                     fontFamily: "Montserrat",
-                    fontSize: "1.1rem",
+                    fontSize: "1rem",
                     color: "#000000",
                     }}
                 >
@@ -199,7 +199,7 @@ const Dashboard = () => {
                  
                   value={videos.length}
                   valueStyle={{
-                    fontSize: "1rem",
+                    fontSize: "0.9rem",
                     color: "#000000",
                     fontFamily: "Montserrat",
                     display: "flex",
@@ -246,7 +246,7 @@ const Dashboard = () => {
           <Card className="dashboard-card" style={{ textAlign: "center" }}>
             <Typography.Title
               level={4}
-              style={{ marginBottom: 16, fontFamily: "Montserrat",  textAlign: "center", margin: 0, fontSize: "1.35rem"}}
+              style={{ marginBottom: 16, fontFamily: "Montserrat",  textAlign: "center", margin: 0, fontSize: "1rem"}}
             >
               Hiệu suất mô hình phát hiện đám cháy 
             </Typography.Title>
@@ -254,7 +254,7 @@ const Dashboard = () => {
               style={{
                 display: "flex",
                 justifyContent: "space-between",
-                fontSize: "1rem",
+                fontSize: "0.9rem",
                 padding: "0 2rem",
                 color: "#000000",
                 marginTop: "0.5rem"

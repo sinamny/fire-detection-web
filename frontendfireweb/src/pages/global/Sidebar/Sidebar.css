@@ -82,13 +82,13 @@
 .sidebar-item {
     display: flex;
     align-items: center;
-    padding: 1rem 20% 1rem 20%; 
+    padding: 1rem 22% 1rem 22%; 
     color: #000000;
     transition: background 0.3s;
     width: 100%;
     font-family: Montserrat;
-    font-weight: 400;
-    font-size: 1.1rem;
+    font-weight: 500;
+    font-size: 1rem;
     text-align: left;  
 }
 
