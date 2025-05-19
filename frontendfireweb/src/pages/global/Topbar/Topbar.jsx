@@ -1,78 +1,8 @@
-// import React, {useEffect} from "react";
-// import { useNavigate } from "react-router-dom";
-// import { FaRegUserCircle } from "react-icons/fa";
-// import { Logout } from '@mui/icons-material';
-// import {IconButton} from '@mui/material';
-// import { MdOutlineLocalFireDepartment } from "react-icons/md";
-// import { Avatar} from "antd";
-// import "./Topbar.css";
-// import { useDispatch, useSelector } from 'react-redux';
-// import { logOutStart, logOutSuccess, logOutFailed } from '../../../redux/authSlice';
-// import { logout } from '../../../redux/userSlice';
-// import { fetchCurrentUser } from '../../../redux/apiRequest'; 
-
-// const Topbar = () => {
-//   const navigate = useNavigate(); 
-//   const dispatch = useDispatch();
-//   useEffect(() => {
-//     fetchCurrentUser(dispatch);
-//   }, [dispatch]);
-
-//    const user = useSelector((state) => state.user.user);
-
-//    const handleUserClick = () => {
-//     navigate("/account"); 
-//   };
-//  const handleLogout = () => {
-//   dispatch(logOutStart()); 
-  
-//   try {
-//     localStorage.removeItem('user');
-//     localStorage.removeItem("access_token");
-//     localStorage.removeItem("user_id");
-//     localStorage.removeItem("role");
-//     localStorage.removeItem("isAuthenticated");
-//      dispatch(logout());   
-//     dispatch(logOutSuccess()); 
-//     navigate('/login');
-//   } catch (error) {
-//     dispatch(logOutFailed());
-//     console.error('Lỗi khi logout:', error);
-//   }
-// };
-
-
-
-//   return (
-//     <div className="topbar">
-//      <div className="topbar-left">
-//         <MdOutlineLocalFireDepartment className="topbar-logo" />
-//         <h1 className="topbar-title">Phát hiện đám cháy</h1>
-//       </div>  
-//       <div className="topbar-right">
-//       <div className="topbar-user" onClick={handleUserClick} style={{ cursor: "pointer" }}>
-//         <Avatar size="1.5rem" icon={<FaRegUserCircle className="topbar-user-logo"/>} />
-//         <div className="topbar-username-container">
-//           <span className="topbar-username">{user?.username}</span>
-//         </div>
-//       </div>
-//       <div className="topbar-logout">
-//         <IconButton onClick={handleLogout}>
-//             <Logout  style={{ color: "white" }}/>
-//           </IconButton>
-//       </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Topbar;
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaRegUserCircle } from "react-icons/fa";
 import { Logout } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
+import { IconButton, Snackbar, Alert as MuiAlert } from "@mui/material";
 import { MdOutlineLocalFireDepartment } from "react-icons/md";
 import {
   Avatar,
@@ -81,7 +11,6 @@ import {
   Modal,
   Input,
   message,
-  Alert,
 } from "antd";
 import "./Topbar.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -103,7 +32,8 @@ const Topbar = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [alert, setAlert] = useState(null); // alert: { type: "success" | "error", msg: string }
+  const [alert, setAlert] = useState(null); // { type: "success" | "error", msg: string }
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   useEffect(() => {
     fetchCurrentUser(dispatch);
@@ -157,6 +87,7 @@ const Topbar = () => {
 
     if (newPassword !== confirmPassword) {
       setAlert({ type: "error", msg: "Mật khẩu mới không khớp." });
+      setOpenSnackbar(true);
       return;
     }
 
@@ -187,19 +118,21 @@ const Topbar = () => {
       setNewPassword("");
       setConfirmPassword("");
 
-      setTimeout(() => {
-        setAlert({ type: "success", msg: "Đổi mật khẩu thành công." });
-
-        setTimeout(() => setAlert(null), 3000);
-      }, 200); 
-          
+      setAlert({ type: "success", msg: "Đổi mật khẩu thành công." });
+      setOpenSnackbar(true);
     } catch (error) {
       const errMsg =
         error?.response?.data?.detail?.[0]?.msg ||
         error?.response?.data?.detail ||
         "Đổi mật khẩu thất bại";
       setAlert({ type: "error", msg: errMsg });
+      setOpenSnackbar(true);
     }
+  };
+
+  const handleSnackbarClose = (_, reason) => {
+    if (reason === "clickaway") return;
+    setOpenSnackbar(false);
   };
 
   const menu = (
@@ -215,28 +148,24 @@ const Topbar = () => {
 
   return (
     <div className="topbar">
-      {alert?.type === "success" && (
-        <div
-          style={{
-            position: "fixed",
-            top: "1.25rem",
-            left: "50%",
-            transform: "translateX(-50%)",
-            zIndex: 9999,
-            width: "max-content",
-          }}
-        >
-          <Alert
-            message={alert.msg}
-            type="success"
-            severity="success"
+      {/* Snackbar MUI */}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={4000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        {alert && (
+          <MuiAlert
+            elevation={6}
             variant="filled"
-            showIcon
-            closable
-            onClose={() => setAlert(null)}
-          />
-        </div>
-      )}
+            onClose={handleSnackbarClose}
+            severity={alert.type}
+          >
+            {alert.msg}
+          </MuiAlert>
+        )}
+      </Snackbar>
 
       <div className="topbar-left">
         <MdOutlineLocalFireDepartment className="topbar-logo" />
@@ -271,15 +200,6 @@ const Topbar = () => {
         okText="Xác nhận"
         cancelText="Hủy"
       >
-        {alert?.type === "error" && (
-          <Alert
-            message={alert.msg}
-            type="error"
-            showIcon
-            style={{ marginBottom: 10 }}
-          />
-        )}
-
         <Input.Password
           placeholder="Mật khẩu hiện tại"
           value={currentPassword}
@@ -309,5 +229,3 @@ const Topbar = () => {
 };
 
 export default Topbar;
-
-
