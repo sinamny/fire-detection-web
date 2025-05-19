@@ -1,28 +1,64 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, Button, message } from "antd";
+import axios from "axios";
 import "./EditAccountModal.css";
 
 const EditUserModal = ({ isVisible, onClose, userInfo, onSave }) => {
   const [form] = Form.useForm();
   const [isSaving, setIsSaving] = useState(false);
-  
+  useEffect(() => {
+  if (isVisible && userInfo) {
+    form.setFieldsValue(userInfo);
+  }
+}, [isVisible, userInfo, form]);
 
 
+
+  // const handleSave = async (values) => {
+  //   try {
+  //     setIsSaving(true);
+  //     setTimeout(() => {
+  //       onSave(values); 
+  //       message.success("Cập nhật thông tin thành công!");
+  //       setIsSaving(false);
+  //       onClose();
+  //     }, 1000);
+  //   } catch (error) {
+  //     message.error("Có lỗi xảy ra!");
+  //     setIsSaving(false);
+  //   }
+  // };
   const handleSave = async (values) => {
-    try {
+   try {
       setIsSaving(true);
-      // Giả lập cập nhật thành công sau 1 giây
-      setTimeout(() => {
-        onSave(values); 
-        message.success("Cập nhật thông tin thành công!");
-        setIsSaving(false);
-        onClose();
-      }, 1000);
-    } catch (error) {
-      message.error("Có lỗi xảy ra!");
+      const payload = {
+        username: values.name,
+        address: values.address,
+        phone_number: values.phone,
+      };
+      const response = await axios.put("http://127.0.0.1:8000/api/v1/users/me", payload, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          Accept: "application/json",
+        },
+      });
+      onSave({
+        name: response.data.username,
+        email: response.data.email,
+        phone: response.data.phone_number,
+        address: response.data.address,
+      });
+
+      message.success("Cập nhật thông tin thành công!");
       setIsSaving(false);
-    }
+      onClose();
+    } catch (error) {
+      message.error("Cập nhật thất bại. Vui lòng thử lại!");
+      console.error("Lỗi cập nhật user:", error);
+      setIsSaving(false);
+     }
   };
+
 
   return (
     <Modal
@@ -48,7 +84,7 @@ const EditUserModal = ({ isVisible, onClose, userInfo, onSave }) => {
           </Form.Item>
         </div>
 
-        <div className="form-row2">
+        {/* <div className="form-row2">
           <Form.Item
             label="Email"
             name="email"
@@ -59,13 +95,19 @@ const EditUserModal = ({ isVisible, onClose, userInfo, onSave }) => {
           >
             <Input placeholder="Nhập email" />
           </Form.Item>
-        </div>
+        </div> */}
 
         <div className="form-row2">
           <Form.Item
             label="Số điện thoại"
             name="phone"
-            rules={[{ required: true, message: "Vui lòng nhập số điện thoại!" }]}
+            rules={[
+            { required: true, message: "Vui lòng nhập số điện thoại!" },
+            {
+              pattern: /^[0-9]+$/,
+              message: "Số điện thoại chỉ được chứa số!"
+            }
+          ]}
           >
             <Input placeholder="Nhập số điện thoại" />
           </Form.Item>

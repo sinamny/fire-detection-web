@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Setting.css";
+import axios from "axios";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import WarningIcon from "@mui/icons-material/Warning";
@@ -15,7 +16,7 @@ import {
   DialogActions,
   Menu,
   MenuItem,
-  Alert
+  Alert,
 } from "@mui/material";
 
 export default function Setting() {
@@ -38,20 +39,78 @@ export default function Setting() {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+const token = localStorage.getItem("access_token");
+
+  useEffect(() => {
+    if (token) {
+      axios
+        .get("http://127.0.0.1:8000/api/v1/notifications/settings", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          setAlert1(response.data.enable_website_notification);
+          setAlert2(response.data.enable_email_notification);
+        })
+        .catch((error) => {
+          console.error("Lỗi khi lấy cài đặt thông báo:", error);
+        });
+    }
+  }, [token]);
 
   const handleEditClick = () => {
     setIsEditing(true);
     handleMenuClose();
   };
 
+  // const handleSave = () => {
+  //   setIsEditing(false);
+  //   setOpenConfirm(false);
+  //   setOpenSnackbar(true);
+  // };
+ const handleSave = () => {
+  
+  if (token) {
+    axios
+      .post(
+        "http://localhost:8000/api/v1/notifications/settings",
+        {
+          enable_website_notification: alert1,
+          enable_email_notification: alert2,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Thêm token vào header
+          },
+        }
+      )
+      .then((res) => {
+        setIsEditing(false);
+        setOpenConfirm(false);
+        setOpenSnackbar(true);
+        return axios.get("http://localhost:8000/api/v1/notifications/settings", {
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          },
+        });
+      })
+      .then((response) => {
+        setAlert1(response.data.enable_website_notification);
+        setAlert2(response.data.enable_email_notification);
+      })
+      .catch((error) => {
+        console.error("Lỗi khi lưu hoặc tải lại cài đặt:", error);
+        setOpenConfirm(false);
+      });
+  } else {
+    console.error("Không tìm thấy access_token");
+  }
+};
+
+
   const handleSaveConfirm = () => {
     setOpenConfirm(true);
-  };
-
-  const handleSave = () => {
-    setIsEditing(false);
-    setOpenConfirm(false);
-    setOpenSnackbar(true);
   };
 
   return (
@@ -165,12 +224,12 @@ export default function Setting() {
         >
           Lưu cài đặt thành công
         </Box> */}
-         <Alert
+        <Alert
           onClose={() => setOpenSnackbar(false)}
           severity="success"
           variant="filled"
         >
-         Lưu cài đặt thành công!
+          Lưu cài đặt thành công!
         </Alert>
       </Snackbar>
       <Dialog open={openConfirm} onClose={() => setOpenConfirm(false)}>

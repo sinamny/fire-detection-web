@@ -1,10 +1,230 @@
-// import React from "react";
-// import { Download } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Table, Button, Tooltip } from "antd";
+import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import CloseIcon from "@mui/icons-material/Close";
+import { PlayCircleOutlined } from '@ant-design/icons';
+import { useNavigate } from "react-router-dom"; 
+import "./Manage.css";
+
+const Manage = () => {
+   const navigate = useNavigate();
+  const [data, setData] = useState([]);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+  const limit = pageSize;
+
+  useEffect(() => {
+    const fetchVideos = async () => {
+      try {
+        const resVideos = await axios.get(
+          "http://127.0.0.1:8000/api/v1/videos/all",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
+        console.log(resVideos.data);
+        const videos = resVideos.data.map((video, idx) => {
+          const dateObj = new Date(video.updated_at);
+          const formattedDate = dateObj.toLocaleDateString("vi-VN");
+          const formattedTime = dateObj.toLocaleTimeString("vi-VN", {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+
+          return {
+            key: video.video_id,
+            user: video.username || "Unknown",
+            date: formattedDate,
+            time: formattedTime,
+            videoName: "",
+            fireDetected: video.fire_detected,
+            processedVideoUrl: video.processed_video_url,
+          };
+        });
+        setData(videos);
+      } catch (error) {
+        console.error("Lỗi khi lấy dữ liệu video:", error);
+      }
+    };
+
+    fetchVideos();
+  }, []);
+
+  const columns = [
+    {
+      title: "Người dùng",
+      dataIndex: "user",
+      key: "user",
+      sorter: (a, b) => a.user.localeCompare(b.user),
+      align: "center",
+      render: (text) => (
+        <span style={{ textAlign: "left", display: "block" }}>{text}</span>
+      ),
+      width: 150,
+    },
+    {
+      title: "Ngày",
+      dataIndex: "date",
+      key: "date",
+      sorter: (a, b) => {
+        const [dayA, monthA, yearA] = a.date.split("/").map(Number);
+        const [dayB, monthB, yearB] = b.date.split("/").map(Number);
+
+        const dateA = new Date(yearA, monthA - 1, dayA);
+        const dateB = new Date(yearB, monthB - 1, dayB);
+
+        return dateA - dateB;
+      },
+      align: "center",
+      width: 120,
+    },
+    {
+      title: "Giờ",
+      dataIndex: "time",
+      key: "time",
+      // sorter: (a, b) => a.time.localeCompare(b.time),
+      align: "center",
+      width: 90,
+    },
+    {
+      title: "Phát hiện cháy",
+      dataIndex: "fireDetected",
+      key: "fireDetected",
+      align: "center",
+      render: (detected) =>
+        detected ? (
+          <CheckCircleOutlineIcon
+            style={{ color: "green", fontSize: "1rem", fontWeight: "bold" }}
+          />
+        ) : (
+          <CloseIcon
+            style={{ color: "red", fontSize: "1rem", fontWeight: "bold" }}
+          />
+        ),
+      width: 170,
+    },
+    {
+      title: "Video",
+      dataIndex: "videoName",
+      key: "videoName",
+      align: "center",
+      render: (text, record, index) => (
+        <div
+          className="video-container"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+        <Tooltip title="Nhấn để xem lại video">
+          <span
+            className="video-name"
+            style={{ textAlign: "left", cursor: "pointer", color: "#000000", fontWeight: 500 }}
+            onClick={() => {
+              navigate("/manage/review", { state: { video_id: record.key, from: '/manage' } });
+            }}
+          >
+             <PlayCircleOutlined style={{ marginRight: '0.5rem' }}/>
+            Video {(page - 1) * limit + index + 1}
+          </span>
+        </Tooltip>
+          <Button
+            type="link"
+            icon={<SaveAltOutlinedIcon className="custom-download-icon" />}
+            onClick={() => {
+              const downloadUrl = record.processedVideoUrl.replace(
+                "/upload/",
+                "/upload/fl_attachment/"
+              );
+              const a = document.createElement("a");
+              a.href = downloadUrl;
+              a.setAttribute("download", record.videoName);
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+            }}
+            style={{ paddingLeft: 10 }}
+          />
+        </div>
+      ),
+    },
+  ];
+
+  const handlePageSizeChange = (current, size) => {
+    setPage(current);
+    setPageSize(size);
+  };
+
+  return (
+    <div className="manage-container">
+      <div className="model-info">
+        <h2 className="model-title">
+          THÔNG TIN CHI TIẾT MÔ HÌNH PHÁT HIỆN ĐÁM CHÁY
+        </h2>
+        <p className="model-name">
+          Mô hình: <span className="highlight">YOLOv11</span>
+        </p>
+        <div className="model-metrics">
+          <div>mAR: 93,33 %</div>
+          <div>mIoU: 77,86 %</div>
+          <div>F-m: 50,76%</div>
+        </div>
+      </div>
+
+      <div className="history-section">
+        <h3 className="history-title">Lịch sử hệ thống</h3>
+        <div className="table-wrapper">
+          <Table
+            columns={columns}
+            dataSource={data}
+            pagination={{
+              current: page,
+              pageSize,
+              total: data.length,
+              onChange: (page) => setPage(page),
+              showQuickJumper: true,
+              showSizeChanger: true,
+              pageSizeOptions: ["5", "10", "15", "20", "30"],
+              onShowSizeChange: handlePageSizeChange,
+              showLessItems: true,
+              showTotal: (total, range) =>
+                `${range[0]}-${range[1]} trong tổng số ${total} bản ghi`,
+              locale: {
+                items_per_page: "bản ghi / trang",
+                jump_to: "Đi tới",
+                jump_to_confirm: "Xác nhận",
+                page: "Trang",
+                prev_page: "Trang trước",
+                next_page: "Trang sau",
+                prev_5: "Lùi 5 trang",
+                next_5: "Tiến 5 trang",
+                prev_3: "Lùi 3 trang",
+                next_3: "Tiến 3 trang",
+              },
+            }}
+            bordered
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Manage;
+
+// import React, { useState } from "react";
+// import { Table, Button } from "antd";
+// import SaveAltOutlinedIcon from '@mui/icons-material/SaveAltOutlined';
 // import "./Manage.css";
 
 // const Manage = () => {
 
-//     const handleDownload = (filename = "free_fire_abc_video.mp4") => {
+//   const handleDownload = (filename = "free_fire_abc_video.mp4") => {
 //     const blob = new Blob(["Fake MP4 content here"], { type: "video/mp4" });
 //     const url = URL.createObjectURL(blob);
 //     const a = document.createElement("a");
@@ -13,6 +233,72 @@
 //     a.click();
 //     URL.revokeObjectURL(url);
 //   };
+//    const [page, setPage] = useState(1);
+//    const [pageSize, setPageSize] = useState(5);
+
+//   const columns = [
+//     {
+//       title: "Người dùng",
+//       dataIndex: "user",
+//       key: "user",
+//       sorter: (a, b) => a.user.localeCompare(b.user),
+//       align: "center",
+//        render: (text) => (
+//         <span style={{ textAlign: "left", display: "block" }}>{text}</span>
+//       ),
+//       width: 200,
+//     },
+//     {
+//       title: "Ngày",
+//       dataIndex: "date",
+//       key: "date",
+//       align: "center",
+//       sorter: (a, b) => new Date(a.date) - new Date(b.date),
+//       width: 150,
+//     },
+//     {
+//       title: "Giờ",
+//       dataIndex: "time",
+//       key: "time",
+//       sorter: (a, b) => a.time.localeCompare(b.time),
+//       align: "center",
+//       width: 120,
+//     },
+//     {
+//       title: "Video",
+//       dataIndex: "videoName",
+//       key: "videoName",
+//       render: (text, record) => (
+//         <div className="video-container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+//             <span className="video-name" style={{ textAlign: "left" }}>
+//             {text}
+//             </span>
+//             <Button
+//             type="link"
+//             icon={<SaveAltOutlinedIcon className="custom-download-icon" />}
+//             onClick={() => handleDownload(record.videoFile)}
+//             style={{ paddingLeft: 10 }}
+//             />
+//         </div>
+//         ),
+
+//       align: "center",
+//     },
+//   ];
+
+//   const handlePageSizeChange = (current, size) => {
+//     setPage(current);
+//     setPageSize(size);
+//   };
+
+//   const data = Array.from({ length: 20 }).map((_, idx) => ({
+//     key: idx,
+//     user: "Nguyễn Thị Nguyệt",
+//     date: "2025-01-01",
+//     time: "23:00",
+//     videoName: `Video ABC ${idx + 1}`,
+//     videoFile: `video_abc_${idx + 1}.mp4`,
+//   }));
 
 //   return (
 //     <div className="manage-container">
@@ -31,36 +317,31 @@
 //       <div className="history-section">
 //         <h3 className="history-title">Lịch sử hệ thống</h3>
 //         <div className="table-wrapper">
-//           <table className="history-table">
-//             <thead>
-//               <tr>
-//                 <th>Người dùng</th>
-//                 <th>Ngày</th>
-//                 <th>Giờ</th>
-//                 <th>Video</th>
-//               </tr>
-//             </thead>
-//             <tbody>
-//               {Array.from({ length: 10 }).map((_, idx) => (
-//                <tr key={idx}>
-//                   <td>ABC</td>
-//                   <td>1/1/2025</td>
-//                   <td>23:00</td>
-//                  <td className="video-cell">
-//                     <span className="video-name">Video Name ABC</span>
-//                     <button
-//                         className="download-icon-button"
-//                         onClick={() => handleDownload(`video_abc_${idx + 1}.mp4`)}
-//                         aria-label="Tải video"
-//                     >
-//                         <Download size={18} />
-//                     </button>
-//                     </td>
-
-//                 </tr>
-//               ))}
-//             </tbody>
-//           </table>
+//           <Table columns={columns} dataSource={data}
+//             pagination={{
+//                 current: page,
+//                 pageSize,
+//                 total: data.length,
+//                 onChange: (page) => setPage(page),
+//                 showQuickJumper: true,
+//                 showSizeChanger: true,
+//                 pageSizeOptions: ["5","10", "15", "20", "30"],
+//                 onShowSizeChange: handlePageSizeChange,
+//                 showTotal: (total, range) => `${range[0]}-${range[1]} trong tổng số ${total} bản ghi`,
+//                 locale: {
+//                   items_per_page: "bản ghi / trang",
+//                   jump_to: "Đi tới",
+//                   jump_to_confirm: "Xác nhận",
+//                   page: "Trang",
+//                   prev_page: "Trang trước",
+//                   next_page: "Trang sau",
+//                   prev_5: "Lùi 5 trang",
+//                   next_5: "Tiến 5 trang",
+//                   prev_3: "Lùi 3 trang",
+//                   next_3: "Tiến 3 trang",
+//                 },
+//                 }}
+//             bordered/>
 //         </div>
 //       </div>
 //     </div>
@@ -68,137 +349,3 @@
 // };
 
 // export default Manage;
-import React, { useState } from "react";
-import { Table, Button } from "antd";
-import SaveAltOutlinedIcon from '@mui/icons-material/SaveAltOutlined';
-import "./Manage.css";
-
-const Manage = () => {
-
-  const handleDownload = (filename = "free_fire_abc_video.mp4") => {
-    const blob = new Blob(["Fake MP4 content here"], { type: "video/mp4" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-   const [page, setPage] = useState(1);
-   const [pageSize, setPageSize] = useState(5);
-
-  
-
-  const columns = [
-    {
-      title: "Người dùng",
-      dataIndex: "user",
-      key: "user",
-      sorter: (a, b) => a.user.localeCompare(b.user),
-      align: "center",
-       render: (text) => (
-        <span style={{ textAlign: "left", display: "block" }}>{text}</span>
-      ),
-      width: 200,
-    },
-    {
-      title: "Ngày",
-      dataIndex: "date",
-      key: "date",
-      align: "center",
-      sorter: (a, b) => new Date(a.date) - new Date(b.date),
-      width: 150,
-    },
-    {
-      title: "Giờ",
-      dataIndex: "time",
-      key: "time",
-      sorter: (a, b) => a.time.localeCompare(b.time),
-      align: "center",
-      width: 120,
-    },
-    {
-      title: "Video",
-      dataIndex: "videoName",
-      key: "videoName",
-      render: (text, record) => (
-        <div className="video-container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <span className="video-name" style={{ textAlign: "left" }}>
-            {text}
-            </span>
-            <Button
-            type="link"
-            icon={<SaveAltOutlinedIcon className="custom-download-icon" />}
-            onClick={() => handleDownload(record.videoFile)}
-            style={{ paddingLeft: 10 }}
-            />
-        </div>
-        ),
-
-      align: "center",
-    },
-  ];
-
-  const handlePageSizeChange = (current, size) => {
-    setPage(current);
-    setPageSize(size);
-  };
-
-  const data = Array.from({ length: 20 }).map((_, idx) => ({
-    key: idx,
-    user: "Nguyễn Thị Nguyệt",
-    date: "2025-01-01",
-    time: "23:00",
-    videoName: `Video ABC ${idx + 1}`,
-    videoFile: `video_abc_${idx + 1}.mp4`,
-  }));
-
-  return (
-    <div className="manage-container">
-      <div className="model-info">
-        <h2 className="model-title">THÔNG TIN CHI TIẾT MÔ HÌNH PHÁT HIỆN ĐÁM CHÁY</h2>
-        <p className="model-name">
-          Mô hình: <span className="highlight">YOLOv11</span>
-        </p>
-        <div className="model-metrics">
-          <div>mAR: 93,33 %</div>
-          <div>mIoU: 77,86 %</div>
-          <div>F-m: 50,76%</div>
-        </div>
-      </div>
-
-      <div className="history-section">
-        <h3 className="history-title">Lịch sử hệ thống</h3>
-        <div className="table-wrapper">
-          <Table columns={columns} dataSource={data} 
-            pagination={{
-                current: page,
-                pageSize,
-                total: data.length,
-                onChange: (page) => setPage(page),
-                showQuickJumper: true,
-                showSizeChanger: true,
-                pageSizeOptions: ["5","10", "15", "20", "30"],
-                onShowSizeChange: handlePageSizeChange,
-                showTotal: (total, range) => `${range[0]}-${range[1]} trong tổng số ${total} bản ghi`,
-                locale: {
-                  items_per_page: "bản ghi / trang",
-                  jump_to: "Đi tới",
-                  jump_to_confirm: "Xác nhận",
-                  page: "Trang",
-                  prev_page: "Trang trước",
-                  next_page: "Trang sau",
-                  prev_5: "Lùi 5 trang",
-                  next_5: "Tiến 5 trang",
-                  prev_3: "Lùi 3 trang",
-                  next_3: "Tiến 3 trang",
-                },
-                }}
-            bordered/>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default Manage;

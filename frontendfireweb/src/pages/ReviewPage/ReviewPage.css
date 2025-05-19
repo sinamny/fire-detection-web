@@ -1,6 +1,6 @@
 .review-page {
-  max-width: 76%;
-  margin: 2.2% 12% 2.2% 12%;
+  max-width: 70%;
+  margin: 1% 15% 2.2% 15%;
 }
 
 .video-review-frame {
@@ -8,10 +8,26 @@
   border-top-right-radius: 8px;
   border: 10px solid #C4D9FF;
    /* border: 10px solid #FF9965; */
-  max-height: 68vh;
+  max-height: 65vh;
+  background-color: #000000;
   
 }
 
+.custom-control {
+  width: 100%;
+  background-color: #E0F7FA;
+  display: flex !important;
+  flex-direction: row;
+  /* justify-content: space-between; */
+  text-align: center;
+  padding: 0rem 0.5rem;
+  align-items: center !important;
+  position: relative !important;
+}
+
+.css-75o2in-MuiSlider-root {
+  padding: 0.5rem 0rem !important;
+}
 
 .custom-controls {
   width: 100%;
@@ -89,3 +105,22 @@
   font-weight: bold;
   color: #003366;
 }
+
+
+.review-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: -1%;
+  margin-left: 2%;
+}
+
+
+.review-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #000000;
+  margin: 0;
+   font-family: Montserrat;
+}
+

@@ -19,7 +19,7 @@ body,
 .content {
   height: 100%;
   width: 100%;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .app {
@@ -51,7 +51,7 @@ body,
 ::-webkit-scrollbar-thumb:hover {
   background-color: rgba(0, 0, 0, 0.3);
 }
-
+/* 
 @media (max-width: 1024px) {
   html {
     font-size: 14px;
@@ -87,4 +87,73 @@ body,
     font-size: 5px;
   }
 }
+ */
+/* Màn hình cực lớn: TV, màn hình 4K */
+@media (min-width: 2560px) {
+  html {
+    font-size: 22px; /* 1rem = 22px */
+  }
+}
 
+/* Màn hình rất lớn: iMac, màn hình 2K */
+@media (min-width: 1920px) and (max-width: 2559px) {
+  html {
+    font-size: 20px;
+  }
+}
+
+/* Màn hình lớn: desktop phổ biến */
+@media (min-width: 1440px) and (max-width: 1919px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+/* Laptop, máy tính nhỏ hơn */
+@media (min-width: 1025px) and (max-width: 1439px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+/* Tablet ngang */
+@media (min-width: 769px) and (max-width: 1024px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+/* Tablet dọc, điện thoại lớn */
+@media (min-width: 651px) and (max-width: 768px) {
+  html {
+    font-size: 13px;
+  }
+}
+
+/* Điện thoại trung bình */
+@media (min-width: 481px) and (max-width: 650px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+/* Điện thoại nhỏ */
+@media (min-width: 376px) and (max-width: 480px) {
+  html {
+    font-size: 11px;
+  }
+}
+
+/* Điện thoại rất nhỏ (iPhone SE, Galaxy Mini, v.v.) */
+@media (min-width: 321px) and (max-width: 375px) {
+  html {
+    font-size: 10px;
+  }
+}
+
+/* Thiết bị cực nhỏ */
+@media (max-width: 320px) {
+  html {
+    font-size: 9px;
+  }
+}

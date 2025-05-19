@@ -1,29 +1,13 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import "./Login.css"; 
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch} from "react-redux";
 import { loginStart, loginSuccess, loginFailed } from "../../redux/authSlice";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import fireImage from "../../assets/img/firefighters.jpg"; 
-
-
+// import fireImage from "../../assets/img/firefighters.jpg"; 
+import fireImage from "../../assets/img/firelogin.jpg"; 
 import { MdOutlineLocalFireDepartment } from "react-icons/md";
-
-const mockLoginApi = (email, password) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (email === "test@gmail.com" && password === "123456") {
-        resolve({
-          email: "test@gmail.com",
-          username: "user123",
-          access_token: "fake-token-12345",
-        });
-      } else {
-        reject(new Error("Sai email hoặc mật khẩu"));
-      }
-    }, 1000);
-  });
-};
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -33,21 +17,49 @@ const Login = () => {
  
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
+ const handleLogin = async (e) => {
+  e.preventDefault();
+  dispatch(loginStart());
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    dispatch(loginStart());
+  try {
+    const response = await axios.post(
+      "http://127.0.0.1:8000/api/v1/auth/login",
+      new URLSearchParams({
+        username: email,          
+        password: password,
+      }),
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
 
-    try {
-      const user = await mockLoginApi(email, password);
-      dispatch(loginSuccess(user));
-      localStorage.setItem("isAuthenticated", true);
+    const data = response.data;
+    dispatch(loginSuccess(data));
+    const userRes = await axios.get("http://127.0.0.1:8000/api/v1/users/me", {
+      headers: {
+        Authorization: `Bearer ${data.access_token}`,
+      },
+    });
+
+    const userData = userRes.data;
+    if (userData.role === "admin") {
+      navigate("/dashboard");
+    } else {
       navigate("/home");
-    } catch (err) {
-      dispatch(loginFailed());
-      setErrorMsg("Email hoặc mật khẩu không đúng.");
     }
-  };
+
+    
+  } catch (err) {
+    dispatch(loginFailed());
+    setErrorMsg("Email hoặc mật khẩu không đúng.");
+    console.error("Login failed:", err);
+  }
+};
+
+
 
   return (
     <div className="login-container">

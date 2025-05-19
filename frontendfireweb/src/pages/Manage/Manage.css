@@ -50,7 +50,7 @@
   margin-top: 0.75rem auto;
   font-family: Montserrat;
     font-weight: 400;
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 .history-section {
@@ -62,7 +62,7 @@
 
 .history-title {
   text-align: center;
-  margin-bottom: 0.6rem;
+  /* margin-bottom: 0.6rem; */
   font-family: Montserrat;
     font-weight: 600;
     font-size: 1.1rem;
@@ -107,7 +107,7 @@
 }
 
 :where(.css-dev-only-do-not-override-18afz5u).ant-pagination .ant-pagination-item-active {
-  font-size: 0.8rem !important;
+  font-size: 0.65rem !important;
   background-color: #FFFFFF !important;
   border: 1px solid #90c67c !important;
   font-family: Montserrat !important;
@@ -115,17 +115,18 @@
 }
 
 :where(.css-dev-only-do-not-override-18afz5u).ant-pagination .ant-pagination-item {
-  font-size: 0.8rem !important;
+  font-size: 0.65rem !important;
   background-color: #FFFFFF !important;
   border: 1px solid #90c67c !important;
   font-family: Montserrat !important;
   color: #ffffff !important;
+  
 }
 
 :where(.css-dev-only-do-not-override-18afz5u).ant-pagination .ant-pagination-total-text,
 :where(.css-dev-only-do-not-override-18afz5u).ant-select-single:not(.ant-select-customize-input) .ant-select-selector,
 :where(.css-dev-only-do-not-override-18afz5u).ant-pagination .ant-pagination-options-quick-jumper  {
-  font-size: 0.8rem !important;
+  font-size: 0.65rem !important;
      font-family: Montserrat;
 }
 
@@ -133,6 +134,13 @@
   color: #4D4B7E !important;
    font-family: Montserrat;
 }
+
+/* Ngăn xuống dòng và cho phép cuộn ngang */
+/* .ant-table-pagination {
+  flex-wrap: nowrap !important;
+  overflow-x: auto;
+} */
+
 
 
 

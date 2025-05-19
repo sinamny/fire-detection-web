@@ -1,39 +1,47 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"; 
-import './App.css';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import "./App.css";
 import Sidebar from "./pages/global/Sidebar/Sidebar";
-import Topbar from "./pages/global/Topbar/Topbar"; 
+import Topbar from "./pages/global/Topbar/Topbar";
 import Login from "./pages/LoginPage/LoginPage";
 import Register from "./pages/RegisterPage/Register";
 import Home from "./pages/HomePage/Home";
+import Dashboard from "./pages/Dashboard/Dashboard";
 import Video from "./pages/Video/Video";
-import Bottombar from "./pages/global/Bottombar/Bottombar"; 
-import Analyze from './pages/Video/Analyze/Analyze';
-import DetectionResult from "./pages/DetectionResult/DetectionResult"; 
-import CameraResult from "./pages/CameraResult/CameraResult"; 
+import Bottombar from "./pages/global/Bottombar/Bottombar";
+import Analyze from "./pages/Video/Analyze/Analyze";
+import DetectionResult from "./pages/DetectionResult/DetectionResult";
+import CameraResult from "./pages/CameraResult/CameraResult";
 import ReviewResult from "./pages/ReviewPage/ReviewPage";
 import Account from "./pages/Account/Account";
 import Setting from "./pages/SettingPage/Setting";
 import Manage from "./pages/Manage/Manage";
+import UsersPage from "./pages/UserPages/UserPages";
+import UserDetailPage from "./pages/UserPages/UserDetail/UserDetail";
+import UserHistoryPage from "./pages/UserHistory/UserHistory";
+import GetUserHistoryPage from "./pages/UserHistory/GetUserHistory";
 import { ColorModeContext, useMode } from "./theme";
-import { ThemeProvider, CssBaseline } from '@mui/material';
-import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute"; 
+import { ThemeProvider, CssBaseline } from "@mui/material";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import { ConfigProvider } from "antd";
-
-
 
 function App() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
 
   return (
-   <ColorModeContext.Provider value={colorMode}>
+    <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <ConfigProvider>
           <Routes>
             <Route path="/" element={<Navigate to="/login" />} />
-             <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route
               path="/*"
@@ -43,17 +51,54 @@ function App() {
                     <Topbar setIsSidebar={setIsSidebar} />
                     <div className="body-layout">
                       <Sidebar isSidebar={isSidebar} />
-                      <main className={`main-content ${isSidebar ? "" : "collapsed"}`}>
+                      <main
+                        className={`main-content ${
+                          isSidebar ? "" : "collapsed"
+                        }`}
+                      >
                         <Routes>
                           <Route path="/home" element={<Home />} />
+                          <Route path="/dashboard" element={<Dashboard />} />
                           <Route path="/video" element={<Video />} />
                           <Route path="/video/analyze" element={<Analyze />} />
-                          <Route path="/video/detectionresult" element={<DetectionResult />} />
-                          <Route path="/video/cameraresult" element={<CameraResult />} />
-                          <Route path="/video/review" element={<ReviewResult/>} />
+                          <Route
+                            path="/video/detectionresult"
+                            element={<DetectionResult />}
+                          />
+                          <Route
+                            path="/video/cameraresult"
+                            element={<CameraResult />}
+                          />
+                          <Route
+                            path="/video/review"
+                            element={<ReviewResult />}
+                          />
                           <Route path="/account" element={<Account />} />
+                          <Route path="/account/history" element={<UserHistoryPage />} />
+                          <Route
+                            path="/account/review"
+                            element={<ReviewResult />}
+                          />
                           <Route path="/settings" element={<Setting />} />
                           <Route path="/manage" element={<Manage />} />
+                          <Route
+                            path="/manage/review"
+                            element={<ReviewResult />}
+                          />
+                          <Route path="/user-page" element={<UsersPage />} />
+                          <Route
+                            path="/user-page/user-detail/:userId"
+                            element={<UserDetailPage />}
+                          />
+                          <Route
+                            path="/user-page/user-detail/:userId/review"
+                            element={<ReviewResult />}
+                          />
+                           <Route
+                            path="/account/history/review"
+                            element={<ReviewResult />}
+                          />
+                          <Route path="/user-page/user-detail/:userId/history" element={<GetUserHistoryPage />} />
                         </Routes>
                       </main>
                     </div>

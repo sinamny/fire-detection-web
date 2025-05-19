@@ -1,6 +1,6 @@
 .modal-title {
   font-family: "Montserrat", sans-serif;
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 700;
   color: #67AF6F;
   text-align: left;
@@ -17,6 +17,7 @@
 .ant-btn-primary {
   background-color: #67AF6F !important;
   border-color: #67AF6F !important;
+   font-family: "Montserrat", sans-serif !important;
 }
 
  .ant-btn-primary .ant-btn-primary:active,
