@@ -180,7 +180,7 @@ const Dashboard = () => {
                     fontWeight: "600",
                     marginBottom: "0.5rem",
                     fontFamily: "Montserrat",
-                    fontSize: "1rem",
+                    fontSize: "1.1rem",
                     color: "#000000",
                   }}
                 >
@@ -189,7 +189,7 @@ const Dashboard = () => {
                 <Statistic
                   value={users.length}
                   valueStyle={{
-                    fontSize: "0.9rem",
+                    fontSize: "1rem",
                     color: "#000000",
                     fontFamily: "Montserrat",
                     display: "flex",
@@ -215,7 +215,7 @@ const Dashboard = () => {
                     fontWeight: "600",
                     marginBottom: "0.5rem",
                     fontFamily: "Montserrat",
-                    fontSize: "1rem",
+                    fontSize: "1.1rem",
                     color: "#000000",
                   }}
                 >
@@ -224,7 +224,7 @@ const Dashboard = () => {
                 <Statistic
                   value={videos.length}
                   valueStyle={{
-                    fontSize: "0.9rem",
+                    fontSize: "1rem",
                     color: "#000000",
                     fontFamily: "Montserrat",
                     display: "flex",
@@ -248,6 +248,7 @@ const Dashboard = () => {
                 fontWeight: "600",
                 marginBottom: "1rem",
                 fontFamily: "Montserrat",
+                fontSize: "1.1rem",
               }}
             >
               Tỉ lệ video có cháy / không cháy
@@ -264,7 +265,7 @@ const Dashboard = () => {
               <Doughnut data={pieData} options={pieOptions} />
               
             </div>
-            <span>
+            <span style={{ fontSize: "1rem" }}>
                 Tỷ lệ cháy / tổng video:{" "}
                 {videos.length > 0
                   ? `${((fireCount / videos.length) * 100).toFixed(2)}%`
@@ -284,7 +285,7 @@ const Dashboard = () => {
                 fontFamily: "Montserrat",
                 textAlign: "center",
                 margin: 0,
-                fontSize: "1rem",
+                fontSize: "1.1rem",
               }}
             >
                 Thống kê hoạt động hệ thống trong tuần
@@ -293,7 +294,7 @@ const Dashboard = () => {
               style={{
                 display: "flex",
                 justifyContent: "space-between",
-                fontSize: "0.9rem",
+                fontSize: "1rem",
                 padding: "0 2rem",
                 color: "#000000",
                 marginTop: "0.5rem",

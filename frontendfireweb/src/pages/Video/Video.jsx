@@ -220,10 +220,11 @@ const isValidVideoFormat = (fileName) => {
 
 const isValidYoutubeUrl = (url) => {
   if (!url) return 'URL trống, vui lòng nhập URL.';
-  const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)[\w-]{11}(&.*)?$/;
+  const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|shorts\/)|youtu\.be\/)[\w-]{11}([?&=a-zA-Z0-9_-]*)?$/;
   if (!youtubeRegex.test(url)) {
     return 'URL không đúng định dạng Youtube.';
   }
+
   if (url.length > 1000) return 'URL quá dài (vượt quá 1000 ký tự).';
   if (!/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\//.test(url)) 
     return 'URL không phải trang Youtube.';
@@ -422,7 +423,7 @@ const Video = () => {
             </div>
 
             <button className="upload-button" onClick={handleUpload}>
-              Tải lên
+              Xem trước video
             </button>
           </div>
         </div>
