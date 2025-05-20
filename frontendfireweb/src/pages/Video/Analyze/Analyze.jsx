@@ -72,21 +72,25 @@ const Analyze = () => {
     return match ? match[1] : "";
   };
 
-  const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      const videoElement = document.getElementById("cameraFeed");
-      if (videoElement) {
-        videoElement.srcObject = stream;
-        videoElement.onloadedmetadata = () => {
-          videoElement.play();
-          navigate("/video/cameraresult", { state: { mode: "camera" } });
-        };
-      }
-    } catch (err) {
-      console.error("Không thể truy cập camera:", err);
-    }
-  };
+  // const startCamera = async () => {
+  //   try {
+  //     const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+  //     const videoElement = document.getElementById("cameraFeed");
+  //     if (videoElement) {
+  //       videoElement.srcObject = stream;
+  //       videoElement.onloadedmetadata = () => {
+  //         videoElement.play();
+  //         navigate("/video/cameraresult", { state: { mode: "camera" } });
+  //       };
+  //     }
+  //   } catch (err) {
+  //     console.error("Không thể truy cập camera:", err);
+  //   }
+  // };
+  const startCamera = () => {
+  navigate("/video/cameraresult", { state: { mode: "camera" } });
+};
+
 
   const handleBackToUpload = () => {
     navigate("/video");

@@ -25,6 +25,13 @@ const ResultDisplay = () => {
   const [displayedFireTimes, setDisplayedFireTimes] = useState([]);
   const notificationEnabled = state?.notificationEnabled ?? false;
   const [showFireAlert, setShowFireAlert] = useState(false);
+ const [wsConnected, setWsConnected] = useState(false);
+  const [frameBase64, setFrameBase64] = useState(null);
+  const [fireDetected, setFireDetected] = useState(false);
+  const [cameraStatus, setCameraStatus] = useState("disconnected");
+
+  const wsRef = useRef(null);
+
 
   const navigate = useNavigate();
 
@@ -52,6 +59,80 @@ const ResultDisplay = () => {
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(utterance);
   };
+
+    // Kết nối WebSocket khi ở chế độ camera
+  useEffect(() => {
+    if (mode !== "camera") return;
+
+    const connectWebSocket = async () => {
+      setCameraStatus("connecting");
+      console.log("Đang kết nối đến WebSocket...");
+      
+      const wsUrl = process.env.REACT_APP_WS_URL || "ws://localhost:8000/api/v1/ws/fire";
+      const ws = new WebSocket(wsUrl);
+      wsRef.current = ws;
+
+      ws.onopen = () => {
+        console.log("Kết nối WebSocket thành công");
+        setWsConnected(true);
+      };
+
+      ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          
+          // Xử lý message trạng thái từ server
+          if (data.status) {
+            if (data.status === "ready") {
+              console.log("Camera đã sẵn sàng");
+              setCameraStatus("connected");
+              setCameraOn(true);
+            } else if (data.status === "error") {
+              console.error("Lỗi camera:", data.message);
+              setCameraStatus("error");
+              setCameraOn(false);
+            }
+            return;
+          }
+
+          // Xử lý frame data
+          setFrameBase64(data.frame);
+          setFireDetected(data.fire_detected);
+          setFirePercent(data.total_area);
+          setBackgroundPercent(100 - data.total_area);
+
+          if (data.fire_detected) {
+            console.log("Phát hiện cháy tại:", data.time);
+            setFireDetectionTimes((prev) => [...prev, data.time]);
+          }
+        } catch (error) {
+          console.error("Lỗi phân tích dữ liệu:", error);
+        }
+      };
+
+      ws.onerror = (error) => {
+        console.error("Lỗi WebSocket:", error);
+        setCameraStatus("error");
+        setWsConnected(false);
+        setCameraOn(false);
+      };
+
+      ws.onclose = () => {
+        console.log("WebSocket đã đóng");
+        setCameraStatus("disconnected");
+        setWsConnected(false);
+        setCameraOn(false);
+      };
+    };
+
+    connectWebSocket();
+
+    return () => {
+      if (wsRef.current) {
+        wsRef.current.close();
+      }
+    };
+  }, [mode]);
 
   useEffect(() => {
     if (fireDetectionTimes.length === 0 || !notificationEnabled) return;
@@ -100,55 +181,18 @@ const ResultDisplay = () => {
     };
   }, [fireDetectionTimes, currentDisplayTimeIndex, mode]);
 
-  useEffect(() => {
-    let mounted = true;
-    const video = videoRef.current;
 
-    const startCamera = async () => {
-      if (mode !== "camera") return;
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-        });
-        if (!mounted) {
-          stream.getTracks().forEach((track) => track.stop());
-          return;
-        }
-        streamRef.current = stream;
-        if (video) video.srcObject = stream;
-        setCameraOn(true);
-      } catch (error) {
-        console.error("Không thể truy cập camera:", error);
-      }
-    };
 
-    startCamera();
-
-    return () => {
-      mounted = false;
-      const stream = streamRef.current;
-      if (stream) {
-        stream.getTracks().forEach((track) => {
-          if (track.readyState === "live") track.stop();
-        });
-      }
-      if (video) video.srcObject = null;
-      streamRef.current = null;
-    };
-  }, [mode]);
-
-  const handleTurnOffCamera = () => {
-    const stream = streamRef.current;
-    if (stream) {
-      stream.getTracks().forEach((track) => {
-        if (track.readyState === "live") track.stop();
-      });
-      streamRef.current = null;
+ const handleTurnOffCamera = () => {
+    if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+      console.log("Đang gửi lệnh tắt camera...");
+      wsRef.current.send("stop");
+      wsRef.current.close();
     }
-    if (videoRef.current) {
-      videoRef.current.srcObject = null;
-    }
+    setCameraStatus("disconnected");
     setCameraOn(false);
+    setFrameBase64(null);
+    console.log("Camera đã tắt");
   };
 
   const handleCreateNew = () => {
@@ -170,14 +214,34 @@ const ResultDisplay = () => {
 
       <div className="video-result-frame" style={{ position: "relative" }}>
         {mode === "camera" ? (
-          <video
-            ref={videoRef}
-            autoPlay
-            playsInline
-            muted
-            className="camera-result-video"
-            style={{ width: "100%", height: "62vh", transform: "scaleX(-1)" }}
-          />
+         <>
+            {frameBase64 ? (
+              <img
+                src={`data:image/jpeg;base64,${frameBase64}`}
+                alt="Camera Fire Detection"
+                style={{ width: "100%", height: "62vh", objectFit: "cover" }}
+              />
+            ) : (
+              <div
+                style={{
+                  width: "100%",
+                  height: "62vh",
+                  backgroundColor: "#000",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#fff",
+                }}
+              >
+            
+              </div>
+            )}
+            {/* {wsConnected && (
+              <button className="new-button" onClick={handleTurnOffCamera} style={{ position: "absolute", top: 10, right: 10 }}>
+                Tắt camera
+              </button>
+            )} */}
+          </>
         ) : (
           <>
             <ReactPlayer
@@ -237,7 +301,7 @@ const ResultDisplay = () => {
 
           <div className="progress-text">Background</div>
           <div className="progress-container">
-            <div className="progress-bar-wrapper">
+           <div className="progress-bar-wrapper">
               <div
                 className="progress-bg"
                 style={{ width: `${backgroundPercent}%` }}

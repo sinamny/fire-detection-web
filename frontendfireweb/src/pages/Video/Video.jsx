@@ -332,18 +332,10 @@ const Video = () => {
     setVideoUrl('');
   };
 
-  const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      const videoElement = document.getElementById('cameraFeed');
-      if (videoElement) {
-        videoElement.srcObject = stream;
-        navigate('/video/cameraresult', { state: { mode: 'camera' } });
-      }
-    } catch {
-      showMessage('Không thể truy cập camera.', 'error');
-    }
-  };
+
+  const startCamera = () => {
+  navigate("/video/cameraresult", { state: { mode: "camera" } });
+};
 
   return (
     <div className="video-page">
