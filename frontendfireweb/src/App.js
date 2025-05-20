@@ -18,6 +18,7 @@ import Analyze from "./pages/Video/Analyze/Analyze";
 import DetectionResult from "./pages/DetectionResult/DetectionResult";
 import CameraResult from "./pages/CameraResult/CameraResult";
 import ReviewResult from "./pages/ReviewPage/ReviewPage";
+import ReviewStreamVideo from "./pages/ReviewPage/ReviewStreamVideo";
 import Account from "./pages/Account/Account";
 import Setting from "./pages/SettingPage/Setting";
 import Manage from "./pages/Manage/Manage";
@@ -73,6 +74,7 @@ function App() {
                               <Route path="/video" element={<Video />} />
                               <Route path="/video/analyze" element={<Analyze />} />
                               <Route path="/video/detectionresult" element={<DetectionResult />} />
+                                <Route path="/video/stream/review" element={<ReviewStreamVideo />} />
                               <Route path="/video/cameraresult" element={<CameraResult />} />
                               <Route path="/video/review" element={<ReviewResult />} />
                               <Route path="/settings" element={<Setting />} />
