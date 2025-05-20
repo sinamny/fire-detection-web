@@ -9,7 +9,7 @@ import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import EditUserModal from "../../components/EditAccountModal/EditAccountModal";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CloseIcon from "@mui/icons-material/Close";
-import { Tooltip, message, Table } from "antd";
+import { Tooltip, message, Table, Pagination } from "antd";
 import { PlayCircleOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 import {
@@ -32,52 +32,54 @@ const Account = () => {
   const [allVideos, setAllVideos] = useState([]);
   const [videos, setVideos] = useState([]);
   const [history, setHistory] = useState([]);
-   const [loading, setLoading] = useState(false); 
-   const [total, setTotal] = useState(0);
-     const pageSize = 10;
-   
- const fetchCurrentUser = async () => {
-  const token = localStorage.getItem("access_token");
-  if (!token) {
-    navigate("/login");
-    return;
-  }
+  const [loading, setLoading] = useState(false);
+  const [total, setTotal] = useState(0);
+  const pageSize = 10;
 
-  try {
-    const response = await axios.get("http://127.0.0.1:8000/api/v1/users/me", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/json",
-      },
-    });
-
-    const userData = response.data;
-    setUser({
-      name: userData.username || "Người dùng",
-      email: userData.email || "",
-      phone: userData.phone_number || "",
-      address: userData.address || "",
-      role: userData.role || "user",
-    });
-    setUserInfo({
-      name: userData.username || "Người dùng",
-      email: userData.email || "",
-      phone: userData.phone_number || "",
-      address: userData.address || "",
-    });
-  } catch (error) {
-    console.error("Không lấy được thông tin người dùng:", error);
-    if (error.response && error.response.status === 401) {
-      dispatch(logout());
+  const fetchCurrentUser = async () => {
+    const token = localStorage.getItem("access_token");
+    if (!token) {
       navigate("/login");
+      return;
     }
-  }
-};
 
-useEffect(() => {
-  fetchCurrentUser();
-}, []);
+    try {
+      const response = await axios.get(
+        "http://127.0.0.1:8000/api/v1/users/me",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        }
+      );
 
+      const userData = response.data;
+      setUser({
+        name: userData.username || "Người dùng",
+        email: userData.email || "",
+        phone: userData.phone_number || "",
+        address: userData.address || "",
+        role: userData.role || "user",
+      });
+      setUserInfo({
+        name: userData.username || "Người dùng",
+        email: userData.email || "",
+        phone: userData.phone_number || "",
+        address: userData.address || "",
+      });
+    } catch (error) {
+      console.error("Không lấy được thông tin người dùng:", error);
+      if (error.response && error.response.status === 401) {
+        dispatch(logout());
+        navigate("/login");
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchCurrentUser();
+  }, []);
 
   // Lấy toàn bộ video (không phân trang)
   useEffect(() => {
@@ -111,12 +113,14 @@ useEffect(() => {
   const startIndex = (page - 1) * limit + 1;
   const endIndex = Math.min(page * limit, allVideos.length);
 
+
+  
   const fetchHistory = async () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("access_token");
       const res = await axios.get(
-        `http://127.0.0.1:8000/api/v1/history/me?skip=0&limit=1000`,
+        `http://127.0.0.1:8000/api/v1/history/me?skip=0&limit=900`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -143,7 +147,8 @@ useEffect(() => {
     fetchHistory();
   }, []);
 
-   const cleanDescription = (desc) =>
+  
+  const cleanDescription = (desc) =>
     desc
       .replace(/VideoTypeEnum\.YOUTUBE/g, "Youtube")
       .replace(/VideoTypeEnum\.UPLOAD/g, "Upload")
@@ -153,57 +158,74 @@ useEffect(() => {
       .replace(/\s+/g, " ")
       .trim();
 
-   const columns = [
-  {
-    title: <div style={{ textAlign: "center" }}>Ngày</div>,
-    dataIndex: "created_at",
-    key: "date",
-    render: (text) => {
-      const date = new Date(text);
-      return <div style={{ textAlign: "center" }}>{date.toLocaleDateString("vi-VN")}</div>;
+  const columns = [
+    {
+      title: <div style={{ textAlign: "center" }}>Ngày</div>,
+      dataIndex: "created_at",
+      key: "date",
+      render: (text) => {
+        const date = new Date(text);
+        return (
+          <div style={{ textAlign: "center" }}>
+            {date.toLocaleDateString("vi-VN")}
+          </div>
+        );
+      },
     },
-  },
-  {
-    title: <div style={{ textAlign: "center" }}>Giờ</div>,
-    dataIndex: "created_at",
-    key: "time",
-    render: (text) => {
-      const date = new Date(text);
-      return <div style={{ textAlign: "center" }}>{date.toLocaleTimeString("vi-VN")}</div>;
+    {
+      title: <div style={{ textAlign: "center" }}>Giờ</div>,
+      dataIndex: "created_at",
+      key: "time",
+      render: (text) => {
+        const date = new Date(text);
+        return (
+          <div style={{ textAlign: "center" }}>
+            {date.toLocaleTimeString("vi-VN")}
+          </div>
+        );
+      },
     },
-  },
- {
-  title: <div style={{ textAlign: "center" }}>Hành động</div>,
-  dataIndex: "description",
-  key: "description",
-  render: (_, item) => (
-    <div style={{ textAlign: "left", display: "flex", alignItems: "center", gap: 8 }}>
-      <span>{cleanDescription(item.description)}.</span>
-
-      {item.video_id && (
-        <span
-          className="watch-link"
-          style={{ display: "flex", alignItems: "center", color: "#000000", cursor: "pointer" }}
-          onClick={() =>
-            navigate("/account/review", {
-              state: {
-                video_id: item.video_id,
-                from: "/account",
-              },
-            })
-          }
+    {
+      title: <div style={{ textAlign: "center" }}>Hành động</div>,
+      dataIndex: "description",
+      key: "description",
+      render: (_, item) => (
+        <div
+          style={{
+            textAlign: "left",
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+          }}
         >
-        
-          <PlayCircleOutlined style={{ fontSize: 18, marginRight: 4 }} />
-          <span>Xem video liên quan</span>
-        </span>
-      )}
-    </div>
-  ),
-}
+          <span>{cleanDescription(item.description)}.</span>
 
-];
-
+          {item.video_id && (
+            <span
+              className="watch-link"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                color: "#000000",
+                cursor: "pointer",
+              }}
+              onClick={() =>
+                navigate("/account/review", {
+                  state: {
+                    video_id: item.video_id,
+                    from: "/account",
+                  },
+                })
+              }
+            >
+              <PlayCircleOutlined style={{ fontSize: 18, marginRight: 4 }} />
+              <span>Xem video liên quan</span>
+            </span>
+          )}
+        </div>
+      ),
+    },
+  ];
 
   const handleEditSave = async (newData) => {
     setUser(newData);
@@ -290,7 +312,10 @@ useEffect(() => {
                   transform: "translateY(-50%)",
                 }}
               >
-                <i className="fas fa-history" style={{ color: "#60477D", fontSize: "1.5rem" }}></i>
+                <i
+                  className="fas fa-history"
+                  style={{ color: "#60477D", fontSize: "1.5rem" }}
+                ></i>
               </IconButton>
             </Tooltip>
           </div>
@@ -418,8 +443,20 @@ useEffect(() => {
             )}
           </div>
 
+          
+          <div className="video-pagination">
+              <Pagination
+            current={page}
+            pageSize={limit}
+            total={allVideos.length}
+            onChange={(newPage) => setPage(newPage)}
+            showSizeChanger={false}
+          />
+
+          </div>
+
           {/*   Phân trang */}
-          {totalPages >= 1 && (
+          {/* {totalPages >= 1 && (
             <div
               style={{
                 display: "flex",
@@ -453,7 +490,7 @@ useEffect(() => {
                       color: page === i + 1 ? "white" : "black",
                       border: "none",
                       cursor: "pointer",
-                      fontSize: "0.8rem"
+                      fontSize: "0.8rem",
                     }}
                     aria-current={page === i + 1 ? "page" : undefined}
                   >
@@ -462,47 +499,45 @@ useEffect(() => {
                 ))}
               </div>
             </div>
-          )}
+          )} */}
         </div>
       )}
 
-         
-    {user?.role === "admin" && (
-      <div className="history-box">
-         <div
+      {user?.role === "admin" && (
+        <div className="history-box">
+          <div
             className="history-header"
             style={{
               position: "relative",
               textAlign: "center",
             }}
           >
-        <h3>Lịch sử hoạt động</h3>
+            <h3>Lịch sử hoạt động</h3>
+          </div>
+          {loading ? (
+            <p>Đang tải dữ liệu...</p>
+          ) : history.length === 0 ? (
+            <p>Không có hoạt động nào.</p>
+          ) : (
+            <Table
+              columns={columns}
+              dataSource={history.map((item) => ({
+                key: item.history_id,
+                ...item,
+              }))}
+              pagination={{
+                current: page,
+                pageSize,
+                total,
+                onChange: (page) => setPage(page),
+                showSizeChanger: false,
+              }}
+              bordered
+            />
+          )}
         </div>
-        {loading ? (
-          <p>Đang tải dữ liệu...</p>
-        ) : history.length === 0 ? (
-          <p>Không có hoạt động nào.</p>
-        ) : (
-             <Table
-        columns={columns}
-        dataSource={history.map((item) => ({
-          key: item.history_id,
-          ...item,
-        }))}
-        pagination={{
-          current: page,
-          pageSize,
-          total,
-          onChange: (page) => setPage(page),
-          showSizeChanger: false,
-        }}
-        bordered
-      />
-        )}
-      </div>
-    )}
-    
-    
+      )}
+
       {/* Modal chỉnh sửa */}
       <EditUserModal
         isVisible={editModalVisible}
