@@ -10,23 +10,23 @@ import {
   getUserFailure,
 } from './userSlice';
 
+import { baseURL } from "../api/api";
+import SummaryApi from "../api/api";
 
 export const loginUser = (email, password, dispatch, navigate) => {
   dispatch(loginStart()); 
 
-  axios
-    .post(
-      "http://127.0.0.1:8000/api/v1/auth/login",
-      new URLSearchParams({
-        username: email,
-        password: password,
-      }),
-      {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      }
-    )
+ axios({
+    method: SummaryApi.login.method,
+    url: baseURL + SummaryApi.login.url,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    data: new URLSearchParams({
+      username: email,
+      password: password,
+    }),
+  })
     .then((response) => {
       const data = response.data;
       dispatch(loginSuccess(data));
@@ -42,9 +42,11 @@ export const loginUser = (email, password, dispatch, navigate) => {
 export const fetchCurrentUser = async (dispatch) => {
   dispatch(getUserStart());
   try {
-    const res = await axios.get('http://127.0.0.1:8000/api/v1/users/me', {
+    const res = await axios({
+      method: SummaryApi.getCurrentUser.method,
+      url: baseURL + SummaryApi.getCurrentUser.url,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
       },
     });
     dispatch(getUserSuccess(res.data));

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, Button, message } from "antd";
 import axios from "axios";
+import { baseURL } from "../../api/api";
+import SummaryApi from "../../api/api";
 import "./EditAccountModal.css";
 
 const EditUserModal = ({ isVisible, onClose, userInfo, onSave }) => {
@@ -13,21 +15,6 @@ const EditUserModal = ({ isVisible, onClose, userInfo, onSave }) => {
 }, [isVisible, userInfo, form]);
 
 
-
-  // const handleSave = async (values) => {
-  //   try {
-  //     setIsSaving(true);
-  //     setTimeout(() => {
-  //       onSave(values); 
-  //       message.success("Cập nhật thông tin thành công!");
-  //       setIsSaving(false);
-  //       onClose();
-  //     }, 1000);
-  //   } catch (error) {
-  //     message.error("Có lỗi xảy ra!");
-  //     setIsSaving(false);
-  //   }
-  // };
   const handleSave = async (values) => {
    try {
       setIsSaving(true);
@@ -36,11 +23,14 @@ const EditUserModal = ({ isVisible, onClose, userInfo, onSave }) => {
         address: values.address,
         phone_number: values.phone,
       };
-      const response = await axios.put("http://127.0.0.1:8000/api/v1/users/me", payload, {
+       const response = await axios({
+        method: SummaryApi.update_user_info.method,             
+        url: baseURL + SummaryApi.update_user_info.url,         
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           Accept: "application/json",
         },
+        data: payload,
       });
       onSave({
         name: response.data.username,

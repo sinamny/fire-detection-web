@@ -6,6 +6,7 @@ import { fetchCurrentUser } from "../../redux/apiRequest";
 import Slider from "@mui/material/Slider";
 import { Button } from "antd";
 import ReplayIcon from "@mui/icons-material/Replay";
+import PauseOutlinedIcon from "@mui/icons-material/PauseOutlined";
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import PlayArrowOutlinedIcon from "@mui/icons-material/PlayArrowOutlined";
 import FastRewindOutlinedIcon from "@mui/icons-material/FastRewindOutlined";
@@ -15,10 +16,10 @@ import "./ReviewPage.css";
 
 const ReviewStreamVideo = () => {
   const navigate = useNavigate();
-  const location = useLocation(); 
+  const location = useLocation();
   const dispatch = useDispatch();
   const playerRef = useRef(null);
- const processedVideoUrl = location.state?.processedVideoUrl;
+  const processedVideoUrl = location.state?.processedVideoUrl;
 
   const [playing, setPlaying] = useState(false);
   const [playedSeconds, setPlayedSeconds] = useState(0);
@@ -32,8 +33,7 @@ const ReviewStreamVideo = () => {
   console.log(processedVideoUrl);
   return (
     <>
-      <div className="review-header">
-      </div>
+      <div className="review-header"></div>
       <div className="review-page">
         <div className="video-review-frame">
           <ReactPlayer
@@ -99,7 +99,11 @@ const ReviewStreamVideo = () => {
             </button>
 
             <button onClick={() => setPlaying(!playing)}>
-              <PlayArrowOutlinedIcon className="control-button" />
+              {playing ? (
+                <PauseOutlinedIcon className="control-button" />
+              ) : (
+                <PlayArrowOutlinedIcon className="control-button" />
+              )}
             </button>
 
             <button

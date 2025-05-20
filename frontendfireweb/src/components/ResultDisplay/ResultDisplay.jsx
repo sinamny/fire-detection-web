@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState, useContext } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import SummaryApi from "../../api/api";
 import "./ResultDisplay.css";
 
 const ResultDisplay = () => {
@@ -40,7 +41,8 @@ const ResultDisplay = () => {
     if (mode !== "video") return;
 
     setStatus("Đang kết nối WebSocket...");
-    const wsUrl = "ws://localhost:8000/api/v1/ws/direct-process";
+    // const wsUrl = "ws://localhost:8000/api/v1/ws/direct-process";
+    const wsUrl = SummaryApi.directProcessWS;
     wsRef.current = new WebSocket(wsUrl);
 
     wsRef.current.onopen = () => {
@@ -146,8 +148,9 @@ const ResultDisplay = () => {
     setIsCameraStarting(true);
     console.log("Đang kết nối đến WebSocket...");
 
-    const wsUrl =
-      process.env.REACT_APP_WS_URL || "ws://localhost:8000/api/v1/ws/fire";
+    // const wsUrl =
+    //   process.env.REACT_APP_WS_URL || "ws://localhost:8000/api/v1/ws/fire";
+    const wsUrl = SummaryApi.fireCameraWS;
     const ws = new WebSocket(wsUrl);
     wsRef.current = ws;
 
