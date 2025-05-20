@@ -40,7 +40,7 @@ const Manage = () => {
             user: video.username || "Unknown",
             date: formattedDate,
             time: formattedTime,
-            videoName: "",
+            videoName: video.file_name,
             fireDetected: video.fire_detected,
             processedVideoUrl: video.processed_video_url,
           };
@@ -113,26 +113,37 @@ const Manage = () => {
       key: "videoName",
       align: "center",
       render: (text, record, index) => (
-        <div
-          className="video-container"
+    <div
+      className="video-container"
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
+    >
+      <Tooltip title="Nhấn để xem lại video">
+        <span
+          className="video-name"
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
+            textAlign: "justify",
+            wordBreak: "break-word",
+            whiteSpace: "normal",
+            maxWidth: "100%",
+            display: "block",
+            cursor: "pointer",
+            color: "#000000",
+            fontWeight: 500,
+          }}
+          onClick={() => {
+            navigate("/manage/review", {
+              state: { video_id: record.key, from: "/manage" },
+            });
           }}
         >
-        <Tooltip title="Nhấn để xem lại video">
-          <span
-            className="video-name"
-            style={{ textAlign: "left", cursor: "pointer", color: "#000000", fontWeight: 500 }}
-            onClick={() => {
-              navigate("/manage/review", { state: { video_id: record.key, from: '/manage' } });
-            }}
-          >
-             <PlayCircleOutlined style={{ marginRight: '0.5rem' }}/>
-            Video {(page - 1) * limit + index + 1}
-          </span>
-        </Tooltip>
+          <PlayCircleOutlined style={{ marginRight: "0.5rem" }} />
+          {record.videoName}
+        </span>
+      </Tooltip>
           <Button
             type="link"
             icon={<SaveAltOutlinedIcon className="custom-download-icon" />}
@@ -170,9 +181,9 @@ const Manage = () => {
           Mô hình: <span className="highlight">YOLOv11</span>
         </p>
         <div className="model-metrics">
-          <div>mAR: 93,33 %</div>
-          <div>mIoU: 77,86 %</div>
-          <div>F-m: 50,76%</div>
+          <div>Precision : 0,854(B) / 0,859(M)</div>
+          <div>mAP@0.5: 0,776(B) / 0,769(M) </div>
+          <div>FPS: 15</div>
         </div>
       </div>
 

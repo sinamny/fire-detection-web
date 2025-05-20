@@ -373,11 +373,16 @@ const Account = () => {
                     <span
                       className="video-name"
                       style={{
+                        display: "flex",
                         cursor: "pointer",
                         color: "#000000",
                         fontWeight: 500,
-                        display: "inline-flex",
                         alignItems: "center",
+                        whiteSpace: "normal",
+                        wordBreak: "break-word",
+                        maxWidth: "100%",
+                        flexDirection: "row",
+                        flexWrap: "wrap",
                       }}
                     >
                       <Tooltip title="Nhấn để xem lại video">
@@ -398,7 +403,18 @@ const Account = () => {
                           <PlayCircleOutlined
                             style={{ marginRight: "0.5rem" }}
                           />
-                          Video {(page - 1) * limit + index + 1}
+                          <span
+                            style={{
+                              wordBreak: "break-word",
+                              whiteSpace: "normal",
+                              maxWidth: "200px",
+                              width: "100%",
+                              display: "block",
+                              textAlign: "justify",
+                            }}
+                          >
+                            {video.file_name}
+                          </span>
                         </span>
                       </Tooltip>
                     </span>

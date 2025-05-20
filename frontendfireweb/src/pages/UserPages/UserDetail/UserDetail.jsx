@@ -119,6 +119,7 @@ const UserDetailPage = () => {
                 minute: "2-digit",
               }),
               fireDetected: video.fire_detected ? "Có" : "Không",
+              file_name: video.file_name,
               videoName: video.processed_video_url ? (
                 <a
                   href={video.processed_video_url}
@@ -200,28 +201,38 @@ const UserDetailPage = () => {
           <CloseIcon style={{ color: "red", fontSize: "1rem" }} />
         ),
     },
-    {
-      title: (
-        <span style={{ display: "block", textAlign: "center" }}>Video</span>
-      ),
-      dataIndex: "video_id",
-      key: "video",
-      width: "35%",
-      render: (_, record, index) => (
-        <Tooltip title="Nhấn để xem lại video">
-          <Button
-            type="link"
-            icon={<PlayCircleOutlined />}
-            onClick={() => {
-              navigate(`/user-page/user-detail/${userId}/review`, { state: { video_id: record.key, from: `/user-page/user-detail/${userId}` } });
-            }}
-            style={{ padding: 0, fontWeight: 500 }}
-          >
-            Video {index + 1}
-          </Button>
-        </Tooltip>
-      ),
-    },
+   {
+  title: (
+    <span style={{ display: "block", textAlign: "center" }}>Video</span>
+  ),
+  dataIndex: "file_name",
+  key: "video",
+  width: "35%",
+  render: (fileName, record) => (
+    <Tooltip title="Nhấn để xem lại video">
+      <span
+        onClick={() => {
+          navigate(`/user-page/user-detail/${userId}/review`, {
+            state: { video_id: record.key, from: `/user-page/user-detail/${userId}` }
+          });
+        }}
+        style={{
+          textAlign: "justify",
+            wordBreak: "break-word",
+            whiteSpace: "normal",
+            maxWidth: "100%",
+            display: "block",
+            cursor: "pointer",
+            color: "#000000",
+            fontWeight: 500,
+        }}
+      >
+        <PlayCircleOutlined style={{ marginRight: 8 }} />
+        {fileName || ""}
+      </span>
+    </Tooltip>
+  ),
+},
     {
       title: "",
       key: "download",
