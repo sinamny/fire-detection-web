@@ -4,6 +4,7 @@ import { IconButton, Snackbar, Alert } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Edit, Logout } from "@mui/icons-material";
+import { FaHistory } from "react-icons/fa";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import EditUserModal from "../../components/EditAccountModal/EditAccountModal";
@@ -113,8 +114,6 @@ const Account = () => {
   const startIndex = (page - 1) * limit + 1;
   const endIndex = Math.min(page * limit, allVideos.length);
 
-
-  
   const fetchHistory = async () => {
     setLoading(true);
     try {
@@ -147,7 +146,6 @@ const Account = () => {
     fetchHistory();
   }, []);
 
-  
   const cleanDescription = (desc) =>
     desc
       .replace(/VideoTypeEnum\.YOUTUBE/g, "Youtube")
@@ -312,10 +310,7 @@ const Account = () => {
                   transform: "translateY(-50%)",
                 }}
               >
-                <i
-                  className="fas fa-history"
-                  style={{ color: "#60477D", fontSize: "1.5rem" }}
-                ></i>
+                <FaHistory style={{ color: "#60477D", fontSize: "1.5rem" }} />
               </IconButton>
             </Tooltip>
           </div>
@@ -443,16 +438,14 @@ const Account = () => {
             )}
           </div>
 
-          
           <div className="video-pagination">
-              <Pagination
-            current={page}
-            pageSize={limit}
-            total={allVideos.length}
-            onChange={(newPage) => setPage(newPage)}
-            showSizeChanger={false}
-          />
-
+            <Pagination
+              current={page}
+              pageSize={limit}
+              total={allVideos.length}
+              onChange={(newPage) => setPage(newPage)}
+              showSizeChanger={false}
+            />
           </div>
 
           {/*   Phân trang */}

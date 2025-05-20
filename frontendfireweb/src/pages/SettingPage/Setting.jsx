@@ -141,7 +141,7 @@ const token = localStorage.getItem("access_token");
         </Menu>
       </div>
 
-      <div className="section-a">
+      {/* <div className="section-a">
         <button className="section-settingbutton">Âm lượng cảnh báo</button>
         <Box sx={{ width: "50%", display: "flex", alignItems: "center" }}>
           <VolumeUpIcon />
@@ -161,7 +161,7 @@ const token = localStorage.getItem("access_token");
         </Box>
       </div>
 
-      <hr className="divider" />
+      <hr className="divider" /> */}
 
       <div className="section-b">
         <button className="section-button-danger">
