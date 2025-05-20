@@ -400,7 +400,7 @@ const ResultDisplay = () => {
             <img
               src={`data:image/jpeg;base64,${frameBase64}`}
               alt="Camera Frame"
-              style={{ width: "100%", height: "62vh", objectFit: "cover" }}
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
             />
           ) :isCameraStarting ? (
             <div
@@ -420,7 +420,7 @@ const ResultDisplay = () => {
               className="loading-placeholder"
               style={{
                 width: "100%",
-                height: "62vh",
+                height: "100%",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
@@ -435,7 +435,7 @@ const ResultDisplay = () => {
               <img
                 src={currentFrame}
                 alt="Processed Frame"
-                style={{ width: "100%", height: "62vh", objectFit: "contain" }}
+                style={{ width: "100%", height: "100%", objectFit: "contain" }}
               />
             ) : (
               <div className="loading-placeholder">

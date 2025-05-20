@@ -12,7 +12,8 @@
   border-top-right-radius: 8px;
   border: 10px solid #C4D9FF;
    /* border: 10px solid #FF9965; */
-  height: 65vh;
+  max-height: 65vh;
+   height: 65vh;
   background-color: #000000;
   
 }
