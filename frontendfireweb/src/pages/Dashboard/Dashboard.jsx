@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Card, Row, Col, Statistic, Typography } from "antd";
 import axios from "axios";
+import { baseURL } from "../../api/api";
+import SummaryApi from "../../api/api";
 import {
   Chart as ChartJS,
   ArcElement,

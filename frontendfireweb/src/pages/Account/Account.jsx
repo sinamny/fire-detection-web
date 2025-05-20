@@ -13,6 +13,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Tooltip, message, Table, Pagination } from "antd";
 import { PlayCircleOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
+import { baseURL } from "../../api/api";
+import SummaryApi from "../../api/api";
 import {
   logOutStart,
   logOutSuccess,
@@ -45,15 +47,14 @@ const Account = () => {
     }
 
     try {
-      const response = await axios.get(
-        "http://127.0.0.1:8000/api/v1/users/me",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-          },
-        }
-      );
+      const response = await axios({
+        method: SummaryApi.getCurrentUser.method,
+        url: baseURL + SummaryApi.getCurrentUser.url,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
 
       const userData = response.data;
       setUser({
@@ -86,14 +87,13 @@ const Account = () => {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const resVideos = await axios.get(
-          "http://127.0.0.1:8000/api/v1/videos",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-          }
-        );
+        const resVideos = await axios({
+          method: SummaryApi.fetchVideos.method,
+          url: baseURL + SummaryApi.fetchVideos.url,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        });
         setAllVideos(resVideos.data);
       } catch (err) {
         console.error("Lỗi khi lấy video:", err);
@@ -117,15 +117,14 @@ const Account = () => {
   const fetchHistory = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("access_token");
-      const res = await axios.get(
-        `http://127.0.0.1:8000/api/v1/history/me?skip=0&limit=900`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await axios({
+        method: SummaryApi.fetchHistory.method,
+        url: baseURL + SummaryApi.fetchHistory.url,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+        params: { skip: 0, limit: 900 },
+      });
 
       const allHistory = Array.isArray(res.data) ? res.data : [];
       setHistory(allHistory);

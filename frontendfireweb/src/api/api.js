@@ -15,6 +15,22 @@ const SummaryApi = {
   }, 
   directProcessWS: `${baseURL.replace(/^http/, "ws")}/api/v1/ws/direct-process`,
   fireCameraWS: `${baseURL.replace(/^http/, "ws")}/api/v1/ws/fire`,
+  fetchVideos: {
+    url: "/api/v1/videos",
+    method: "get",
+  },
+  fetchHistory: {
+    url: "/api/v1/history/me",
+    method: "get",
+  },
+   fetchAllUsers: {
+    url: "/api/v1/users",
+    method: "get",
+  },
+  fetchAllVideos: {
+    url: "/api/v1/videos/all",
+    method: "get",
+  },
 };
 
 export default SummaryApi;
