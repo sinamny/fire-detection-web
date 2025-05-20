@@ -8,7 +8,8 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 // import fireImage from "../../assets/img/firefighters.jpg"; 
 import fireImage from "../../assets/img/firelogin.jpg"; 
 import { MdOutlineLocalFireDepartment } from "react-icons/md";
-
+import { baseURL } from "../../api/api";
+import SummaryApi from "../../api/api";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,23 +23,28 @@ const Login = () => {
   e.preventDefault();
   dispatch(loginStart());
 
-  try {
-    const response = await axios.post(
-      "http://127.0.0.1:8000/api/v1/auth/login",
-      new URLSearchParams({
-        username: email,          
+   try {
+    const { url: loginUrl, method: loginMethod } = SummaryApi.login;
+
+    const response = await axios({
+      method: loginMethod,
+      url: `${baseURL}${loginUrl}`,
+      data: new URLSearchParams({
+        username: email,
         password: password,
       }),
-      {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      }
-    );
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
 
     const data = response.data;
     dispatch(loginSuccess(data));
-    const userRes = await axios.get("http://127.0.0.1:8000/api/v1/users/me", {
+    const { url: userUrl, method: userMethod } = SummaryApi.getCurrentUser;
+
+    const userRes = await axios({
+      method: userMethod,
+      url: `${baseURL}${userUrl}`,
       headers: {
         Authorization: `Bearer ${data.access_token}`,
       },

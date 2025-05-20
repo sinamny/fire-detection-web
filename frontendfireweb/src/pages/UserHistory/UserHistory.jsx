@@ -4,6 +4,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { PlayCircleOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 import "./UserHistory.css"
+import { baseURL } from "../../api/api";
+import SummaryApi from "../../api/api";
 const { Title, Text, Paragraph } = Typography;
 const pageSize = 10;
 
@@ -18,14 +20,15 @@ const UserHistoryPage = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("access_token");
-      const res = await axios.get(
-        `http://127.0.0.1:8000/api/v1/history/me?skip=0&limit=1000`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const { url, method } = SummaryApi.fetchHistory;
+
+    const res = await axios({
+      method,
+      url: `${baseURL}${url}?skip=0&limit=1000`, 
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
       const allHistory = Array.isArray(res.data) ? res.data : [];
       setHistory(allHistory);

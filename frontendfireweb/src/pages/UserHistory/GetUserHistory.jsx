@@ -3,6 +3,8 @@ import { List, Card, Typography, message, Empty, Button, Tooltip } from "antd";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { PlayCircleOutlined, ArrowLeftOutlined } from "@ant-design/icons";
+import { baseURL } from "../../api/api";
+import SummaryApi from "../../api/api";
 import "./UserHistory.css";
 
 const { Title, Text } = Typography;
@@ -20,15 +22,14 @@ const GetUserHistoryPage = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("access_token");
-      const res = await axios.get(
-        `http://127.0.0.1:8000/api/v1/history/${userId}?skip=0&limit=1000`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
+       const api = SummaryApi.fetchUserHistory(userId);
+    const res = await axios({
+      method: api.method,
+      url: baseURL + api.url, 
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
       const allHistory = Array.isArray(res.data) ? res.data : [];
       setHistory(allHistory);
       setTotal(allHistory.length);

@@ -5,6 +5,8 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import WarningIcon from "@mui/icons-material/Warning";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { baseURL } from "../../api/api";
+import SummaryApi from "../../api/api";
 import {
   Slider,
   Box,
@@ -43,12 +45,13 @@ const token = localStorage.getItem("access_token");
 
   useEffect(() => {
     if (token) {
-      axios
-        .get("http://127.0.0.1:8000/api/v1/notifications/settings", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
+      axios({
+        method: SummaryApi.notificationSettings.method.get,
+        url: baseURL + SummaryApi.notificationSettings.url,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
         .then((response) => {
           setAlert1(response.data.enable_website_notification);
           setAlert2(response.data.enable_email_notification);
@@ -71,20 +74,18 @@ const token = localStorage.getItem("access_token");
   // };
  const handleSave = () => {
   
-  if (token) {
-    axios
-      .post(
-        "http://localhost:8000/api/v1/notifications/settings",
-        {
+   if (token) {
+      axios({
+        method: SummaryApi.notificationSettings.method.post,
+        url: baseURL + SummaryApi.notificationSettings.url,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: {
           enable_website_notification: alert1,
           enable_email_notification: alert2,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Thêm token vào header
-          },
-        }
-      )
+      })
       .then((res) => {
         setIsEditing(false);
         setOpenConfirm(false);

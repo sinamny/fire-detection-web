@@ -21,6 +21,8 @@ import {
 } from "../../../redux/authSlice";
 import { logout } from "../../../redux/userSlice";
 import { fetchCurrentUser } from "../../../redux/apiRequest";
+import { baseURL } from "../../../api/api";
+import SummaryApi from "../../../api/api";
 import axios from "axios";
 
 const Topbar = () => {
@@ -99,19 +101,20 @@ const Topbar = () => {
     try {
       const token = localStorage.getItem("access_token");
 
-      await axios.post(
-        "http://127.0.0.1:8000/api/v1/auth/change-password",
-        {
+     const { url, method } = SummaryApi.changePassword;
+
+      await axios({
+        method,
+        url: `${baseURL}${url}`,
+        data: {
           current_password: currentPassword,
           new_password: newPassword,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
 
       setIsModalVisible(false);
       setCurrentPassword("");
@@ -151,7 +154,7 @@ const Topbar = () => {
       {/* Snackbar MUI */}
       <Snackbar
         open={openSnackbar}
-        autoHideDuration={4000}
+        autoHideDuration={2000}
         onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >

@@ -435,7 +435,7 @@ const ResultDisplay = () => {
               <img
                 src={currentFrame}
                 alt="Processed Frame"
-                style={{ width: "100%", height: "60vh", objectFit: "contain" }}
+                style={{ width: "100%", height: "62vh", objectFit: "contain" }}
               />
             ) : (
               <div className="loading-placeholder">

@@ -13,6 +13,8 @@ import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import PlayArrowOutlinedIcon from "@mui/icons-material/PlayArrowOutlined";
 import FastRewindOutlinedIcon from "@mui/icons-material/FastRewindOutlined";
 import FastForwardOutlinedIcon from "@mui/icons-material/FastForwardOutlined";
+import { baseURL } from "../../api/api";
+import SummaryApi from "../../api/api";
 import "../../components/ResultDisplay/ResultDisplay.css";
 import "./ReviewPage.css";
 
@@ -41,14 +43,15 @@ const ReviewPage = () => {
 
     const fetchVideoDetail = async () => {
       try {
-        const res = await axios.get(
-          `http://127.0.0.1:8000/api/v1/videos/${video_id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-          }
-        );
+          const api = SummaryApi.getVideoDetail(video_id);
+        const res = await axios({
+          baseURL: baseURL,
+          url: api.url,
+          method: api.method,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        });
         console.log(res.data);
         setVideoUrl(res.data.processed_video_url);
         console.log("Cloudinary video URL:", res.data.processed_video_url);

@@ -54,27 +54,38 @@ const Dashboard = () => {
   const [videos, setVideos] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+     const fetchData = async () => {
       try {
+        const token = localStorage.getItem("access_token");
+
         const [userRes, videoRes] = await Promise.all([
-          axios.get("http://127.0.0.1:8000/api/v1/users", {
+          axios({
+            method: SummaryApi.fetchAllUsers.method,
+            url: `${baseURL}${SummaryApi.fetchAllUsers.url}`,
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+              Authorization: `Bearer ${token}`,
             },
-            params: { skip: 0, limit: 100 },
+            params: {
+              skip: 0,
+              limit: 100,
+            },
           }),
-          axios.get("http://127.0.0.1:8000/api/v1/videos/all", {
+          axios({
+            method: SummaryApi.fetchAllVideos.method,
+            url: `${baseURL}${SummaryApi.fetchAllVideos.url}`,
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+              Authorization: `Bearer ${token}`,
             },
           }),
         ]);
+
         setUsers(userRes.data);
         setVideos(videoRes.data);
       } catch (error) {
         console.error("Lỗi khi fetch dữ liệu:", error);
       }
     };
+
     fetchData();
   }, []);
 
