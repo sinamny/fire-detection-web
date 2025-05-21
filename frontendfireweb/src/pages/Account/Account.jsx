@@ -175,8 +175,10 @@ const Account = () => {
       key: "time",
       render: (text) => {
         const date = new Date(text);
+        date.setHours(date.getHours() + 7);
         return (
           <div style={{ textAlign: "center" }}>
+
             {date.toLocaleTimeString("vi-VN")}
           </div>
         );

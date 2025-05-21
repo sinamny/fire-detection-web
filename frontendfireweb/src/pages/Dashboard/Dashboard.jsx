@@ -76,6 +76,10 @@ const Dashboard = () => {
             headers: {
               Authorization: `Bearer ${token}`,
             },
+             params: {
+              skip: 0,
+              limit: 1000,
+            },
           }),
         ]);
 
@@ -136,15 +140,23 @@ const Dashboard = () => {
     );
   };
 
-  const isThisWeek = (dateStr) => {
-    const date = new Date(dateStr);
-    const today = new Date();
-    const firstDayOfWeek = new Date(today);
-    firstDayOfWeek.setDate(today.getDate() - today.getDay());
-    const lastDayOfWeek = new Date(firstDayOfWeek);
-    lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 6);
-    return date >= firstDayOfWeek && date <= lastDayOfWeek;
-  };
+ const isThisWeek = (dateStr) => {
+  const date = new Date(dateStr);
+  const today = new Date();
+
+  const day = today.getDay();
+  const diffToMonday = (day === 0 ? 6 : day - 1);
+  const monday = new Date(today);
+  monday.setDate(today.getDate() - diffToMonday);
+  monday.setHours(0, 0, 0, 0);
+
+  const sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 6);
+  sunday.setHours(23, 59, 59, 999);
+
+  return date >= monday && date <= sunday;
+};
+
 
   const todayAlerts = videos.filter(
     (v) => v.fire_detected && isToday(v.created_at)

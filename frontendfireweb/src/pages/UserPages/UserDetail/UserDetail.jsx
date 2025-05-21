@@ -100,17 +100,21 @@ const UserDetailPage = () => {
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            }, params: {
+              skip: 0,
+              limit: 1000,
             },
           }
         );
 
-        if (userDetails?.username) {
+        if (userDetails?.user_id) {
           const filteredVideos = resVideos.data.filter(
             (video) => video.username === userDetails.username
           );
 
           const videos = filteredVideos.map((video) => {
             const dateObj = new Date(video.updated_at);
+            dateObj.setHours(dateObj.getHours() + 7);
             return {
               key: video.video_id,
               date: dateObj.toLocaleDateString("vi-VN"),
@@ -151,21 +155,22 @@ const UserDetailPage = () => {
 
   if (!userDetails) return <div>Loading...</div>;
 
-  const createdAt = new Date(userDetails.created_at).toLocaleString("vi-VN", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  function formatToVietnamTime(dateString) {
+  const date = new Date(dateString);
+  // Cộng thêm 7 giờ (theo giờ Việt Nam)
+  // date.setHours(date.getHours() + 7);
 
-  const updatedAt = new Date(userDetails.updated_at).toLocaleString("vi-VN", {
+  return date.toLocaleString("vi-VN", {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
+    // hour: "2-digit",
+    // minute: "2-digit",
   });
+}
+
+const createdAt = formatToVietnamTime(userDetails.created_at);
+const updatedAt = formatToVietnamTime(userDetails.updated_at);
 
   const totalVideos = userVideos.length;
   const fireDetectedCount = userVideos.filter(
