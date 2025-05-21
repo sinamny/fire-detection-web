@@ -37,104 +37,211 @@ const ResultDisplay = () => {
 
  
   // Kết nối WebSocket khi mode === 'video'
-  useEffect(() => {
-    if (mode !== "video") return;
+// Kết nối WebSocket khi mode === 'video'
+useEffect(() => {
+  if (mode !== "video") return;
 
-    setStatus("Đang kết nối WebSocket...");
-    // const wsUrl = "ws://localhost:8000/api/v1/ws/direct-process";
-    const wsUrl = SummaryApi.directProcessWS;
-    wsRef.current = new WebSocket(wsUrl);
+  setStatus("Đang kết nối WebSocket...");
+  const wsUrl = SummaryApi.directProcessWS;
+  wsRef.current = new WebSocket(wsUrl);
 
-    wsRef.current.onopen = () => {
-      setStatus("Đã kết nối, đang xử lý...");
+  // Hàm thêm log
+  const addLog = (message, type = 'info') => {
+    console.log(`[${type}] ${message}`);
+  };
 
-      const token = localStorage.getItem("access_token");
-      if (token) {
-        wsRef.current.send(JSON.stringify({ token }));
-      }
+  wsRef.current.onopen = () => {
+    setStatus("Đã kết nối, đang xử lý...");
+    addLog('Đã kết nối WebSocket', 'success');
 
-      const metadata = {
-        type: videoFile ? "upload" : "youtube",
-        ...(videoFile ? {} : { youtube_url: videoUrl }),
-      };
-      wsRef.current.send(JSON.stringify(metadata));
+    // Gửi token xác thực
+    const token = localStorage.getItem("access_token");
+    const authData = { token: token || '' };
+    wsRef.current.send(JSON.stringify(authData));
+    addLog(token ? 'Gửi token xác thực...' : 'Kết nối dưới dạng khách (không có token)');
 
-      if (videoFile) {
+    // Gửi metadata
+    const metadata = {
+      type: videoFile ? "upload" : "youtube",
+      ...(videoFile ? { fileName: videoFile.name } : { youtube_url: videoUrl }),
+    };
+    wsRef.current.send(JSON.stringify(metadata));
+    addLog(`Đã gửi metadata: ${JSON.stringify(metadata)}`);
+
+    if (videoFile) {
+      // Xử lý upload file
+      const fileSize = videoFile.size;
+      addLog(`Kích thước file: ${(fileSize / (1024 * 1024)).toFixed(2)} MB`);
+
+      if (fileSize > 15 * 1024 * 1024) {
+        // Xử lý file lớn bằng chunking
+        handleLargeFileUpload(videoFile, wsRef.current);
+      } else {
+        // Xử lý file nhỏ
         const reader = new FileReader();
 
         reader.onprogress = (e) => {
           if (e.lengthComputable) {
-            setProgressPercent(Math.round((e.loaded / e.total) * 50));
+            const percent = Math.round((e.loaded / e.total) * 50);
+            setProgressPercent(percent);
           }
         };
 
         reader.onload = () => {
-          wsRef.current.send(reader.result);
           setProgressPercent(50);
+          addLog(`Đã đọc xong file vào bộ nhớ, chuẩn bị gửi...`);
+          wsRef.current.send(reader.result);
+          addLog(`Đã gửi ${(reader.result.byteLength / (1024 * 1024)).toFixed(2)} MB dữ liệu thành công!`, 'success');
         };
 
+        reader.onerror = (error) => {
+          addLog(`Lỗi khi đọc file: ${error}`, 'error');
+          setStatus("Lỗi khi đọc file video");
+        };
+
+        addLog(`Bắt đầu đọc file ${videoFile.name}...`);
         reader.readAsArrayBuffer(videoFile);
       }
+    }
+  };
+
+  // Hàm xử lý upload file lớn
+  const handleLargeFileUpload = (videoFile, ws) => {
+    const CHUNK_SIZE = 5 * 1024 * 1024; // 5MB mỗi chunk
+    const totalChunks = Math.ceil(videoFile.size / CHUNK_SIZE);
+    let currentChunk = 0;
+    let waitingForServerReady = false;
+
+    addLog(`File lớn sẽ được chia thành ${totalChunks} phần`);
+
+    // Gửi thông tin chunk
+    ws.send(JSON.stringify({
+      type: "chunk_info",
+      fileName: videoFile.name,
+      fileSize: videoFile.size,
+      mimeType: videoFile.type,
+      totalChunks: totalChunks
+    }));
+
+    const sendChunkMeta = (chunkIndex) => {
+      if (chunkIndex >= totalChunks) return;
+
+      const start = chunkIndex * CHUNK_SIZE;
+      const end = Math.min(start + CHUNK_SIZE, videoFile.size);
+      const chunk = videoFile.slice(start, end);
+
+      ws.send(JSON.stringify({
+        type: "chunk_meta",
+        chunkIndex: chunkIndex,
+        totalChunks: totalChunks,
+        chunkSize: chunk.size
+      }));
+
+      waitingForServerReady = true;
     };
 
-    wsRef.current.onmessage = (event) => {
-      if (event.data instanceof Blob) {
-        const frameUrl = URL.createObjectURL(event.data);
-        setCurrentFrame(frameUrl);
-        setFrameHistory((prev) => [...prev, frameUrl]);
-      } else {
+    const sendChunk = (chunkIndex) => {
+      const start = chunkIndex * CHUNK_SIZE;
+      const end = Math.min(start + CHUNK_SIZE, videoFile.size);
+      const chunk = videoFile.slice(start, end);
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        ws.send(e.target.result);
+        const percent = 50 + Math.floor((chunkIndex / totalChunks) * 50);
+        setProgressPercent(percent);
+      };
+      reader.readAsArrayBuffer(chunk);
+    };
+
+    // Bắt đầu gửi chunk đầu tiên
+    sendChunkMeta(currentChunk);
+
+    // Xử lý phản hồi từ server
+    const chunkMessageHandler = (event) => {
+      if (typeof event.data === 'string') {
         try {
           const data = JSON.parse(event.data);
-
-          if (data.status === "frame") {
-            const frameInfo = data.frame_info;
-            const roundedFirePercent =
-              Math.round((frameInfo.total_area || 0) * 100) / 100;
-            const roundedBackgroundPercent =
-              Math.round((100 - roundedFirePercent) * 100) / 100;
-
-            setFirePercent(roundedFirePercent);
-            setBackgroundPercent(roundedBackgroundPercent);
-
-            if (frameInfo.fire_detected) {
-              setFireDetectionTimes((prev) => [...prev, frameInfo.video_time]);
-              // if (notificationEnabled) setShowFireAlert(true);
+          if (data.status === "chunk_ready" && waitingForServerReady) {
+            waitingForServerReady = false;
+            sendChunk(currentChunk);
+            currentChunk++;
+            if (currentChunk < totalChunks) {
+              sendChunkMeta(currentChunk);
             }
-          } else if (data.status === "progress") {
-            // setProgressPercent(50 + Math.floor(data.frames_processed / 10));
-            setProgressPercent(100);
-          } else if (data.status === "completed") {
-            setStatus("Xử lý hoàn thành");
-            if (data.processed_url) {
-              setProcessedVideoUrl(data.processed_url);
-            }
-            setProgressPercent(100);
-            setVideoEnded(true);
-          } else if (data.status === "error") {
-            setStatus(`Lỗi: ${data.message}`);
           }
         } catch (e) {
-          console.error("Lỗi xử lý dữ liệu từ server:", e);
+          console.error('Lỗi parse JSON:', e);
         }
       }
     };
 
-    wsRef.current.onerror = (error) => {
-      setStatus("Lỗi kết nối WebSocket");
-      console.error("WebSocket error:", error);
-    };
+    ws.addEventListener('message', chunkMessageHandler);
 
-    wsRef.current.onclose = () => {
-      setStatus("Kết nối đã đóng");
-    };
+    // Cleanup
+    return () => ws.removeEventListener('message', chunkMessageHandler);
+  };
 
-    return () => {
-      if (wsRef.current) {
-        wsRef.current.close();
+  wsRef.current.onmessage = (event) => {
+    if (event.data instanceof Blob) {
+      const frameUrl = URL.createObjectURL(event.data);
+      setCurrentFrame(frameUrl);
+      setFrameHistory((prev) => [...prev, frameUrl]);
+    } else {
+      try {
+        const data = JSON.parse(event.data);
+        addLog(`Nhận dữ liệu: ${JSON.stringify(data)}`);
+
+        if (data.status === "frame") {
+          const frameInfo = data.frame_info;
+          const roundedFirePercent = Math.round((frameInfo.total_area || 0) * 100) / 100;
+          const roundedBackgroundPercent = Math.round((100 - roundedFirePercent) * 100) / 100;
+
+          setFirePercent(roundedFirePercent);
+          setBackgroundPercent(roundedBackgroundPercent);
+
+          if (frameInfo.fire_detected) {
+            setFireDetectionTimes((prev) => [...prev, frameInfo.video_time]);
+          }
+        } else if (data.status === "progress") {
+          setProgressPercent(50 + Math.floor(data.frames_processed / 10));
+        } else if (data.status === "completed") {
+          setStatus("Xử lý hoàn thành");
+          if (data.processed_url) {
+            setProcessedVideoUrl(data.processed_url);
+          }
+          setProgressPercent(100);
+          setVideoEnded(true);
+          addLog('Xử lý video hoàn tất', 'success');
+        } else if (data.status === "error") {
+          setStatus(`Lỗi: ${data.message}`);
+          addLog(`Lỗi: ${data.message}`, 'error');
+        }
+      } catch (e) {
+        addLog('Lỗi khi xử lý dữ liệu từ server', 'error');
+        console.error("Lỗi xử lý dữ liệu từ server:", e);
       }
-      frameHistory.forEach((url) => URL.revokeObjectURL(url));
-    };
-  }, [mode, videoFile, videoUrl, notificationEnabled]);
+    }
+  };
+
+  wsRef.current.onerror = (error) => {
+    setStatus("Lỗi kết nối WebSocket");
+    addLog('Lỗi WebSocket', 'error');
+    console.error("WebSocket error:", error);
+  };
+
+  wsRef.current.onclose = () => {
+    setStatus("Kết nối đã đóng");
+    addLog('Kết nối WebSocket đã đóng');
+  };
+
+  return () => {
+    if (wsRef.current) {
+      wsRef.current.close();
+    }
+    frameHistory.forEach((url) => URL.revokeObjectURL(url));
+  };
+}, [mode, videoFile, videoUrl, notificationEnabled]);
 
   // Các state bổ sung cho camera mode
   const [cameraStatus, setCameraStatus] = useState("disconnected");
