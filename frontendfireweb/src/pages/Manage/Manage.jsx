@@ -161,7 +161,8 @@ const Manage = () => {
               a.click();
               document.body.removeChild(a);
             }}
-            style={{ paddingLeft: 10 }}
+            className="buttonicon-upload"
+            // style={{ paddingLeft: 10 }}
           />
         </div>
       ),

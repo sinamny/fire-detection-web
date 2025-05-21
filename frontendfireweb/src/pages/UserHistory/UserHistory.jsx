@@ -99,6 +99,8 @@ const UserHistoryPage = () => {
           total: total,
           onChange: (p) => setPage(p),
           showSizeChanger: false,
+          showLessItems: true
+          
         }}
         locale={{
           emptyText: <Empty description="Không có lịch sử hoạt động nào" />,

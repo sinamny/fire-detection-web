@@ -103,7 +103,7 @@ const ReviewPage = () => {
             onProgress={({ playedSeconds }) => setPlayedSeconds(playedSeconds)}
             onDuration={(d) => setDuration(d)}
             width="100%"
-            height="61vh"
+            // height="100%"
           />
         </div>
 

@@ -462,6 +462,8 @@ const Account = () => {
               total={allVideos.length}
               onChange={(newPage) => setPage(newPage)}
               showSizeChanger={false}
+              showLessItems={true}
+
             />
           </div>
 
@@ -541,9 +543,10 @@ const Account = () => {
                 total,
                 onChange: (page) => setPage(page),
                 showSizeChanger: false,
+                 showLessItems:true,
               }}
               bordered
-               scroll={{ x: "max-content" }}
+              //  scroll={{ x: "max-content" }}
             />
           )}
         </div>

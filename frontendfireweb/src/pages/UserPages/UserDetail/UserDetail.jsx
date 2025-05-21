@@ -18,6 +18,10 @@ const UserDetailPage = () => {
   const [userDetails, setUserDetails] = useState(null);
   const [userVideos, setUserVideos] = useState([]);
   const navigate = useNavigate();
+const [pagination, setPagination] = useState({
+  current: 1,
+  pageSize: 5,
+});
 
 useEffect(() => {
   const fetchUserDetails = async () => {
@@ -188,7 +192,7 @@ useEffect(() => {
               fontWeight: 500,
             }}
           >
-            <PlayCircleOutlined style={{ marginRight: 8 }} />
+            <PlayCircleOutlined style={{ marginRight: "0.4rem" }} />
             {fileName || ""}
           </span>
         </Tooltip>
@@ -277,7 +281,7 @@ useEffect(() => {
           }}
         >
           <h3 style={{ margin: 0 }}>Lịch sử phân tích video</h3>
-          <Tooltip title="Xem lịch sử người dùng">
+          <Tooltip title="Xem lịch sử chi tiết người dùng">
             <IconButton
               onClick={() =>
                 navigate(`/user-page/user-detail/${userId}/history`)
@@ -297,9 +301,34 @@ useEffect(() => {
         <Table
           columns={columns}
           dataSource={userVideos}
-          pagination={{ pageSize: 5 }}
+           pagination={{
+            current: pagination.current,
+            pageSize: pagination.pageSize,
+            showSizeChanger: true,
+            pageSizeOptions: ["5", "10", "20", "50"],
+            onChange: (page, pageSize) => {
+              setPagination({
+                current: page,
+                pageSize: pageSize,
+              });
+            },
+            showLessItems: true,
+            locale: {
+                items_per_page: "bản ghi / trang",
+                jump_to: "Đi tới",
+                jump_to_confirm: "Xác nhận",
+                page: "Trang",
+                prev_page: "Trang trước",
+                next_page: "Trang sau",
+                prev_5: "Lùi 5 trang",
+                next_5: "Tiến 5 trang",
+                prev_3: "Lùi 3 trang",
+                next_3: "Tiến 3 trang",
+              },
+          }}
           locale={{ emptyText: "Không có video lịch sử" }}
           style={{ marginTop: 20 }}
+          
           // scroll={{ x: "max-content" }}
         />
         </div>

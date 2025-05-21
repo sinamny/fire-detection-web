@@ -28,12 +28,16 @@ ChartJS.register(
   LineElement
 );
 
+const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
+
+const fontSizeRem = 0.7; // 0.75rem
+const fontSizeCenterRem = 1.5;
 const centerTextPlugin = {
   id: "centerTextPlugin",
   beforeDraw: (chart) => {
     const { ctx, chartArea } = chart;
     const fireCount = chart.data.datasets[0].data[1];
-    const fontSize = 20;
+    const fontSize = fontSizeCenterRem * rootFontSize;
     const fontFamily = "'Montserrat', sans-serif";
 
     ctx.save();
@@ -106,6 +110,8 @@ const Dashboard = () => {
     ],
   };
 
+  
+
   const pieOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -117,7 +123,7 @@ const Dashboard = () => {
         labels: {
           font: {
             family: "Montserrat",
-            size: 12,
+            size: fontSizeRem * rootFontSize, 
             weight: "bold",
           },
           usePointStyle: true,
@@ -279,13 +285,7 @@ const Dashboard = () => {
               Tỉ lệ video có cháy / không cháy
             </div>
             <div
-              style={{
-                width: "100%",
-                height: "40vh",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
+             className="donut-chart"
             >
               <Doughnut data={pieData} options={pieOptions} />
               

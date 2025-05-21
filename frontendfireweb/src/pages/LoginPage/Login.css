@@ -40,7 +40,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  margin-top: -1.8rem;
+  /* margin-top: -1.8rem; */
   margin-bottom: 0.2rem;
   text-align: center;
   flex-wrap: wrap;
@@ -125,6 +125,7 @@
   margin-bottom: 5%;
   outline: none;
   transition: border-color 0.3s;
+  font-size: 0.8rem;
 }
 
 .login-input:focus {
@@ -252,4 +253,45 @@
   margin-bottom: 0.5rem !important;
   font-size: 0.7rem;
   text-align: center;
+}
+
+@media (max-width: 414px) {
+  .login-box {
+    width: 80%;         
+    height: auto;       
+  }
+
+  .login-form-section,
+  .login-image-section {
+    width: 100%;         
+    height: auto;
+  }
+
+  
+
+  .login-title {
+    font-size: 1.2rem;
+    margin: 1rem 0;
+  }
+
+  .login-button {
+    font-size: 1rem;
+    padding: 1rem 0;
+  }
+}
+
+/* Màn hình nhỏ hơn hoặc bằng 768px (máy tính bảng) */
+@media (max-width: 768px) {
+  .login-form-section,
+ 
+ 
+  .login-title {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .login-button {
+    font-size: 0.9rem;
+    padding: 0.8rem 0;
+  }
 }
