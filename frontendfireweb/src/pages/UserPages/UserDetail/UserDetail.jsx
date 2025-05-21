@@ -60,7 +60,7 @@
 // export default UserDetailPage;
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { IconButton} from "@mui/material";
+import { IconButton } from "@mui/material";
 import axios from "axios";
 import { Button, Table, Tooltip } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
@@ -100,7 +100,8 @@ const UserDetailPage = () => {
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            }, params: {
+            },
+            params: {
               skip: 0,
               limit: 1000,
             },
@@ -156,21 +157,21 @@ const UserDetailPage = () => {
   if (!userDetails) return <div>Loading...</div>;
 
   function formatToVietnamTime(dateString) {
-  const date = new Date(dateString);
-  // Cộng thêm 7 giờ (theo giờ Việt Nam)
-  // date.setHours(date.getHours() + 7);
+    const date = new Date(dateString);
+    // Cộng thêm 7 giờ (theo giờ Việt Nam)
+    // date.setHours(date.getHours() + 7);
 
-  return date.toLocaleString("vi-VN", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    // hour: "2-digit",
-    // minute: "2-digit",
-  });
-}
+    return date.toLocaleString("vi-VN", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      // hour: "2-digit",
+      // minute: "2-digit",
+    });
+  }
 
-const createdAt = formatToVietnamTime(userDetails.created_at);
-const updatedAt = formatToVietnamTime(userDetails.updated_at);
+  const createdAt = formatToVietnamTime(userDetails.created_at);
+  const updatedAt = formatToVietnamTime(userDetails.updated_at);
 
   const totalVideos = userVideos.length;
   const fireDetectedCount = userVideos.filter(
@@ -206,38 +207,41 @@ const updatedAt = formatToVietnamTime(userDetails.updated_at);
           <CloseIcon style={{ color: "red", fontSize: "1rem" }} />
         ),
     },
-   {
-  title: (
-    <span style={{ display: "block", textAlign: "center" }}>Video</span>
-  ),
-  dataIndex: "file_name",
-  key: "video",
-  width: "35%",
-  render: (fileName, record) => (
-    <Tooltip title="Nhấn để xem lại video">
-      <span
-        onClick={() => {
-          navigate(`/user-page/user-detail/${userId}/review`, {
-            state: { video_id: record.key, from: `/user-page/user-detail/${userId}` }
-          });
-        }}
-        style={{
-          textAlign: "justify",
-            wordBreak: "break-word",
-            whiteSpace: "normal",
-            maxWidth: "100%",
-            display: "block",
-            cursor: "pointer",
-            color: "#000000",
-            fontWeight: 500,
-        }}
-      >
-        <PlayCircleOutlined style={{ marginRight: 8 }} />
-        {fileName || ""}
-      </span>
-    </Tooltip>
-  ),
-},
+    {
+      title: (
+        <span style={{ display: "block", textAlign: "center" }}>Video</span>
+      ),
+      dataIndex: "file_name",
+      key: "video",
+      width: "35%",
+      render: (fileName, record) => (
+        <Tooltip title="Nhấn để xem lại video">
+          <span
+            onClick={() => {
+              navigate(`/user-page/user-detail/${userId}/review`, {
+                state: {
+                  video_id: record.key,
+                  from: `/user-page/user-detail/${userId}`,
+                },
+              });
+            }}
+            style={{
+              textAlign: "justify",
+              wordBreak: "break-word",
+              whiteSpace: "normal",
+              maxWidth: "100%",
+              display: "block",
+              cursor: "pointer",
+              color: "#000000",
+              fontWeight: 500,
+            }}
+          >
+            <PlayCircleOutlined style={{ marginRight: 8 }} />
+            {fileName || ""}
+          </span>
+        </Tooltip>
+      ),
+    },
     {
       title: "",
       key: "download",
@@ -314,34 +318,42 @@ const updatedAt = formatToVietnamTime(userDetails.updated_at);
 
       <div className="history-box">
         <div
-            className="history-header"
-            style={{
-              position: "relative",
-              textAlign: "center",
-            }}
-          >
-            <h3 style={{ margin: 0 }}>Lịch sử phân tích video</h3>
-            <Tooltip title="Xem lịch sử người dùng">
-              <IconButton
-                onClick={() => navigate(`/user-page/user-detail/${userId}/history`)}
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  right: 0,
-                  transform: "translateY(-50%)",
-                }}
-              >
-                <i className="fas fa-history" style={{ color: "#60477D", fontSize: "1.5rem" }}></i>
-              </IconButton>
-            </Tooltip>
-          </div>
+          className="history-header"
+          style={{
+            position: "relative",
+            textAlign: "center",
+          }}
+        >
+          <h3 style={{ margin: 0 }}>Lịch sử phân tích video</h3>
+          <Tooltip title="Xem lịch sử người dùng">
+            <IconButton
+              onClick={() =>
+                navigate(`/user-page/user-detail/${userId}/history`)
+              }
+              style={{
+                position: "absolute",
+                top: "50%",
+                right: 0,
+                transform: "translateY(-50%)",
+              }}
+            >
+              <i
+                className="fas fa-history"
+                style={{ color: "#60477D", fontSize: "1.5rem" }}
+              ></i>
+            </IconButton>
+          </Tooltip>
+        </div>
+        <div className="table-wrapper">
         <Table
           columns={columns}
           dataSource={userVideos}
           pagination={{ pageSize: 5 }}
           locale={{ emptyText: "Không có video lịch sử" }}
           style={{ marginTop: 20 }}
+          // scroll={{ x: "max-content" }}
         />
+        </div>
       </div>
     </div>
   );

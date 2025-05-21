@@ -82,7 +82,7 @@ const GetUserHistoryPage = () => {
           />
         </Tooltip>
 
-        <Title level={2} style={{ flexGrow: 1, textAlign: "center", margin: 0 }}>
+        <Title level={2} style={{ flexGrow: 1, textAlign: "center", margin: 0, fontSize: "1.75rem" }}>
           Lịch sử chi tiết hoạt động người dùng
         </Title>
       </div>
@@ -112,7 +112,7 @@ const GetUserHistoryPage = () => {
             <List.Item>
               <Card style={{ width: "100%" }}>
                 <div>
-                  <Text type="secondary" style={{ color: "#000000", fontWeight: "600" }}>
+                  <Text type="secondary" style={{ color: "#000000", fontWeight: "600", fontSize: "1rem" }}>
                     {formattedDate} - {cleanDescription(item.description)}
                   </Text>
                 </div>
@@ -129,8 +129,8 @@ const GetUserHistoryPage = () => {
                       })
                     }
                   >
-                    <PlayCircleOutlined style={{ fontSize: 18 }} />
-                    <span>Xem video liên quan</span>
+                    <PlayCircleOutlined style={{ fontSize: "1.25rem" }} />
+                    <span style={{ fontSize: "1rem" }}>Xem video liên quan</span>
                   </div>
                 )}
               </Card>

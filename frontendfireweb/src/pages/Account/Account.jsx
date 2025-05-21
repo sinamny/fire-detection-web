@@ -275,17 +275,17 @@ const Account = () => {
 
           <div className="account-details">
             <p>
-              <strong>Email:</strong> {user.email}
+              <strong>Email:</strong>&nbsp;{user.email}
             </p>
             <p>
-              <strong>SĐT:</strong> {user.phone}
+              <strong>SĐT:</strong>&nbsp;{user.phone}
             </p>
             <p>
-              <strong>Địa chỉ:</strong> {user.address}
+              <strong>Địa chỉ:</strong> &nbsp;{user.address}
             </p>
             {user.role === "admin" && (
               <p>
-                <strong>Vai trò:</strong> {user.role}
+                <strong>Vai trò:</strong> &nbsp;{user.role}
               </p>
             )}
           </div>
@@ -543,6 +543,7 @@ const Account = () => {
                 showSizeChanger: false,
               }}
               bordered
+               scroll={{ x: "max-content" }}
             />
           )}
         </div>

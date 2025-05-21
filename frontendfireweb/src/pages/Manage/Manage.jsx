@@ -221,6 +221,7 @@ const Manage = () => {
               },
             }}
             bordered
+              // scroll={{ x: "max-content" }}
           />
         </div>
       </div>

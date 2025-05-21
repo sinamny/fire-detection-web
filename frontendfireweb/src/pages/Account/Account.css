@@ -61,10 +61,14 @@
     padding: 0.05rem 1.5rem;
     border-radius: 10px;
     font-size: 0.9rem;
+   
 }
 
 .account-details p {
   margin: 0.625rem 0;
+   word-break: break-word; display: flex;
+  flex-wrap: wrap;
+ 
  
 }
 

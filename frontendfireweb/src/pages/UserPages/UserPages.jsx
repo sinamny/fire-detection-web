@@ -223,6 +223,7 @@ const UsersPage = () => {
         rowKey="user_id"
         pagination={false}
         className="users-table"
+          scroll={{ x: "max-content" }}
       />
 
       <Modal
