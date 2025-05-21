@@ -67,7 +67,7 @@ const Dashboard = () => {
             },
             params: {
               skip: 0,
-              limit: 100,
+              limit: 1000,
             },
           }),
           axios({
