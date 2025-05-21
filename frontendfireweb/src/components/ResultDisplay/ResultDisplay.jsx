@@ -36,7 +36,6 @@ const ResultDisplay = () => {
   } = state || {};
 
  
-  // Kết nối WebSocket khi mode === 'video'
 // Kết nối WebSocket khi mode === 'video'
 useEffect(() => {
   if (mode !== "video") return;
