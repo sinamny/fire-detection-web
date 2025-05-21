@@ -293,15 +293,79 @@
   z-index: 1000; 
   pointer-events: all; 
 }
-/* Tablet: <=768px */
-@media (max-width: 768px) {
-  /* .video-page {
-    margin: 4% 12.5% 4% 12.5%;
-    padding: 1rem;
-  } */
 
+@media (max-width: 1024px) {
+ 
+  .tab-button {
+    font-size: 0.8rem;
+    padding: 0.5rem;
+  }
+
+  .upload-box {
+    width: 50%;
+    height: 40%;
+     border-radius: 20px;
+  }
+
+  .upload-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 30vh;
+  justify-content: center;
+  /* max-height: 100vh; */
+}
+.upload-link, .upload-header {
+  height: 3vh;
+}
+
+
+  .upload-box p {
+    padding-left: 10%;
+    padding-right: 10%;
+    font-size: 0.7rem;
+  }
+
+  .url-input {
+    max-width: 100%;
+    padding: 0.4rem;
+    font-size: 0.8rem;
+  }
+
+  .upload-title {
+    font-size: 0.9rem;
+  }
+
+  .upload-button,
+  .camera-button,
+  .analyze-button {
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .video-page {
+    /* margin-top: 15%; */
+    margin: 20% 5% 4% 5%
+  }
   
 
+  .video-frame {
+    width: 95%;
+    height: 20vh;
+    padding: 0.6rem;
+  }
+
+  .loading-message {
+    font-size: 1rem;
+  }
+
+  .loading-overlay {
+    margin: 2% 3% 2% 0%;
+    height: 45vh;
+    padding: 1rem;
+  }
+}
+@media (max-width: 768px) {
   .tab-button {
     font-size: 0.9rem;
     padding: 0.6rem;
@@ -351,7 +415,7 @@
   .upload-box {
     width: 60%;
     height: 40%;
-     border-radius: 10px;
+     border-radius: 15px;
   }
 
   .upload-section {
