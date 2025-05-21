@@ -30,7 +30,7 @@ const Manage = () => {
         console.log(resVideos.data);
         const videos = resVideos.data.map((video, idx) => {
           const dateObj = new Date(video.updated_at);
-          dateObj.setHours(dateObj.getHours() + 7);
+          // dateObj.setHours(dateObj.getHours() + 7);
           const formattedDate = dateObj.toLocaleDateString("vi-VN");
           const formattedTime = dateObj.toLocaleTimeString("vi-VN", {
             hour: "2-digit",

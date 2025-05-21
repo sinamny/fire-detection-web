@@ -175,7 +175,7 @@ const Account = () => {
       key: "time",
       render: (text) => {
         const date = new Date(text);
-        date.setHours(date.getHours() + 7);
+        // date.setHours(date.getHours() + 7);
         return (
           <div style={{ textAlign: "center" }}>
 
@@ -326,7 +326,7 @@ const Account = () => {
             {videos.length > 0 ? (
               videos.map((video, index) => {
                 const date = new Date(video.created_at);
-                date.setHours(date.getHours() + 7);
+                // date.setHours(date.getHours() + 7);
 
                 const formattedDate = date.toLocaleDateString("vi-VN");
                 const formattedTime = date.toLocaleTimeString("vi-VN", {

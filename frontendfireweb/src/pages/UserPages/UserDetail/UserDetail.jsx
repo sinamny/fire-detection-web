@@ -1,73 +1,16 @@
-// import React, { useState, useEffect } from 'react';
-// import { useParams, useNavigate } from 'react-router-dom';
-// import axios from 'axios';
-// import { Button } from 'antd';
-// import { ArrowLeftOutlined } from '@ant-design/icons';
-// import "./UserDetail.css"
-
-// const UserDetailPage = () => {
-//   const { userId } = useParams();
-//   const [userDetails, setUserDetails] = useState(null);
-//   const navigate = useNavigate();
-
-//   useEffect(() => {
-//     axios
-//       .get(`http://127.0.0.1:8000/api/v1/users/${userId}`, {
-//         headers: {
-//           Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-//         },
-//       })
-//       .then((response) => {
-//         setUserDetails(response.data);
-//       })
-//       .catch((error) => {
-//         console.error('Error fetching user details:', error);
-//       });
-//   }, [userId]);
-
-//   const handleBack = () => {
-//     navigate('/user-page');
-//   };
-
-//   if (!userDetails) return <div>Loading...</div>;
-
-//   return (
-//     <div className="account-box">
-//       <div className="user-header">
-//         <Button onClick={handleBack}
-//           icon={<ArrowLeftOutlined />}
-//           style={{ marginRight: '1rem', padding: '0 0.8rem', borderRadius: '50%' }}
-//           ></Button>
-//         <h3>Chi tiết người dùng</h3>
-//       </div>
-
-//       <div className="account-content">
-//         <div className="account-name">
-//           <span className="name-input">{userDetails.username}</span>
-//         </div>
-
-//         <div className="account-details">
-//           <p><strong>Email:</strong> {userDetails.email}</p>
-//           <p><strong>Vai trò:</strong> {userDetails.role}</p>
-//           <p><strong>Ngày tạo:</strong> {userDetails.created_at}</p>
-//           <p><strong>Ngày cập nhật:</strong> {userDetails.updated_at}</p>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default UserDetailPage;
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import axios from "axios";
 import { Button, Table, Tooltip } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
+import { FaHistory } from "react-icons/fa";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CloseIcon from "@mui/icons-material/Close";
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import { PlayCircleOutlined } from "@ant-design/icons";
+import { baseURL } from "../../../api/api";
+import SummaryApi from "../../../api/api";
 import "./UserDetail.css";
 
 const UserDetailPage = () => {
@@ -76,79 +19,88 @@ const UserDetailPage = () => {
   const [userVideos, setUserVideos] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Lấy chi tiết user
-    axios
-      .get(`http://127.0.0.1:8000/api/v1/users/${userId}`, {
+useEffect(() => {
+  const fetchUserDetails = async () => {
+    try {
+      const { url, method } = SummaryApi.getUserById(userId);
+      const response = await axios({
+        method,
+        url: baseURL + url,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
-      })
-      .then((response) => {
-        setUserDetails(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching user details:", error);
       });
-  }, [userId]);
+      setUserDetails(response.data);
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+    }
+  };
 
-  useEffect(() => {
-    const fetchVideos = async () => {
-      try {
-        const resVideos = await axios.get(
-          "http://127.0.0.1:8000/api/v1/videos/all",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-            params: {
-              skip: 0,
-              limit: 1000,
-            },
-          }
+  if (userId) {
+    fetchUserDetails();
+  }
+}, [userId]);
+
+// Gọi video của user đó
+useEffect(() => {
+  const fetchVideos = async () => {
+    try {
+      const { url, method } = SummaryApi.fetchAllVideos;
+      const resVideos = await axios({
+        method,
+        url: baseURL + url,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+        params: {
+          skip: 0,
+          limit: 1000,
+        },
+      });
+
+      if (userDetails?.user_id) {
+        const filteredVideos = resVideos.data.filter(
+          (video) => video.user_id === userDetails.user_id
         );
 
-        if (userDetails?.user_id) {
-          const filteredVideos = resVideos.data.filter(
-            (video) => video.username === userDetails.username
-          );
+        const videos = filteredVideos.map((video) => {
+          const dateObj = new Date(video.updated_at);
+          // dateObj.setHours(dateObj.getHours() + 7);
+          return {
+            key: video.video_id,
+            date: dateObj.toLocaleDateString("vi-VN"),
+            time: dateObj.toLocaleTimeString("vi-VN", {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+            fireDetected: video.fire_detected ? "Có" : "Không",
+            file_name: video.file_name,
+            videoName: video.processed_video_url ? (
+              <a
+                href={video.processed_video_url}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Xem video
+              </a>
+            ) : (
+              "Không có"
+            ),
+            processed_video_url: video.processed_video_url,
+          };
+        });
 
-          const videos = filteredVideos.map((video) => {
-            const dateObj = new Date(video.updated_at);
-            dateObj.setHours(dateObj.getHours() + 7);
-            return {
-              key: video.video_id,
-              date: dateObj.toLocaleDateString("vi-VN"),
-              time: dateObj.toLocaleTimeString("vi-VN", {
-                hour: "2-digit",
-                minute: "2-digit",
-              }),
-              fireDetected: video.fire_detected ? "Có" : "Không",
-              file_name: video.file_name,
-              videoName: video.processed_video_url ? (
-                <a
-                  href={video.processed_video_url}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Xem video
-                </a>
-              ) : (
-                "Không có"
-              ),
-              processed_video_url: video.processed_video_url,
-            };
-          });
-
-          setUserVideos(videos);
-        }
-      } catch (error) {
-        console.error("Lỗi khi lấy dữ liệu video:", error);
+        setUserVideos(videos);
       }
-    };
+    } catch (error) {
+      console.error("Lỗi khi lấy dữ liệu video:", error);
+    }
+  };
 
+  if (userDetails) {
     fetchVideos();
-  }, [userDetails]);
+  }
+}, [userDetails]);
 
   const handleBack = () => {
     navigate("/user-page");
@@ -292,25 +244,25 @@ const UserDetailPage = () => {
 
           <div className="account-details">
             <p>
-              <strong>Email:</strong> {userDetails.email}
+              <strong>Email:</strong> &nbsp;{userDetails.email}
             </p>
             <p>
-              <strong>Địa chỉ:</strong> {userDetails.address || "Chưa có"}
+              <strong>Địa chỉ:</strong> &nbsp;{userDetails.address || "Chưa có"}
             </p>
             <p>
-              <strong>Vai trò:</strong> {userDetails.role}
+              <strong>Vai trò:</strong>&nbsp; {userDetails.role}
             </p>
             <p>
-              <strong>Ngày tạo:</strong> {createdAt}
+              <strong>Ngày tạo:</strong>&nbsp; {createdAt}
             </p>
             <p>
-              <strong>Ngày cập nhật:</strong> {updatedAt}
+              <strong>Ngày cập nhật:</strong> &nbsp;{updatedAt}
             </p>
             <p>
-              <strong>Tổng số video:</strong> {totalVideos}
+              <strong>Tổng số video:</strong> &nbsp;{totalVideos}
             </p>
             <p>
-              <strong>Số video phát hiện cháy:</strong> {fireDetectedCount}
+              <strong>Số video phát hiện cháy:</strong>&nbsp; {fireDetectedCount}
             </p>
           </div>
         </div>
@@ -337,10 +289,7 @@ const UserDetailPage = () => {
                 transform: "translateY(-50%)",
               }}
             >
-              <i
-                className="fas fa-history"
-                style={{ color: "#60477D", fontSize: "1.5rem" }}
-              ></i>
+              <FaHistory style={{ color: "#60477D", fontSize: "1.5rem" }} />
             </IconButton>
           </Tooltip>
         </div>

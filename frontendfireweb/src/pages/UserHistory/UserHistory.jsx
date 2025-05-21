@@ -105,7 +105,7 @@ const UserHistoryPage = () => {
         }}
         renderItem={(item) => {
           const date = new Date(item.created_at);
-          date.setHours(date.getHours() + 7);
+          // date.setHours(date.getHours() + 7);
           const formattedDate =
             date.toLocaleTimeString("vi-VN", { hour12: false }) +
             " " +
