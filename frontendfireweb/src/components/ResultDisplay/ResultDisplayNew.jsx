@@ -456,7 +456,7 @@ const ResultDisplay = () => {
             <img
               src={`data:image/jpeg;base64,${frameBase64}`}
               alt="Camera Frame"
-              // style={{ width: "100%", height: "62vh", objectFit: "cover" }}
+              style={{ width: "100%", height: "62vh", objectFit: "cover" }}
               className="stream-result"
             />
           ) : isCameraStarting ? (
@@ -479,7 +479,7 @@ const ResultDisplay = () => {
                 src={currentFrame}
                 alt="Processed Frame"
                 className="stream-result"
-                // style={{ width: "100%", height: "62vh", objectFit: "contain" }}
+                style={{ width: "100%", height: "62vh", objectFit: "contain" }}
               />
             ) : (
               <div className="loading-placeholder">
@@ -544,7 +544,6 @@ const ResultDisplay = () => {
             <span className="progress-percent">{backgroundPercent}%</span>
           </div>
         </div>
-
         <div className="right-column">
           <div className="detection-time">
             <strong>

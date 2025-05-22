@@ -345,13 +345,13 @@
 
   .video-page {
     /* margin-top: 15%; */
-    margin: 20% 5% 4% 5%
+    margin: 5% 5% 4% 5%
   }
   
 
   .video-frame {
     width: 95%;
-    height: 20vh;
+    height: 45vh;
     padding: 0.6rem;
   }
 

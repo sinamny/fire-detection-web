@@ -43,12 +43,8 @@ const ReviewStreamVideo = () => {
             onProgress={({ playedSeconds }) => setPlayedSeconds(playedSeconds)}
             onDuration={(d) => setDuration(d)}
             style={{
-              maxWidth: "100%",
-              maxHeight: "100%",
-              height: "100%",
               width: "auto",
-              objectFit: "contain",
-              // margin: "auto", 
+              height: "61vh",
             }}
           />
         </div>
