@@ -1,0 +1,13 @@
+train: /kaggle/input/dataset-fire-segment/train/images
+val: /kaggle/input/dataset-fire-segment/valid/images
+test: /kaggle/input/dataset-fire-segment/valid/images
+
+nc: 2
+names: ['fire', 'smoke']
+
+roboflow:
+  workspace: firesegpart1
+  project: fire-seg-part1
+  version: 20
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/firesegpart1/fire-seg-part1/dataset/20
