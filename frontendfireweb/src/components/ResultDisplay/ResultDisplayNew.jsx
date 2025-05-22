@@ -361,10 +361,11 @@ const ResultDisplay = () => {
     setCameraStatus("connecting");
     setIsCameraStarting(true);
 
-    const wsUrl =
-      process.env.REACT_APP_WS_URL || "ws://localhost:8000/api/v1/ws/fire";
+      const wsUrl = SummaryApi.fireCameraWS;
     const ws = new WebSocket(wsUrl);
     wsRef.current = ws;
+
+
 
     ws.onopen = () => {
       console.log("Bật lại WebSocket thành công");

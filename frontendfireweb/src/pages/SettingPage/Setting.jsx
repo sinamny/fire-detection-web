@@ -90,11 +90,11 @@ const token = localStorage.getItem("access_token");
         setIsEditing(false);
         setOpenConfirm(false);
         setOpenSnackbar(true);
-        return axios.get("http://localhost:8000/api/v1/notifications/settings", {
-          headers: {
-            Authorization: `Bearer ${token}`, 
-          },
-        });
+        return axios.get(`${baseURL}${SummaryApi.notificationSettings.url}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       })
       .then((response) => {
         setAlert1(response.data.enable_website_notification);

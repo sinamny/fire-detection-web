@@ -60,7 +60,7 @@ const UsersPage = () => {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
       },
-      params: { skip: 0, limit: 100 },
+      params: { skip: 0, limit: 1000 },
     })
       .then((response) => {
         setUsers(response.data);
