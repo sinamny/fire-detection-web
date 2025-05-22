@@ -9,9 +9,13 @@
   border: 10px solid #C4D9FF;
    /* border: 10px solid #FF9965; */
   /* max-height: 65vh; */
-  aspect-ratio: 16 / 9;
 
-
+ max-height: 65vh;
+   height: 65vh;
+ display: flex;
+  align-items: center;
+  justify-content: center;
+    position: relative;
 
   background-color: #000000;
   
@@ -132,11 +136,11 @@
   
 
   .review-header {
-    margin-top: 5%;
+    margin-top: 3%;
   }
   .review-page {
   max-width: 80%;
-  margin: 10% 10% 2.2% 10%;
+  margin: 2% 10% 2.2% 10%;
 }
 
 .video-review-frame {
@@ -144,7 +148,8 @@
   border-top-right-radius: 8px;
   border: 10px solid #C4D9FF;
    /* border: 10px solid #FF9965; */
-  aspect-ratio: 16 / 9;
+    height: 45vh;
+    max-height: 45vh;
   background-color: #000000;
   
 }
@@ -165,7 +170,8 @@
   border-top-right-radius: 8px;
   border: 10px solid #C4D9FF;
    /* border: 10px solid #FF9965; */
-   aspect-ratio: 16 / 9;
+  height: 30vh;
+    max-height: 30vh;
   background-color: #000000;
   
 }
@@ -187,8 +193,9 @@
   border-top-right-radius: 8px;
   border: 10px solid #C4D9FF;
    /* border: 10px solid #FF9965; */
-  aspect-ratio: 16 / 9;
   background-color: #000000;
+    height: 30vh;
+    max-height: 30vh;
   
 }
 

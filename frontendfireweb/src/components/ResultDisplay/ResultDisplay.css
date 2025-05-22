@@ -15,6 +15,10 @@
   max-height: 65vh;
    height: 65vh;
   background-color: #000000;
+   display: flex;
+  align-items: center;
+  justify-content: center;
+    position: relative;
   
 }
 
@@ -26,8 +30,13 @@
 }
 
 .stream-result {
-  width: 100%;
-   height: 62vh;
+  /* width: 100%; */
+   /* height: 62vh; */
+    max-width: 100%;
+  max-height: 100%;
+  height: 100%;
+  width: auto;
+  object-fit: contain;
     object-fit: cover;
 }
 
@@ -317,12 +326,52 @@
   100% { transform: rotate(360deg); }
 }
 
+@media (max-width: 1024px) {
+.result-page {
+    max-width: 85%;
+    margin: 10% auto;
+  }
+
+   .video-result-frame {
+    height: 28vh;
+    max-height: 28vh;
+  }
+
+  .stream-result {
+  /* width: 100%; */
+   /* height: 26.5vh;
+    object-fit: contain; */
+     max-width: 100%;
+  max-height: 100%;
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+    
+}
+}
+
 /* Tablet: max-width 768px */
 @media (max-width: 768px) {
   .result-page {
-    max-width: 92%;
-    margin: 30% auto;
+    max-width: 85%;
+    margin: 20% auto;
   }
+
+   .video-result-frame {
+    height: 28vh;
+    max-height: 28vh;
+  }
+
+  .stream-result {
+  /* width: 100%; */
+   /* height: 25vh; */
+    max-width: 100%;
+  max-height: 100%;
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+    
+}
 
   .video-player {
     width: 100%;
@@ -379,9 +428,14 @@
   }
 
   .stream-result {
-  width: 100%;
-   height: 25vh;
-    object-fit: fill;
+    /* width: 100%; */
+   /* height: 25vh; */
+    max-width: 100%;
+  max-height: 100%;
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+    
 }
   .video-player {
     width: 100%;
