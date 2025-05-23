@@ -78,9 +78,9 @@ yarn-error.log*
 *.flv
 *.mkv
 *.webm
-*.jpg
+# *.jpg
 *.jpeg
-*.png
+# *.png
 *.gif
 *.bmp
 temp/
