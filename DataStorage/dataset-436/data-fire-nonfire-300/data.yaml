@@ -1,6 +1,0 @@
-train: /kaggle/input/data-fire-nonfire/data-fire-nonfire/train/images
-val: /kaggle/input/data-fire-nonfire/data-fire-nonfire/valid/images
-test: /kaggle/input/data-fire-nonfire/data-fire-nonfire/test/images
-
-nc: 1
-names: ['fire']
