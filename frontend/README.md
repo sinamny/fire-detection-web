@@ -38,13 +38,3 @@ Dự án này là một ứng dụng web được xây dựng bằng React, vớ
    ```bash
    npm start
    ```
-
-## Sử Dụng
-
-- Truy cập vào `/login` để vào trang đăng nhập.
-- **Thông Tin Tài Khoản Đăng Nhập**:
-  - **Email**: `test@gmail.com`
-  - **Mật khẩu**: `123456`
-- Đăng ký tài khoản mới tại `/register`.
-- Truy cập vào các đường dẫn bảo vệ như `/home`, `/video`, và `/account` sau khi đăng nhập.
-

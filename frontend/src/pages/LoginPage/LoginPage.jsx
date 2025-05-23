@@ -6,7 +6,7 @@ import { useDispatch} from "react-redux";
 import { loginStart, loginSuccess, loginFailed } from "../../redux/authSlice";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 // import fireImage from "../../assets/img/firefighters.jpg"; 
-import fireImage from "../../assets/img/firelogin.jpg"; 
+import fireImage from "../../assets/img/firelogin.jpg";
 import { MdOutlineLocalFireDepartment } from "react-icons/md";
 import { baseURL } from "../../api/api";
 import SummaryApi from "../../api/api";
